@@ -5,14 +5,21 @@ type UserProviderProps = {
 };
 
 type UserContext = {
-    user: string;
-    setUser: React.Dispatch<React.SetStateAction<string>>;
+    user: User;
+    setUser: React.Dispatch<React.SetStateAction<User>>;
+};
+
+type User = {
+    uid: string | null;
+    displayName: string | null;
+    email: string | null;
+    photoUrl: string | null;
 };
 
 export const UserContext = createContext<UserContext | null>(null);
 
 export function UserProvider({ children }: UserProviderProps) {
-    const [user, setUser] = useState<string>("grumpy19");
+    const [user, setUser] = useState<User>({ uid: "", displayName: "", email: "", photoUrl: "" });
 
     return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 }

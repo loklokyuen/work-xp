@@ -7,7 +7,7 @@ export default function TabTwoScreen() {
 
     return (
         <View>
-            <Text>{user}</Text>
+            <Text>{user.displayName}</Text>
             <Chat sender={"1"} receiver={"2"} />;
         </View>
     );
