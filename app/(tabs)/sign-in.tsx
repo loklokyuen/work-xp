@@ -17,7 +17,6 @@ import { useContext } from "react";
 import { useUserContext } from "@/components/UserContext";
 
 const SignIn = () => {
-    // const [user, setUser] = useState("");
     const [displayName, setDisplayName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

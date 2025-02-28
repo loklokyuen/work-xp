@@ -12,7 +12,7 @@ import {
 import React, { useState } from "react";
 import { auth } from "@/database/firebase";
 import { useUserContext } from "@/components/UserContext";
-import { useContext } from "react";
+import { router } from "expo-router";
 
 const SuccessSignIn = () => {
     const { user, setUser } = useUserContext();
@@ -38,7 +38,7 @@ const SuccessSignIn = () => {
     const handleSignOut = () => {
         auth.signOut()
             .then(() => {
-                alert("Signed out successfully!");
+                router.replace("/(tabs)/sign-in");
                 setUser({ uid: "", displayName: "", email: "", photoUrl: "" });
                 setError("");
             })

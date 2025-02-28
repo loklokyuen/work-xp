@@ -1,40 +1,40 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: "center",
         padding: 16,
-        backgroundColor: '#fff',
+        backgroundColor: "#fff",
         marginHorizontal: 16,
     },
     title: {
         fontSize: 24,
         marginBottom: 16,
-        textAlign: 'center',
+        textAlign: "center",
     },
     input: {
         height: 40,
-        borderColor: 'gray',
+        borderColor: "gray",
         borderWidth: 1,
         margin: 12,
         paddingHorizontal: 8,
     },
     option: {
-        color: 'blue',
+        color: "blue",
         margin: 12,
-        textAlign: 'center',
+        textAlign: "center",
     },
     button: {
         margin: 12,
     },
     error: {
-        color: 'red',
+        color: "red",
         margin: 12,
-        textAlign: 'center',
+        textAlign: "center",
     },
     fixToText: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flexDirection: "row",
+        justifyContent: "space-between",
     },
 });
 
