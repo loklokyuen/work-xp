@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { useEffect, useState } from "react";
 import { Button } from "react-native";
 import { getDocs } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../database/firebase";
 import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
 
 type chatProps = {
