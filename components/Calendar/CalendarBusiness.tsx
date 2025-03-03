@@ -5,7 +5,7 @@ import {Calendar, CalendarList, Agenda, LocaleConfig} from 'react-native-calenda
 import React, {useEffect, useState} from 'react';
 import Day from 'react-native-calendars/src/calendar/day';
 
-import { db } from "./firebaseConfig"
+import { db } from "../../database/firebase"
 import { addDoc,getDocs, query, collection, doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 
 type DayPressEvent = {
@@ -17,12 +17,13 @@ type DayPressEvent = {
    
 }
 
+
 const calculateDate = (firstDate: string,SecondDate: string) => {
-  let marked:  Record<string, any> = {}
+let markedDates:  Record<string, any> = {}
 
       
-      marked[firstDate] = {startingDay: true, color: 'green',textColor: 'white'}
-      marked[SecondDate] = {endingDay: true, color: 'green',textColor: 'white'}
+      markedDates[firstDate] = {startingDay: true, color: 'green',textColor: 'white'}
+      markedDates[SecondDate] = {endingDay: true, color: 'green',textColor: 'white'}
 
       let start = new Date(firstDate)
       let end = new Date(SecondDate) 
@@ -33,15 +34,16 @@ const calculateDate = (firstDate: string,SecondDate: string) => {
       while(current<=end){
           let dateAsString = current.toISOString().split("T")[0]
 
-          marked[dateAsString] = {color:"green", textColor: "white"}
+          markedDates[dateAsString] = {color:"green", textColor: "white"}
           
           current.setDate(current.getDate()+1)
 
       }
 
 
-      return marked
   }
+
+
 
 
 
@@ -52,117 +54,70 @@ const BusinessCalender = ({currentBusiness}: {currentBusiness:string}) => {
   const [secondDay, setSecondDay]= useState<string>("")
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const [confirmedDates, setConfirmedDates] = useState <string[]>([])
-  const [formattedConfirmedDates, setFormattedConfirmedDates] = useState<any[][]>([])
-
-
-  // const handleConfirm = (currentBusiness: string, startDate:string, endDate:string) => {
-
-  //   const addDateToBusiness = async (currentBusiness: string, startDate:string, endDate:string) => {
-  //     try {
-  //       const docRef = doc(db,"Business_Users", currentBusiness)
-
-  //       await updateDoc(docRef,{
-  //        ["Available dates"]: `${startDate}:${endDate}`
-  //       })
-  //       console.log("succesfully written")
-  //     }catch(err){
-  //       console.error("Error adding to database", err)
-  //     }
-  //   }
-
-  //   addDateToBusiness
-
-  // }
-
-  // const handleConfirm = async (currentBusiness: string, startDate: string, endDate: string) => {
-  //   try {
-  //     const docRef = doc(db, 'Business_Users', currentBusiness);
-
-     
-  //     await updateDoc(docRef, {
-  //       ["Available dates"]: [`${startDate}:${endDate}`],
-  //     });
-
-  //     console.log('Successfully written to Firestore');
-  //   } catch (err) {
-  //     console.error('Error adding to database', err);
-  //   }
-  // };
+  const [formattedConfirmedDates, setFormattedConfirmedDates] = useState <any>([])
 
 
 
-//   useEffect(()=> {
-//  const fetchConfirmedDates = async () => {
-//   console.log("Hello")
-//     try {
-//       const docRef = doc(db,"Business_Users", currentBusiness);
 
-//       const docSnap = await getDoc(docRef)
+  useEffect(()=> {
+ const fetchConfirmedDates = async () => {
 
-//       if(docSnap.exists()) {
-//         const data = docSnap.data()
-//         if(Array.isArray(data["Available dates"])) {
-//               const confirmed = data["Available dates"]
-//               console.log(confirmed)
-//               setConfirmedDates(confirmed)
+    try {
+      const docRef = doc(db,"Business_Users", currentBusiness);
+
+      const docSnap = await getDoc(docRef)
+
+      let alreadyConfirmedDates:  Record<string, any> = {}
+
+      if(docSnap.exists()) {
+        const data = docSnap.data()
+        if(Array.isArray(data["Available dates"])) {
+              const confirmed = data["Available dates"]
+              const splitArray = confirmed.map((datePair:string)=> {
+                return datePair.split(":")
+                
+              })
+             splitArray.forEach((datePair)=> {
+              let firstDate = datePair[0]
+              let secondDate = datePair[1]
+
+              alreadyConfirmedDates[firstDate] = {startingDay: true, color: 'red',textColor: 'white'}
+              alreadyConfirmedDates[secondDate] = {endingDay: true, color: 'red',textColor: 'white'}
               
-//       }
-//     }  
-//     }catch(err) {
-//       console.log(err)
-//   }
-// }
-
-// fetchConfirmedDates()
-//   },[currentBusiness])
-
-//  const calculateConfirmedMarked = (array:string[]) => {
-//    const splitArray = array.map((datePair:string)=> {
-//     return [datePair.split(":")[0], datePair.split(":")[1]]
-//   })
-//   const firstDate = splitArray[0]
-//   const secondDate = splitArray[1]
-//   return [firstDate, secondDate]
-// }
-// console.log(calculateConfirmedMarked(confirmedDates))
-
-// const markConfirmedMarked = (dateArray: any[]) => {
-  
-//   const confirmedDates1 = calculateConfirmedMarked(confirmedDates)
-//   let marked:  Record<string, any> = {}
+              let start = new Date(firstDate)
+              let end = new Date(secondDate)
+              let current = new Date(start)
 
 
-//   confirmedDates1.forEach((datePair) => {
-//     const firstDate = datePair[0]
-//     const secondDate = datePair[1]
-    
-//     marked[firstDate] = {startingDay: true, color: 'red',textColor: 'white'}
-//     marked[secondDate] = {endingDay: true, color: 'red',textColor: 'white'}
-
-
-
-//     let start = new Date(firstDate)
-//     let end = new Date(secondDate) 
-  
-
-//     let current = new Date(start)
-
-//     while(current<=end){
-//         let dateAsString = current.toISOString().split("T")[0]
-
-//         marked[dateAsString] = {color:"red", textColor: "white"}
+              while(current<=end){
+                let dateAsString = current.toISOString().split("T")[0]
         
-//         current.setDate(current.getDate()+1)
-
-//     }
-
-
-
-//     return marked
+                alreadyConfirmedDates[dateAsString] = {color:"red", textColor: "white"}
+                
+                current.setDate(current.getDate()+1)
+        
+            }
 
 
-//   })
-// }
+             })
+            
+              
+      }
+
+    }
+    setFormattedConfirmedDates(alreadyConfirmedDates)
+    console.log(alreadyConfirmedDates)
+     return alreadyConfirmedDates
+    }catch(err) {
+     
+  }  
+} 
+
+fetchConfirmedDates()
+  },[currentBusiness])
+
+
+
 
 
   const calculateDate = (firstDate: string,SecondDate: string) => {
@@ -243,8 +198,11 @@ const BusinessCalender = ({currentBusiness}: {currentBusiness:string}) => {
       textDisabledColor: '#dd99ee'
     }}
     markingType={'period'}
-     markedDates={calculateDate(firstDay,secondDay)}
-    // markedDates = {markConfirmedMarked(confirmedDates)}
+     markedDates={{
+      ...calculateDate(firstDay,secondDay),
+      ...formattedConfirmedDates
+    }}
+  
     
     onDayPress={(day:DayPressEvent)=> {
      
