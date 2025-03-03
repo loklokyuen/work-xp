@@ -16,7 +16,6 @@ export default function ChatScreen() {
         onSnapshot(collection(db, "Student"), (snapshot) => {
             const query = snapshot.docs.map((doc) => {
                 const data = doc.data();
-                console.log(data);
                 return {
                     uid: data.uid,
                     displayName: data.displayName,

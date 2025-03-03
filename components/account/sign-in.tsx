@@ -1,25 +1,12 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button } from "react-native";
-import {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    sendEmailVerification,
-    signInAnonymously,
-    sendPasswordResetEmail,
-    updatePassword,
-    updateProfile,
-} from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../database/firebase";
-import { Link } from "expo-router";
-import styles from "../styles";
-import { router } from "expo-router";
-import { useContext } from "react";
+import styles from "../../app/styles";
 import { useUserContext } from "@/context/UserContext";
-import { getStudentById } from "@/database/student";
-import { getBusinessById } from "@/database/business";
 import { getUserById } from "@/database/user";
 
-const SignIn = () => {
+const SignIn: React.FC<accountProps> = ({ setAccount }) => {
     const [accountType, setAccountType] = useState<string>("");
 
     const [email, setEmail] = useState("");
@@ -45,7 +32,7 @@ const SignIn = () => {
                             photoUrl: user.photoUrl || "",
                             accountType: accountType,
                         });
-                        router.replace("/(tabs)/success-sign-in");
+                        // router.replace("/(tabs)/success-sign-in");
                         setError("");
                     });
                     // if (!user.emailVerified) {
@@ -95,9 +82,8 @@ const SignIn = () => {
                 Forgot password
             </Text>
             <Text>Don't have an account?</Text>
-            <Link href="/create-account">
-                <Button title="Create Account" />
-            </Link>
+
+            <Button title="Create Account" onPress={() => setAccount(false)} />
         </View>
     );
 };

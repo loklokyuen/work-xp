@@ -10,13 +10,13 @@ import {
 } from "firebase/auth";
 import { auth } from "../../database/firebase";
 import { Link } from "expo-router";
-import styles from "../styles";
+import styles from "../../app/styles";
 import { router } from "expo-router";
 import { useUserContext } from "@/context/UserContext";
 import { db } from "../../database/firebase";
 import { setDoc, doc } from "firebase/firestore";
 
-const CreateAccount = () => {
+const CreateAccount: React.FC<accountProps> = ({ setAccount }) => {
     const { user, setUser } = useUserContext();
     const [displayName, setDisplayName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -46,7 +46,7 @@ const CreateAccount = () => {
                     setUser(userData);
                     setDoc(doc(db, accountType, user.uid), userData);
 
-                    router.replace("/(tabs)/success-sign-in");
+                    // router.replace("/(tabs)/success-sign-in");
                     // sendEmailVerification(user)
                     //   .then(() => {
                     //     alert("Email verification sent.");
@@ -113,9 +113,12 @@ const CreateAccount = () => {
                 <Button title="Continue as guest" onPress={handleGuestSignIn} />
             </View>
             <Text>Already have an account?</Text>
-            <Link href="/sign-in">
-                <Button title="Sign in" />
-            </Link>
+            <Button
+                title="Sign in"
+                onPress={() => {
+                    setAccount(true);
+                }}
+            />
         </View>
     );
 };

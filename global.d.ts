@@ -6,6 +6,9 @@ declare global {
         photoUrl: string;
         accountType: string;
     }
+    interface accountProps {
+        setAccount: React.Dispatch<React.SetStateAction<boolean>>;
+    }
 }
 
 export {};
