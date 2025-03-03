@@ -21,7 +21,7 @@ import { getUserById } from "@/database/user";
 
 const SignIn = () => {
     const [accountType, setAccountType] = useState<string>("");
-    
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -32,7 +32,7 @@ const SignIn = () => {
             setError("Please fill out all fields.");
             return;
         }
-        if (accountType){
+        if (accountType) {
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     console.log(userCredential);
@@ -45,15 +45,15 @@ const SignIn = () => {
                             photoUrl: user.photoUrl || "",
                             accountType: accountType,
                         });
+                        router.replace("/(tabs)/success-sign-in");
+                        setError("");
                     });
-                    router.replace("/(tabs)/success-sign-in");
                     // if (!user.emailVerified) {
                     //     sendEmailVerification(user)
                     //     alert('Please verify your email before signing in.');
                     // } else {
                     //     alert('Signed in successfully!');
                     // }
-                    setError("");
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -63,7 +63,6 @@ const SignIn = () => {
         } else {
             setError("Please choose your account type.");
         }
-
     };
 
     const handleForgetPassword = () => {
@@ -79,7 +78,7 @@ const SignIn = () => {
         <View style={styles.container}>
             <Text style={styles.title}>{accountType} Sign In</Text>
             <Button title="Student" onPress={() => setAccountType("Student")} />
-                <Text> OR</Text>
+            <Text> OR</Text>
             <Button title="Business" onPress={() => setAccountType("Business")} />
             <TextInput
                 style={styles.input}
