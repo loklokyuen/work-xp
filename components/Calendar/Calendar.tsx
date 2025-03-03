@@ -27,11 +27,8 @@ const CalendarApp: React.FC<CalendarAppProps> = ({ currentAvailableDates }) => {
   const [secondDay, setSecondDay]= useState<string>("")
 
  const customerDates2 = currentAvailableDates
-//  console.log(customerDates2)
 
-  const customerDates1 = {
-    dates:[["2025-02-03", "2025-02-07","mechanic workshop"], ["2025-02-17","2025-02-21","receptionist"], ["2025-03-03","2025-03-07", "mechanic workshop"]]
-  }
+  
 
   const setMarkedCustomerArray = () => {
     let marked:  Record<string, any> = {}
@@ -61,7 +58,7 @@ const CalendarApp: React.FC<CalendarAppProps> = ({ currentAvailableDates }) => {
 
         }
   })
-//   console.log(marked)
+
   
         return marked
     }
@@ -71,46 +68,6 @@ const CalendarApp: React.FC<CalendarAppProps> = ({ currentAvailableDates }) => {
     updateDays()
   
 
-    // const customerDates = {
-    //     startDate: "2025-02-13",
-    //     endDate: "2025-02-17",
-    // }
-
-    // const setMarkedCustomerDates = () => {
-    //     let marked: Record<string, any> = {}
-    //     marked[customerDates.startDate] = {startingDay: true, color: 'green',textColor: 'white'}
-    //     marked[customerDates.endDate] = {endingDay: true, color: 'green',textColor: 'white'}
-
-    //     let start = new Date(customerDates.startDate)
-    //     let end = new Date(customerDates.endDate)
-    //     console.log(start.toISOString().split("T")[0])
-
-    //     let current = new Date(start)
-
-    //     while(current<=end){
-    //         let dateAsString = current.toISOString().split("T")[0]
-
-    //         marked[dateAsString] = {color:"green", textColor: "white"}
-            
-    //         current.setDate(current.getDate()+1)
-
-    //     }
-
-    //     return marked
-    // }
-
-    // const getMarkedDates = () => {
-    //     let marked: Record<string, any> = {}
-
-    //     if(firstDay){
-    //         marked[firstDay] = {startingDay: true, color: 'green',textColor: 'white'}
-    //     }
-    //     if(secondDay){
-    //         marked[secondDay]= {endingDay: true, color: 'green',textColor: 'white'}
-    //     }
-
-    //     return marked
-    // }
 
   return (
     
@@ -133,31 +90,12 @@ const CalendarApp: React.FC<CalendarAppProps> = ({ currentAvailableDates }) => {
       }}
       markingType={'period'}
       markedDates={setMarkedCustomerArray()}
-      
+
+   
       onDayPress={(day:DayPressEvent)=> {
       
       }}
-   
-    //   onDayPress={(day:DayPressEvent)=> {
-        
-    //     setSelected(day.dateString);
 
-    //      console.log(`${day.year}-${day.month}-${day.day}`)
-
-    //      if(!firstDay){
-    //         setFirstDay(selected)
-    //      } else if(!secondDay){
-    //         setSecondDay(selected)
-    //      } else if(firstDay&&secondDay){
-    //         setFirstDay("")
-    //         setSecondDay("")
-    //         console.log("reset")
-    //      }
-
-    //     console.log(firstDay, secondDay)
-       
-       
-    //   }}
       
     />
   );
