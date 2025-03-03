@@ -2,9 +2,9 @@
 import { Alert, Button, Text, View } from 'react-native';
 
 import {Calendar, CalendarList, Agenda, LocaleConfig} from 'react-native-calendars';
-import React, {useEffect, useState} from 'react';
+import React, {SetStateAction, useEffect, useState, Dispatch} from 'react';
 import Day from 'react-native-calendars/src/calendar/day';
-import { useUserContext } from "../../context/UserContext"
+import { useUserContext } from "../UserContext";
 
 import { db } from "../../database/firebase"
 import { addDoc,getDocs, query, collection, doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
@@ -44,12 +44,21 @@ let markedDates:  Record<string, any> = {}
 
   }
 
+  interface BusinessCalendarPostProps {
+    setAvailability: Dispatch<SetStateAction<string>>
+   
+  }
+
+ 
+
+  interface Opportunities {
+    Availability: string
+  }
 
 
 
 
-
-const BusinessCalender = () => {
+const BusinessCalenderPost: React.FC<BusinessCalendarPostProps> = ({setAvailability}) => {
 
   const [firstDay, setFirstDay]= useState<string>("")
   const [secondDay, setSecondDay]= useState<string>("")
@@ -57,6 +66,7 @@ const BusinessCalender = () => {
   const [confirmedDates, setConfirmedDates] = useState <string[]>([])
   const [formattedConfirmedDates, setFormattedConfirmedDates] = useState <any>([])
   const { user, setUser } = useUserContext();
+
 
 
 
@@ -69,12 +79,29 @@ const BusinessCalender = () => {
 
       const docSnap = await getDoc(docRef)
 
+
+
       let alreadyConfirmedDates:  Record<string, any> = {}
 
       if(docSnap.exists()) {
         const data = docSnap.data()
-        if(Array.isArray(data["Available dates"])) {
-              const confirmed = data["Available dates"]
+
+        let opportunitiesDatesArray:string[] = []
+
+        const opportunitiesArray = data.Opportunities
+
+        opportunitiesArray.forEach((opp:Opportunities)=> {
+          opportunitiesDatesArray.push(opp["Availability"])
+          
+        })
+        
+
+        console.log(opportunitiesDatesArray)
+        // if(Array.isArray(data["Available dates"])) {
+              // const confirmed = data["Available dates"]
+
+           if(Array.isArray(opportunitiesDatesArray)){
+            const confirmed = opportunitiesDatesArray   
               const splitArray = confirmed.map((datePair:string)=> {
                 return datePair.split(":")
                 
@@ -149,33 +176,11 @@ fetchConfirmedDates()
     }
  
 
-    // const handleConfirm = async (currentBusiness:string, startDate:string, endDate:string) => {
-      const handleConfirm = async ( startDate:string, endDate:string) => {
-      try {
-        // const docRef = doc(db, "Business_Users", currentBusiness);
-        const docRef = doc(db,"business", user.uid);
-  
-        const docSnap = await getDoc(docRef);
-  
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-  
-          if (!Array.isArray(data["Available dates"])) {
-            await updateDoc(docRef, {
-              ["Available dates"]: [`${startDate}:${endDate}`],
-            });
-          } else {
-            await updateDoc(docRef, {
-              ["Available dates"]: arrayUnion(`${startDate}:${endDate}`),
-            });
-          }
-        }
-  
-        console.log("Successfully written to Firestore");
-      } catch (err) {
-        console.error("Error adding to database", err);
-      }
-    };
+ 
+
+    const handleConfirm = (startDate: string, endDate: string) => {
+      setAvailability(`${startDate}:${endDate}`)
+    }
 
   
 
@@ -257,4 +262,4 @@ fetchConfirmedDates()
 
 
   
-export default BusinessCalender
+export default BusinessCalenderPost
