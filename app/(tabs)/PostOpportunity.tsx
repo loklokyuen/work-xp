@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 // import styles from "../styles";
-import { useUserContext } from "../../components/UserContext";
+import { useUserContext } from "../../context/UserContext"
 import BusinessCalenderPost from "@/components/Calendar/CalendarBusinessPost";
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
