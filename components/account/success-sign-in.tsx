@@ -1,18 +1,9 @@
-import styles from "../styles";
+import styles from "../../app/styles";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
-import {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    sendEmailVerification,
-    signInAnonymously,
-    sendPasswordResetEmail,
-    updatePassword,
-    updateProfile,
-} from "firebase/auth";
+import { updatePassword } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "@/database/firebase";
 import { useUserContext } from "@/context/UserContext";
-import { router } from "expo-router";
 
 const SuccessSignIn = () => {
     const { user, setUser } = useUserContext();
@@ -38,7 +29,6 @@ const SuccessSignIn = () => {
     const handleSignOut = () => {
         auth.signOut()
             .then(() => {
-                router.replace("/(tabs)/sign-in");
                 setUser({ uid: "", displayName: "", email: "", photoUrl: "", accountType: "" });
                 setError("");
             })
@@ -49,7 +39,9 @@ const SuccessSignIn = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Successfully Signed In as {user.displayName} ({user.accountType})</Text>
+            <Text style={styles.title}>
+                Successfully Signed In as {user.displayName} ({user.accountType})
+            </Text>
             <View>
                 {showChangePassword && (
                     <View>
