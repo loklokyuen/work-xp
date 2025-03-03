@@ -5,7 +5,7 @@ import { Button, TextInput } from "react-native";
 import { getDocs, orderBy, Timestamp } from "firebase/firestore";
 import { db } from "../database/firebase";
 import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
-import { useUserContext } from "./UserContext";
+import { useUserContext } from "../context/UserContext";
 import styles from "../app/styles";
 
 type chatProps = {

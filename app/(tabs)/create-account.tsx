@@ -12,7 +12,7 @@ import { auth } from "../../database/firebase";
 import { Link } from "expo-router";
 import styles from "../styles";
 import { router } from "expo-router";
-import { useUserContext } from "@/components/UserContext";
+import { useUserContext } from "@/context/UserContext";
 import { db } from "../../database/firebase";
 import { setDoc, doc } from "firebase/firestore";
 
@@ -25,6 +25,10 @@ const CreateAccount = () => {
     const [accountType, setAccountType] = useState<string>("");
 
     const handleCreateAccount = () => {
+        if (!email || !password || !displayName) {
+            setError("Please fill out all fields.");
+            return;
+        }
         if (accountType) {
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
@@ -34,6 +38,7 @@ const CreateAccount = () => {
                         displayName: displayName,
                         email: email,
                         photoUrl: "",
+                        accountType: accountType,
                     };
                     updateProfile(user, {
                         displayName: displayName,
@@ -55,9 +60,15 @@ const CreateAccount = () => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     setError(errorMessage);
+                    if (errorCode === "auth/email-already-in-use") {
+                        setError("Email already in use.");
+                    }
+                    if (errorCode === "auth/weak-password") {
+                        setError("Password should include at least an upper case letter, a lower case letter and needs to be at least 6 digits.");
+                    }
                 });
         } else {
-            setError("please choose your account type");
+            setError("Please choose your account type.");
         }
     };
 
@@ -80,11 +91,11 @@ const CreateAccount = () => {
             {user.displayName ? (
                 <Text style={styles.title}>Signed in as {user.displayName ? user.displayName : user.email}</Text>
             ) : (
-                <Text style={styles.title}>Create Account</Text>
+                <Text style={styles.title}>Create {accountType} Account</Text>
             )}
-            <Button title="Student" onPress={() => setAccountType("student")} />
+            <Button title="Student" onPress={() => setAccountType("Student")} />
             <Text> OR</Text>
-            <Button title="Business" onPress={() => setAccountType("business")} />
+            <Button title="Business" onPress={() => setAccountType("Business")} />
 
             <TextInput style={styles.input} placeholder="Display Name" value={displayName} onChangeText={setDisplayName} autoCapitalize="words" />
             <TextInput

@@ -14,27 +14,37 @@ import { Link } from "expo-router";
 import styles from "../styles";
 import { router } from "expo-router";
 import { useContext } from "react";
-import { useUserContext } from "@/components/UserContext";
+import { useUserContext } from "@/context/UserContext";
+import { getStudentById } from "@/database/student";
+import { getBusinessById } from "@/database/business";
+import { getUserById } from "@/database/user";
 
 const SignIn = () => {
-    const [displayName, setDisplayName] = useState("");
+    const [accountType, setAccountType] = useState<string>("");
+    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const { user, setUser } = useUserContext();
 
     const handleSignIn = () => {
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                console.log(userCredential);
-                const user = auth.currentUser;
-                if (user) {
-                    console.log(user);
-                    setUser({
-                        uid: user.uid,
-                        displayName: user.displayName,
-                        email: user.email,
-                        photoUrl: user.photoURL,
+        if (!email || !password) {
+            setError("Please fill out all fields.");
+            return;
+        }
+        if (accountType){
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    console.log(userCredential);
+                    const user = userCredential.user;
+                    getUserById(user.uid, accountType).then((user) => {
+                        setUser({
+                            uid: user.uid,
+                            displayName: user.displayName,
+                            email: user.email || "",
+                            photoUrl: user.photoUrl || "",
+                            accountType: accountType,
+                        });
                     });
                     router.replace("/(tabs)/success-sign-in");
                     // if (!user.emailVerified) {
@@ -43,14 +53,17 @@ const SignIn = () => {
                     // } else {
                     //     alert('Signed in successfully!');
                     // }
-                }
-                setError("");
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                setError(errorMessage);
-            });
+                    setError("");
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    setError(errorMessage);
+                });
+        } else {
+            setError("Please choose your account type.");
+        }
+
     };
 
     const handleForgetPassword = () => {
@@ -64,7 +77,10 @@ const SignIn = () => {
     };
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Sign In</Text>
+            <Text style={styles.title}>{accountType} Sign In</Text>
+            <Button title="Student" onPress={() => setAccountType("Student")} />
+                <Text> OR</Text>
+            <Button title="Business" onPress={() => setAccountType("Business")} />
             <TextInput
                 style={styles.input}
                 placeholder="Email"
