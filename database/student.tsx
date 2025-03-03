@@ -1,6 +1,7 @@
-import { collection, addDoc, getDocs, getFirestore } from "firebase/firestore";
+import { collection, addDoc, getDocs, getFirestore, doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase";
-const StudentUsersCollection = collection(db, 'Student_Users');
+const StudentUsersCollection = collection(db, 'Student');
+
 
 export interface Student {
     id: string;
@@ -8,6 +9,18 @@ export interface Student {
     country: string;
     imageURLs?: string[];
 }
+
+async function getStudentById(uid: string): Promise<User> {
+    const docRef = doc(db, 'Student', uid);
+    const docSnap = await getDoc(docRef);
+    console.log(docSnap.data());
+    const student = docSnap.data();
+    // if (student.exists()){
+    //     return student as User;
+    // }
+    return student as User;
+}
+
 
 async function getStudents(): Promise<Student[]> {
     const querySnapshot = await getDocs(StudentUsersCollection);
@@ -27,5 +40,5 @@ async function addStudent(fullName: string, country: string, imageURLs: string[]
     return studentAdded;
 }
 
-export { getStudents, addStudent };
+export { getStudents, addStudent, getStudentById };
 

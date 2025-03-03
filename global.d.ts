@@ -4,6 +4,7 @@ declare global {
         displayName: string;
         email: string;
         photoUrl: string;
+        accountType: string;
     }
 }
 

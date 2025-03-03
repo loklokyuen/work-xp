@@ -1,5 +1,5 @@
 import Chat from "@/components/chatComponent";
-import { useUserContext } from "@/components/UserContext";
+import { useUserContext } from "@/context/UserContext";
 import { StyleSheet, Text, View } from "react-native";
 import { useEffect, useState } from "react";
 import { onSnapshot, collection } from "firebase/firestore";
@@ -13,7 +13,7 @@ export default function ChatScreen() {
     const [message, setMessage] = useState<string>("");
 
     useEffect(() => {
-        onSnapshot(collection(db, "student"), (snapshot) => {
+        onSnapshot(collection(db, "Student"), (snapshot) => {
             const query = snapshot.docs.map((doc) => {
                 const data = doc.data();
                 console.log(data);
@@ -22,6 +22,7 @@ export default function ChatScreen() {
                     displayName: data.displayName,
                     email: data.email,
                     photoUrl: data.photoUrl,
+                    accountType: data.accountType,
                 };
             });
             setStudents(query);

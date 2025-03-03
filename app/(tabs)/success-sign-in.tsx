@@ -11,7 +11,7 @@ import {
 } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "@/database/firebase";
-import { useUserContext } from "@/components/UserContext";
+import { useUserContext } from "@/context/UserContext";
 import { router } from "expo-router";
 
 const SuccessSignIn = () => {
@@ -39,7 +39,7 @@ const SuccessSignIn = () => {
         auth.signOut()
             .then(() => {
                 router.replace("/(tabs)/sign-in");
-                setUser({ uid: "", displayName: "", email: "", photoUrl: "" });
+                setUser({ uid: "", displayName: "", email: "", photoUrl: "", accountType: "" });
                 setError("");
             })
             .catch(() => {
@@ -49,7 +49,7 @@ const SuccessSignIn = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Successfully Signed In as {user.displayName}</Text>
+            <Text style={styles.title}>Successfully Signed In as {user.displayName} ({user.accountType})</Text>
             <View>
                 {showChangePassword && (
                     <View>

@@ -12,7 +12,7 @@ interface UserContext {
 export const UserContext = createContext<UserContext | null>(null);
 
 export function UserProvider({ children }: UserProviderProps) {
-    const [user, setUser] = useState<User>({ uid: "", displayName: "", email: "", photoUrl: "" });
+    const [user, setUser] = useState<User>({ uid: "", displayName: "", email: "", photoUrl: "", accountType: "" });
 
     return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 }
