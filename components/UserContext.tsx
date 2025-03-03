@@ -1,20 +1,13 @@
 import React, { createContext, useState } from "react";
 
-type UserProviderProps = {
+interface UserProviderProps {
     children: React.ReactNode;
-};
+}
 
-type UserContext = {
+interface UserContext {
     user: User;
     setUser: React.Dispatch<React.SetStateAction<User>>;
-};
-
-type User = {
-    uid: string | null;
-    displayName: string | null;
-    email: string | null;
-    photoUrl: string | null;
-};
+}
 
 export const UserContext = createContext<UserContext | null>(null);
 
