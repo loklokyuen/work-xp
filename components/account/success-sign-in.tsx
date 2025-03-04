@@ -1,11 +1,11 @@
 import styles from "../../app/styles";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { updatePassword } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { auth } from "@/database/firebase";
 import { useUserContext } from "@/context/UserContext";
 
-const SuccessSignIn = () => {
+const SuccessSignIn = ({ accountType, setAccountType, setIsNewUser  }: accountProps) => {
     const { user, setUser } = useUserContext();
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -29,7 +29,7 @@ const SuccessSignIn = () => {
     const handleSignOut = () => {
         auth.signOut()
             .then(() => {
-                setUser({ uid: "", displayName: "", email: "", photoUrl: "", accountType: "" });
+                setUser(null);
                 setError("");
             })
             .catch(() => {
@@ -40,7 +40,7 @@ const SuccessSignIn = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>
-                Successfully Signed In as {user.displayName} ({user.accountType})
+                Successfully Signed In as {user? user.displayName : null} {accountType ? `(${accountType})` : ""}
             </Text>
             <View>
                 {showChangePassword && (

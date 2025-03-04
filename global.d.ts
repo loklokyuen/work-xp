@@ -4,10 +4,11 @@ declare global {
         displayName: string;
         email: string;
         photoUrl: string;
-        accountType: string;
     }
     interface accountProps {
-        setAccount: React.Dispatch<React.SetStateAction<boolean>>;
+        accountType: string;
+        setIsNewUser: React.Dispatch<React.SetStateAction<boolean>>;
+        setAccountType: React.Dispatch<React.SetStateAction<string>>;
     }
 }
 
