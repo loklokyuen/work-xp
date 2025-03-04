@@ -82,7 +82,6 @@ const BusinessCalenderPost: React.FC<BusinessCalendarPostProps> = ({
   useEffect(() => {
     const fetchConfirmedDates = async () => {
       try {
-        // const docRef = doc(db,"Business_Users", currentBusiness);
         const docRef = doc(db, "Business", user.uid);
 
         const docSnap = await getDoc(docRef);
@@ -99,10 +98,6 @@ const BusinessCalenderPost: React.FC<BusinessCalendarPostProps> = ({
           opportunitiesArray.forEach((opp: Opportunities) => {
             opportunitiesDatesArray.push(opp["Availability"]);
           });
-
-          console.log(opportunitiesDatesArray);
-          // if(Array.isArray(data["Available dates"])) {
-          // const confirmed = data["Available dates"]
 
           if (Array.isArray(opportunitiesDatesArray)) {
             const confirmed = opportunitiesDatesArray;
