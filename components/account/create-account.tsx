@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, Button } from "react-native";
 import {
     createUserWithEmailAndPassword,
@@ -8,21 +8,20 @@ import {
     updatePassword,
     updateProfile,
 } from "firebase/auth";
-import { auth } from "../../database/firebase";
-import { Link } from "expo-router";
+import { auth } from "@/database/firebase";
+import { Link, useLocalSearchParams } from "expo-router";
 import styles from "../../app/styles";
 import { router } from "expo-router";
 import { useUserContext } from "@/context/UserContext";
-import { db } from "../../database/firebase";
+import { db } from "@/database/firebase";
 import { setDoc, doc } from "firebase/firestore";
 
-const CreateAccount: React.FC<accountProps> = ({ setAccount }) => {
+const CreateAccount: React.FC<accountProps> = ({ accountType, setAccountType, setIsNewUser }) => {
     const { user, setUser } = useUserContext();
     const [displayName, setDisplayName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
-    const [accountType, setAccountType] = useState<string>("");
 
     const handleCreateAccount = () => {
         if (!email || !password || !displayName) {
@@ -37,8 +36,7 @@ const CreateAccount: React.FC<accountProps> = ({ setAccount }) => {
                         uid: user.uid,
                         displayName: displayName,
                         email: email,
-                        photoUrl: "",
-                        accountType: accountType,
+                        photoUrl: ""
                     };
                     updateProfile(user, {
                         displayName: displayName,
@@ -88,7 +86,7 @@ const CreateAccount: React.FC<accountProps> = ({ setAccount }) => {
 
     return (
         <View style={styles.container}>
-            {user.displayName ? (
+            {user ? (
                 <Text style={styles.title}>Signed in as {user.displayName ? user.displayName : user.email}</Text>
             ) : (
                 <Text style={styles.title}>Create {accountType} Account</Text>
@@ -116,7 +114,7 @@ const CreateAccount: React.FC<accountProps> = ({ setAccount }) => {
             <Button
                 title="Sign in"
                 onPress={() => {
-                    setAccount(true);
+                    setIsNewUser(false);
                 }}
             />
         </View>

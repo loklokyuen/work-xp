@@ -5,14 +5,14 @@ interface UserProviderProps {
 }
 
 interface UserContext {
-    user: User;
-    setUser: React.Dispatch<React.SetStateAction<User>>;
+    user: User | null;
+    setUser: React.Dispatch<React.SetStateAction<User|null>>;
 }
 
 export const UserContext = createContext<UserContext | null>(null);
 
 export function UserProvider({ children }: UserProviderProps) {
-    const [user, setUser] = useState<User>({ uid: "", displayName: "", email: "", photoUrl: "", accountType: "" });
+    const [user, setUser] = useState<User | null>(null);
 
     return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 }

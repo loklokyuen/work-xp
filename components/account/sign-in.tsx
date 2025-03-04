@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, TextInput, Button } from "react-native";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "../../database/firebase";
+import { auth } from "@/database/firebase";
 import styles from "../../app/styles";
 import { useUserContext } from "@/context/UserContext";
 import { getUserById } from "@/database/user";
 
-const SignIn: React.FC<accountProps> = ({ setAccount }) => {
-    const [accountType, setAccountType] = useState<string>("");
-
+const SignIn: React.FC<accountProps> = ({ accountType, setAccountType, setIsNewUser }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -22,15 +20,13 @@ const SignIn: React.FC<accountProps> = ({ setAccount }) => {
         if (accountType) {
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    console.log(userCredential);
                     const user = userCredential.user;
                     getUserById(user.uid, accountType).then((user) => {
                         setUser({
                             uid: user.uid,
                             displayName: user.displayName,
                             email: user.email || "",
-                            photoUrl: user.photoUrl || "",
-                            accountType: accountType,
+                            photoUrl: user.photoUrl || ""
                         });
                         // router.replace("/(tabs)/success-sign-in");
                         setError("");
@@ -46,6 +42,9 @@ const SignIn: React.FC<accountProps> = ({ setAccount }) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     setError(errorMessage);
+                    if (errorCode === "auth/invalid-credential") {
+                        setError("Incorrect password. Please check.");
+                    }
                 });
         } else {
             setError("Please choose your account type.");
@@ -83,7 +82,7 @@ const SignIn: React.FC<accountProps> = ({ setAccount }) => {
             </Text>
             <Text>Don't have an account?</Text>
 
-            <Button title="Create Account" onPress={() => setAccount(false)} />
+            <Button title="Create Account" onPress={() => setIsNewUser(true)} />
         </View>
     );
 };
