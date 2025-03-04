@@ -1,19 +1,19 @@
 import React, { createContext, useState } from "react";
+import { auth } from "../database/firebase";
 
 interface UserProviderProps {
     children: React.ReactNode;
 }
 
 interface UserContext {
-    user: User | null;
-    setUser: React.Dispatch<React.SetStateAction<User|null>>;
+    user: User;
+    setUser: React.Dispatch<React.SetStateAction<User>>;
 }
 
 export const UserContext = createContext<UserContext | null>(null);
 
 export function UserProvider({ children }: UserProviderProps) {
-    const [user, setUser] = useState<User | null>(null);
-
+    const [user, setUser] = useState<User>({ uid: "", displayName: "", email: "", photoUrl: "" });
     return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 }
 

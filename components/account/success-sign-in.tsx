@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { auth } from "@/database/firebase";
 import { useUserContext } from "@/context/UserContext";
 
-const SuccessSignIn = ({ accountType, setAccountType, setIsNewUser  }: accountProps) => {
+const SuccessSignIn = ({ accountType, setAccountType, setIsNewUser }: accountProps) => {
     const { user, setUser } = useUserContext();
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -40,7 +40,7 @@ const SuccessSignIn = ({ accountType, setAccountType, setIsNewUser  }: accountPr
     return (
         <View style={styles.container}>
             <Text style={styles.title}>
-                Successfully Signed In as {user? user.displayName : null} {accountType ? `(${accountType})` : ""}
+                Successfully Signed In as {user ? user.displayName : null} {accountType ? `(${accountType})` : ""}
             </Text>
             <View>
                 {showChangePassword && (

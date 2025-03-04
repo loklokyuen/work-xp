@@ -36,7 +36,7 @@ const CreateAccount: React.FC<accountProps> = ({ accountType, setAccountType, se
                         uid: user.uid,
                         displayName: displayName,
                         email: email,
-                        photoUrl: ""
+                        photoUrl: "",
                     };
                     updateProfile(user, {
                         displayName: displayName,

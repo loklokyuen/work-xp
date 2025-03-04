@@ -10,6 +10,11 @@ declare global {
         setIsNewUser: React.Dispatch<React.SetStateAction<boolean>>;
         setAccountType: React.Dispatch<React.SetStateAction<string>>;
     }
+    interface OpportunityCardProps {
+        availability: string;
+        description: string;
+        jobRole: string;
+    }
 }
 
 export {};

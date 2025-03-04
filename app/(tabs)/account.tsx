@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import { onSnapshot, collection } from "firebase/firestore";
 import { db, auth } from "@/database/firebase";
 import { Button } from "react-native";
-import { router } from 'expo-router';
+import { router } from "expo-router";
 import SignIn from "@/components/account/sign-in";
-import CreateAccount from "../../components/account/create-account"
+import CreateAccount from "../../components/account/create-account";
 import SuccessSignIn from "@/components/account/success-sign-in";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage"; //all this needs to move to usercontext
 
 export default function AccountScreen() {
     const [initializing, setInitializing] = useState(true);
@@ -17,11 +17,11 @@ export default function AccountScreen() {
     const [isNewUser, setIsNewUser] = useState<boolean>(true);
     const [accountType, setAccountType] = useState<string>("");
     function onAuthStateChanged(user: any) {
-        setUser(user); 
+        setUser(user);
         setUserAccountType(accountType);
         if (initializing) setInitializing(false);
     }
-    
+
     useEffect(() => {
         getUserAccountType();
         const subscriber = auth.onAuthStateChanged(onAuthStateChanged);
@@ -33,44 +33,56 @@ export default function AccountScreen() {
     }, [accountType]);
     async function getUserAccountType() {
         try {
-            const value = await AsyncStorage.getItem('accountType')
+            const value = await AsyncStorage.getItem("accountType");
             if (value) {
-                setAccountType(value)
+                setAccountType(value);
             }
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
     }
 
     async function setUserAccountType(value: string) {
         try {
-            if (value){
-                await AsyncStorage.setItem('accountType', value)
+            if (value) {
+                await AsyncStorage.setItem("accountType", value);
             }
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
     }
 
     if (initializing) return null;
 
-    if (accountType && !user) { 
-        if (isNewUser){
+    if (accountType && !user) {
+        if (isNewUser) {
             return <CreateAccount accountType={accountType} setAccountType={setAccountType} setIsNewUser={setIsNewUser} />;
         } else {
             return <SignIn accountType={accountType} setAccountType={setAccountType} setIsNewUser={setIsNewUser} />;
         }
     }
- 
+
     if (!user) {
-        return <View style={{ backgroundColor: "#fff", flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <Text>Are you a business or student user?</Text>
-            <Button title="Student" onPress={() => { setAccountType("Student")}} />
-            <Text> OR</Text>
-            <Button title="Business" onPress={() => { setAccountType("Business")}} />
+        return (
+            <View style={{ backgroundColor: "#fff", flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <Text>Are you a business or student user?</Text>
+                <Button
+                    title="Student"
+                    onPress={() => {
+                        setAccountType("Student");
+                    }}
+                />
+                <Text> OR</Text>
+                <Button
+                    title="Business"
+                    onPress={() => {
+                        setAccountType("Business");
+                    }}
+                />
             </View>
+        );
     } else {
-        return  <SuccessSignIn accountType={accountType} setAccountType={setAccountType} setIsNewUser={setIsNewUser}/>
+        return <SuccessSignIn accountType={accountType} setAccountType={setAccountType} setIsNewUser={setIsNewUser} />;
     }
     // if (user.uid) {
     //     return <SuccessSignIn />;
