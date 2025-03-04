@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 // import styles from "../styles";
 import { useUserContext } from "@/context/UserContext";
+import { useRefreshContext } from "@/context/RefreshContext";
 import BusinessCalenderPost from "@/components/Calendar/CalendarBusinessPost";
 import {
   View,
@@ -11,13 +12,13 @@ import {
   ScrollView,
 } from "react-native";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
-import { db } from "@/database/firebase";
+import { db } from "../../database/firebase";
 
 export default function PostOpportunity() {
   const [jobRole, setJobRole] = useState<string>("");
   const [availability, setAvailability] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-
+  const { triggerRefresh } = useRefreshContext();
   const { user, setUser } = useUserContext();
   const [refresh, setRefresh] = useState<number>(0);
 
@@ -38,7 +39,7 @@ export default function PostOpportunity() {
         Availability: availability,
       }),
     });
-    setRefresh((prev) => prev + 1);
+    triggerRefresh();
   };
 
   return (

@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-
+import { useRefreshContext } from "../../context/RefreshContext";
 import { useUserContext } from "../../context/UserContext";
 import BusinessCalenderPost from "@/components/Calendar/CalendarBusinessPost";
 import {
@@ -20,7 +20,7 @@ import {
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
-import { db } from "@/database/firebase";
+import { db } from "../../database/firebase";
 
 import OpportunityCard from "@/components/OpportunityCard";
 
@@ -32,11 +32,14 @@ interface OpportunityCardProps {
 
 export default function ViewCurrentOpportunities() {
   const { user, setUser } = useUserContext();
+  const { refreshTrigger } = useRefreshContext();
   const [opportunities, setOpportunities] = useState<OpportunityCardProps[]>(
     []
   );
 
   useEffect(() => {
+    console.log("refresh trigger changed", refreshTrigger);
+
     const fetchOpportunities = async () => {
       const docRef = doc(db, "Business", user.uid);
 
@@ -50,7 +53,7 @@ export default function ViewCurrentOpportunities() {
       }
     };
     fetchOpportunities();
-  }, []);
+  }, [refreshTrigger]);
 
   console.log(opportunities);
 
