@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
-// import styles from "../styles";
 import { useUserContext } from "@/context/UserContext";
-import { useRefreshContext } from "@/context/RefreshContext";
+
 import BusinessCalenderPost from "@/components/Calendar/CalendarBusinessPost";
 import {
   View,
@@ -18,9 +17,7 @@ export default function PostOpportunity() {
   const [jobRole, setJobRole] = useState<string>("");
   const [availability, setAvailability] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const { triggerRefresh } = useRefreshContext();
   const { user, setUser } = useUserContext();
-  const [refresh, setRefresh] = useState<number>(0);
 
   const handleSubmit = async () => {
     if (!jobRole || !description || !availability) {
@@ -39,7 +36,6 @@ export default function PostOpportunity() {
         Availability: availability,
       }),
     });
-    triggerRefresh();
   };
 
   return (

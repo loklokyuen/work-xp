@@ -1,23 +1,9 @@
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Button,
-} from "react-native";
-import {
-  arrayUnion,
-  doc,
-  updateDoc,
-  arrayRemove,
-  getDoc,
-} from "firebase/firestore";
+import { View, Text, StyleSheet, Button } from "react-native";
+import { doc, updateDoc, arrayRemove, getDoc } from "firebase/firestore";
 import { router } from "expo-router";
 import { useUserContext } from "@/context/UserContext";
 import { useState } from "react";
 import { db } from "../database/firebase.js";
-import { useRefreshContext } from "@/context/RefreshContext.tsx";
 
 interface OpportunityCardProps {
   Availability: string;
@@ -32,8 +18,6 @@ export default function OpportunityCard({
 }: OpportunityCardProps) {
   const { user, setUser } = useUserContext();
   const [oppToRemove, setOppToRemove] = useState({});
-
-  const { triggerRefresh } = useRefreshContext();
 
   const handleDelete = async () => {
     const docRef = doc(db, "Business", user.uid);
@@ -54,7 +38,6 @@ export default function OpportunityCard({
           await updateDoc(docRef, {
             Opportunities: arrayRemove(singleOpp),
           });
-          triggerRefresh();
         }
       }
     } catch (err) {

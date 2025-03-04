@@ -16,7 +16,7 @@ import {
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import CalendarBusinessEdit from "../../components/Calendar/CalendarBusinessEdit";
-import { db } from "@/database/firebase";
+import { db } from "../../database/firebase";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 interface OpportunityCardProps {
@@ -32,7 +32,6 @@ interface Opportunity {
 }
 
 export default function EditListing() {
-  console.log("HELLO");
   const { Availability, Description, JobRole } =
     useLocalSearchParams<OpportunityCardProps>();
   const router = useRouter();
@@ -90,7 +89,6 @@ export default function EditListing() {
     setDescription(Description);
   }, [JobRole, Availability, Description]);
 
-  console.log(Availability, Description, JobRole);
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Edit this Opportunity...</Text>
