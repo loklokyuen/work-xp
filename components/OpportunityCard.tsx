@@ -6,8 +6,18 @@ import {
   TouchableOpacity,
   Button,
 } from "react-native";
-
+import {
+  arrayUnion,
+  doc,
+  updateDoc,
+  arrayRemove,
+  getDoc,
+} from "firebase/firestore";
 import { router } from "expo-router";
+import { useUserContext } from "@/context/UserContext";
+import { useState } from "react";
+import { db } from "../database/firebase.js";
+import { useRefreshContext } from "@/context/RefreshContext.tsx";
 
 interface OpportunityCardProps {
   Availability: string;
@@ -20,6 +30,38 @@ export default function OpportunityCard({
   Description,
   JobRole,
 }: OpportunityCardProps) {
+  const { user, setUser } = useUserContext();
+  const [oppToRemove, setOppToRemove] = useState({});
+
+  const { triggerRefresh } = useRefreshContext();
+
+  const handleDelete = async () => {
+    const docRef = doc(db, "Business", user.uid);
+    try {
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const opportunitiesArray = data.Opportunities;
+
+        const singleOpp = opportunitiesArray.find(
+          (opportunity: OpportunityCardProps) =>
+            opportunity.Availability === Availability
+        );
+        if (singleOpp) {
+          setOppToRemove(singleOpp);
+
+          await updateDoc(docRef, {
+            Opportunities: arrayRemove(singleOpp),
+          });
+          triggerRefresh();
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <View style={styles.card}>
       <Text style={styles.role}>{JobRole}</Text>
@@ -34,7 +76,7 @@ export default function OpportunityCard({
           });
         }}
       />
-      <Button title="Delete Listing" onPress={() => {}} />
+      <Button title="Delete Listing" onPress={handleDelete} />
     </View>
   );
 }
