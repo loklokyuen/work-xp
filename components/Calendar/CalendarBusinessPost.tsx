@@ -4,7 +4,7 @@ import { Alert, Button, Text, View } from 'react-native';
 import {Calendar, CalendarList, Agenda, LocaleConfig} from 'react-native-calendars';
 import React, {SetStateAction, useEffect, useState, Dispatch} from 'react';
 import Day from 'react-native-calendars/src/calendar/day';
-import { useUserContext } from "../UserContext";
+import { useUserContext } from '@/context/UserContext'; 
 
 import { db } from "../../database/firebase"
 import { addDoc,getDocs, query, collection, doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
