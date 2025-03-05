@@ -164,7 +164,6 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    color: "white",
   },
   buttonContainer: {
     flexDirection: "row",
