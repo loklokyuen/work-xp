@@ -8,6 +8,9 @@ declare global {
     interface accountProps {
         setIsNewUser: React.Dispatch<React.SetStateAction<boolean>>;
     }
+
+    type AccountType = "Student" | "Business" | "Guest" | null;
+
     interface Business {
         uid: string;
         displayName: string;
@@ -30,7 +33,7 @@ declare global {
     interface Review {
         rating: number;
         review: string;
-        author: string; 
+        author: string;
     }
     interface Student {
         uid: string;
