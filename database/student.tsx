@@ -2,7 +2,6 @@ import { collection, addDoc, getDocs, getFirestore, doc, getDoc } from "firebase
 import { db } from "./firebase";
 const StudentUsersCollection = collection(db, 'Student');
 
-
 export interface Student {
     id: string;
     name: string;
@@ -10,17 +9,12 @@ export interface Student {
     imageURLs?: string[];
 }
 
-async function getStudentById(uid: string): Promise<User> {
-    const docRef = doc(db, 'Student', uid);
+async function getStudentById(uid: string): Promise<Student> {
+    const docRef = doc(StudentUsersCollection, uid);
     const docSnap = await getDoc(docRef);
-    console.log(docSnap.data());
     const student = docSnap.data();
-    // if (student.exists()){
-    //     return student as User;
-    // }
-    return student as User;
+    return student as Student;
 }
-
 
 async function getStudents(): Promise<Student[]> {
     const querySnapshot = await getDocs(StudentUsersCollection);
