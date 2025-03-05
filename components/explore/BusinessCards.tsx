@@ -4,13 +4,13 @@ import styles from "@/app/styles";
 
 interface BusinessInfoProps {
   displayName: string;
-  location: string;
+  county: string;
   photoUrl: string;
 }
 
 const BusinessCards: React.FC<BusinessInfoProps> = ({
   displayName,
-  location,
+  county,
   photoUrl,
 }) => {
   return (
@@ -24,7 +24,7 @@ const BusinessCards: React.FC<BusinessInfoProps> = ({
         />
 
         <Text style={styles.text} variant="bodyMedium">
-          {location}
+          {county}
         </Text>
 
         <Card.Cover style={styles.cardCover} source={{ uri: photoUrl }} />
