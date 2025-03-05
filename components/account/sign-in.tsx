@@ -3,14 +3,14 @@ import { View, Text, TextInput, Button } from "react-native";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/database/firebase";
 import styles from "../../app/styles";
-import { useUserContext } from "@/context/UserContext";
+import { setUserAccountType, useUserContext } from "@/context/UserContext";
 import { getUserById } from "@/database/user";
 
-const SignIn: React.FC<accountProps> = ({ accountType, setAccountType, setIsNewUser }) => {
+const SignIn: React.FC<accountProps> = ({ setIsNewUser }) => {
+    const { user, setUser, accountType, setAccountType } = useUserContext();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const { user, setUser } = useUserContext();
 
     const handleSignIn = () => {
         if (!email || !password) {
@@ -28,6 +28,7 @@ const SignIn: React.FC<accountProps> = ({ accountType, setAccountType, setIsNewU
                             email: user.email || "",
                             photoUrl: user.photoUrl || ""
                         });
+                        setUserAccountType(accountType);
                         // router.replace("/(tabs)/success-sign-in");
                         setError("");
                     });
