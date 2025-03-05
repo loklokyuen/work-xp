@@ -14,7 +14,6 @@ export default function ProfilePage() {
         if(user?.uid){
             getBusinessById(user.uid).then((res) => {
                 setBusinessInfo(res)
-                console.log(businessInfo)
             })
         }
     }, [editButtonPressed])
