@@ -47,7 +47,6 @@ export default function TabLayout() {
               size={28}
               color={color}
             />
-<<<<<<< HEAD
           ),
         }}
       />
@@ -71,36 +70,4 @@ export default function TabLayout() {
       />
     </Tabs>
   );
-=======
-            <Tabs.Screen
-                name="explore"
-                options={{
-                    title: "Explore",
-                    tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-                }}
-            />
-            <Tabs.Screen
-                name="chat"
-                options={{
-                    title: "chat",
-                    tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-                }}
-            />
-            <Tabs.Screen
-                name="account"
-                options={{
-                    title: "account",
-                    tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-                }}
-            />
-            <Tabs.Screen
-                name="EditListing"
-                options={{
-                    title: "EditListing",
-                    tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-                }}
-            />
-        </Tabs>
-    );
->>>>>>> main
 }

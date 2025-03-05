@@ -71,7 +71,7 @@ export function EditableStudentInfo({studentInfo}) {
   const [experience, setExperience] = useState<string>(studentInfo.experience || "")
   const [email, setEmail] = useState<string>(studentInfo.email);
   const [county, setCounty] = useState<string>(studentInfo.county || "")
-  const [rawSubjects, setRawSubjects] = useState<string>(studentInfo.subjects.join(","))
+  const [rawSubjects, setRawSubjects] = useState<string>(studentInfo.subjects ? studentInfo.subjects.join(",") : "")
   const [subjects, setSubjects] =useState<string[]>(studentInfo.subjects)
 
   const {user} = useUserContext()
