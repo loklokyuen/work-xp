@@ -1,5 +1,8 @@
 import Listing from "@/components/listing";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 export default function EditListing() {
-    return <Listing listingId={"KX9f5gAyGRFMdvCJ1jN3"} />;
+    const { availability, description, jobRole, id } = useLocalSearchParams<OpportunityCardProps>();
+
+    return <Listing listingId={id} />;
 }

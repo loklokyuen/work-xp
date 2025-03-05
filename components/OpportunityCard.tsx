@@ -1,38 +1,16 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity, Button } from "react-native";
-import { arrayUnion, doc, updateDoc, arrayRemove, getDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc, arrayRemove, getDoc, deleteDoc } from "firebase/firestore";
 import { router } from "expo-router";
 import { useUserContext } from "@/context/UserContext";
 import { useState } from "react";
 import { db } from "../database/firebase.js";
 
-interface OpportunityCardProps {
-    Availability: string;
-    Description: string;
-    JobRole: string;
-}
-
-export default function OpportunityCard({ Availability, Description, JobRole }: OpportunityCardProps) {
+export default function OpportunityCard({ availability, description, jobRole, id }: OpportunityCardProps) {
     const { user, setUser } = useUserContext();
-    const [oppToRemove, setOppToRemove] = useState({});
 
     const handleDelete = async () => {
-        const docRef = doc(db, "Business", user.uid);
         try {
-            const docSnap = await getDoc(docRef);
-
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                const opportunitiesArray = data.Opportunities;
-
-                const singleOpp = opportunitiesArray.find((opportunity: OpportunityCardProps) => opportunity.Availability === Availability);
-                if (singleOpp) {
-                    setOppToRemove(singleOpp);
-
-                    await updateDoc(docRef, {
-                        Opportunities: arrayRemove(singleOpp),
-                    });
-                }
-            }
+            await deleteDoc(doc(db, "Business", user.uid, "Opportunities", id));
         } catch (err) {
             console.log(err);
         }
@@ -40,15 +18,17 @@ export default function OpportunityCard({ Availability, Description, JobRole }: 
 
     return (
         <View style={styles.card}>
-            <Text style={styles.role}>{JobRole}</Text>
-            <Text style={styles.description}>{Description}</Text>
-            <Text style={styles.availability}>Availability: {Availability}</Text>
+            <Text style={styles.role}>{jobRole}</Text>
+            <Text style={styles.description}>{description}</Text>
+            <Text style={styles.availability}>
+                availability: {availability[0]}-{availability[1]}
+            </Text>
             <Button
                 title="Edit Listing"
                 onPress={() => {
                     router.replace({
                         pathname: "/(tabs)/EditListing",
-                        params: { Availability, Description, JobRole },
+                        params: { availability, description, jobRole, id },
                     });
                 }}
             />

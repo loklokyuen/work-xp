@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
 import { View, ScrollView } from "react-native";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, collection } from "firebase/firestore";
 import { db } from "../../database/firebase";
 
 import OpportunityCard from "@/components/OpportunityCard";
@@ -11,32 +11,35 @@ export default function ViewCurrentOpportunities() {
     const [opportunities, setOpportunities] = useState<OpportunityCardProps[]>([]);
 
     useEffect(() => {
-        if (user.uid) {
-            const fetchOpportunities = async () => {
-                const docRef = doc(db, "Business", user.uid);
-
-                const docSnap = await getDoc(docRef);
-
-                const data = docSnap.data();
-
-                if (data) {
-                    const opps = data.Opportunities;
-                    setOpportunities(opps);
-                }
+        if (user?.uid) {
+            const collectionRef = collection(db, "Business", user.uid, "Opportunities");
+            const unsubscribe = onSnapshot(collectionRef, (snapshot) => {
+                let opps: any[] = [];
+                const data = snapshot.docs.map((doc) => {
+                    opps.push({ id: doc.id, ...doc.data() });
+                });
+                setOpportunities(opps);
+            });
+            return () => {
+                unsubscribe();
             };
-            fetchOpportunities();
         }
-    }, []);
+    }, [user?.uid]);
 
     return (
         <ScrollView>
             <View>
-                {opportunities &&
-                    opportunities.map((opp, index) => {
-                        return (
-                            <OpportunityCard key={index} Availability={opp.Availability} Description={opp.Description} JobRole={opp["Job role"]} />
-                        );
-                    })}
+                {opportunities.map((opp, index) => {
+                    return (
+                        <OpportunityCard
+                            key={index}
+                            availability={opp.availability}
+                            description={opp.description}
+                            jobRole={opp.jobRole}
+                            id={opp.id}
+                        />
+                    );
+                })}
             </View>
         </ScrollView>
     );
