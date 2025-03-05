@@ -9,28 +9,28 @@ interface UserProviderProps {
 
 async function getUserAccountType() {
     try {
-        const value = await AsyncStorage.getItem('accountType')
+        const value = await AsyncStorage.getItem("accountType");
         if (value) {
-            return value
+            return value;
         }
     } catch (e) {
-        console.log(e)
+        console.log(e);
     }
 }
 
 export async function setUserAccountType(value: string) {
     try {
-        if (value){
-            await AsyncStorage.setItem('accountType', value)
+        if (value) {
+            await AsyncStorage.setItem("accountType", value);
         }
     } catch (e) {
-        console.log(e)
+        console.log(e);
     }
 }
 
 interface UserContext {
     user: User | null;
-    setUser: React.Dispatch<React.SetStateAction<User|null>>;
+    setUser: React.Dispatch<React.SetStateAction<User | null>>;
     accountType: AccountType | null;
     setAccountType: React.Dispatch<React.SetStateAction<AccountType>>;
 }
@@ -43,7 +43,7 @@ export function UserProvider({ children }: UserProviderProps) {
     useEffect(() => {
         const auth = getAuth();
         function onAuthStateChanged(user: any) {
-            setUser(user); 
+            setUser(user);
         }
         getUserAccountType().then((value) => {
             if (value) {
@@ -53,8 +53,7 @@ export function UserProvider({ children }: UserProviderProps) {
         const subscriber = auth.onAuthStateChanged(onAuthStateChanged);
         return subscriber;
     }, []);
-    return <UserContext.Provider value={{ user, setUser, accountType, setAccountType }}>
-        {children}</UserContext.Provider>;
+    return <UserContext.Provider value={{ user, setUser, accountType, setAccountType }}>{children}</UserContext.Provider>;
 }
 
 export function useUserContext() {

@@ -30,7 +30,7 @@ const SuccessSignIn = () => {
         auth.signOut()
             .then(() => {
                 setUser(null);
-                setUserAccountType('');
+                setUserAccountType("");
                 setError("");
             })
             .catch(() => {
@@ -41,7 +41,7 @@ const SuccessSignIn = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>
-                Successfully Signed In as {user? user.displayName : null} {accountType ? `(${accountType})` : ""}
+                Successfully Signed In as {user ? user.displayName : null} {accountType ? `(${accountType})` : ""}
             </Text>
             <View>
                 {showChangePassword && (
