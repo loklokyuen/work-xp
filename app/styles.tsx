@@ -1,4 +1,8 @@
 import { StyleSheet } from "react-native";
+import CardActions from "react-native-paper/lib/typescript/components/Card/CardActions";
+import CardContent from "react-native-paper/lib/typescript/components/Card/CardContent";
+import CardTitle from "react-native-paper/lib/typescript/components/Card/CardTitle";
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -42,20 +46,41 @@ const styles = StyleSheet.create({
   searchContainer: {
     padding: 10,
   },
-  cardContainer: {
-    padding: 10,
-    justifyContent: "center",
-  },
   card: {
     width: "100%",
     marginVertical: 10,
     alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    padding: 10,
+  },
+  cardContent: {
+    margin: 0,
     padding: 0,
   },
+  cardTitle: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 10,
+    paddingRight: 0,
+    paddingLeft: 0,
+    textAlign: "center",
+  },
+  cardActions: {
+    alignItems: "center",
+    justifyContent: "center",
+    margin: "auto",
+    padding: 20,
+  },
   cardCover: {
-    width: 150,
-    height: 150,
+    width: 320,
+    height: 200,
     resizeMode: "cover",
+    alignSelf: "center",
+  },
+  text: {
+    textAlign: "center",
+    padding: 10,
   },
 });
 
