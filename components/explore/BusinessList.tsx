@@ -9,7 +9,6 @@ const BusinessList: React.FC = () => {
   interface IndividualBusiness {
     displayName: string;
     county: string;
-    sector: string;
     photoUrl: string;
   }
 
@@ -18,8 +17,6 @@ const BusinessList: React.FC = () => {
     IndividualBusiness[]
   >([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [selectedCounty, setSelectedCounty] = useState<string>("All");
-  const [selectedSector, setSelectedSector] = useState<string>("All");
 
   useEffect(() => {
     const fetchData = async () => {
