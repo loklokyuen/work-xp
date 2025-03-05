@@ -6,10 +6,9 @@ declare global {
         photoUrl: string;
     }
     interface accountProps {
-        accountType: string;
         setIsNewUser: React.Dispatch<React.SetStateAction<boolean>>;
-        setAccountType: React.Dispatch<React.SetStateAction<string>>;
     }
+    type AccountType = "Student" | "Business" | "Guest" | null;
 }
 
 export {};
