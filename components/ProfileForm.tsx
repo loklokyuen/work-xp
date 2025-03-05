@@ -1,8 +1,8 @@
-import { IconButton, Text, TextInput } from "react-native-paper";
+import { Button, IconButton, Text, TextInput } from "react-native-paper";
 import ImageViewer from "./imageViewer";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet, Platform, View } from "react-native";
 
 export function ReadonlyUserInfo() {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
@@ -49,6 +49,24 @@ export function ReadonlyUserInfo() {
       <Text variant="titleSmall" style={styles.data}>
         Fill this with data from database
       </Text>
+      <View style={styles.buttonContainer}>
+        <Button
+          mode="contained-tonal"
+          onPress={() => {
+            console.log("pressed");
+          }}
+        >
+          View ads
+        </Button>
+        <Button
+          mode="contained-tonal"
+          onPress={() => {
+            console.log("pressed");
+          }}
+        >
+          Log out
+        </Button>
+      </View>
     </>
   );
 }
@@ -58,6 +76,7 @@ export function EditableUserInfo() {
   const [industry, setIndustry] = useState<string>("");
   const [phoneNum, setPhoneNum] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
 
   return (
     <>
@@ -87,6 +106,20 @@ export function EditableUserInfo() {
         onChangeText={(text) => setEmail(text)}
         keyboardType="email-address"
       />
+      <TextInput
+        label="Address"
+        mode="outlined"
+        value={address}
+        onChangeText={(text) => setAddress(text)}
+      />
+      <Button
+        mode="contained-tonal"
+        onPress={() => {
+          console.log("pressed");
+        }}
+      >
+        Save Changes
+      </Button>
     </>
   );
 }
@@ -97,5 +130,9 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   },
 });

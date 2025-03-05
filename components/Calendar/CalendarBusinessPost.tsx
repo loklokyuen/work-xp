@@ -1,15 +1,4 @@
 // import { firebase } from "./firebaseConfig"
-<<<<<<< HEAD
-import { Alert, Button, Text, View } from 'react-native';
-
-import {Calendar, CalendarList, Agenda, LocaleConfig} from 'react-native-calendars';
-import React, {SetStateAction, useEffect, useState, Dispatch} from 'react';
-import Day from 'react-native-calendars/src/calendar/day';
-import { useUserContext } from '@/context/UserContext'; 
-
-import { db } from "../../database/firebase"
-import { addDoc,getDocs, query, collection, doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
-=======
 import { Alert, Button, Text, View } from "react-native";
 
 import {
@@ -33,7 +22,6 @@ import {
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
->>>>>>> dd10742cf5f0049e1cf13c53f026d7b1ad10b871
 
 type DayPressEvent = {
   dateString: string;

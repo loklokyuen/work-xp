@@ -8,13 +8,13 @@ export default function ProfilePage() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView >
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <Text>Header here</Text>
       <Button
         mode="contained-tonal"
         onPress={() => {setEditButtonPressed(!editButtonPressed)}}
       >
-        Edit
+        {editButtonPressed ? "Go back" : "Edit"}
       </Button>
       {editButtonPressed ?  <EditableUserInfo/> : <ReadonlyUserInfo/>}
       </ScrollView>
@@ -25,5 +25,9 @@ export default function ProfilePage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  }
+    margin: 18,
+  },
+  scrollViewContent: {
+    paddingBottom: 75,
+  },
 });
