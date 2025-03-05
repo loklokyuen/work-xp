@@ -8,16 +8,15 @@ import {
     updatePassword,
     updateProfile,
 } from "firebase/auth";
-import { auth } from "@/database/firebase";
+import { auth, db } from "@/database/firebase";
 import { Link, useLocalSearchParams } from "expo-router";
 import styles from "../../app/styles";
 import { router } from "expo-router";
-import { useUserContext } from "@/context/UserContext";
-import { db } from "@/database/firebase";
+import { setUserAccountType, useUserContext } from "@/context/UserContext";
 import { setDoc, doc } from "firebase/firestore";
 
-const CreateAccount: React.FC<accountProps> = ({ accountType, setAccountType, setIsNewUser }) => {
-    const { user, setUser } = useUserContext();
+const CreateAccount: React.FC<accountProps> = ({ setIsNewUser }: accountProps) => {
+    const { user, setUser, accountType, setAccountType } = useUserContext();
     const [displayName, setDisplayName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -42,6 +41,7 @@ const CreateAccount: React.FC<accountProps> = ({ accountType, setAccountType, se
                         displayName: displayName,
                     });
                     setUser(userData);
+                    setUserAccountType(accountType);
                     setDoc(doc(db, accountType, user.uid), userData);
 
                     // router.replace("/(tabs)/success-sign-in");

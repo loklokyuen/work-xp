@@ -3,10 +3,10 @@ import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { updatePassword } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { auth } from "@/database/firebase";
-import { useUserContext } from "@/context/UserContext";
+import { setUserAccountType, useUserContext } from "@/context/UserContext";
 
-const SuccessSignIn = ({ accountType, setAccountType, setIsNewUser }: accountProps) => {
-    const { user, setUser } = useUserContext();
+const SuccessSignIn = () => {
+    const { user, setUser, accountType } = useUserContext();
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [showChangePassword, setShowChangePassword] = useState(false);
@@ -30,6 +30,7 @@ const SuccessSignIn = ({ accountType, setAccountType, setIsNewUser }: accountPro
         auth.signOut()
             .then(() => {
                 setUser(null);
+                setUserAccountType("");
                 setError("");
             })
             .catch(() => {
