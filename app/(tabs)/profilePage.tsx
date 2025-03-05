@@ -1,6 +1,6 @@
 import { EditableUserInfo, ReadonlyUserInfo } from "@/components/ProfileForm";
 import { useState } from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 
 export default function ProfilePage() {
@@ -8,6 +8,7 @@ export default function ProfilePage() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView >
       <Text>Header here</Text>
       <Button
         mode="contained-tonal"
@@ -15,7 +16,8 @@ export default function ProfilePage() {
       >
         Edit
       </Button>
-      {editButtonPressed ? <ReadonlyUserInfo/> : <EditableUserInfo/>}
+      {editButtonPressed ?  <EditableUserInfo/> : <ReadonlyUserInfo/>}
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -23,6 +25,5 @@ export default function ProfilePage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
   }
 });

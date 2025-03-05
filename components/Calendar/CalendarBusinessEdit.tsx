@@ -1,15 +1,4 @@
 // import { firebase } from "./firebaseConfig"
-<<<<<<< HEAD
-import { Alert, Button, Text, View } from 'react-native';
-
-import {Calendar, CalendarList, Agenda, LocaleConfig} from 'react-native-calendars';
-import React, {SetStateAction, useEffect, useState, Dispatch} from 'react';
-import Day from 'react-native-calendars/src/calendar/day';
-import { useUserContext } from '@/context/UserContext'; 
-
-import { db } from "../../database/firebase"
-import { addDoc,getDocs, query, collection, doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
-=======
 import { Alert, Button, Text, View } from "react-native";
 
 import {
@@ -33,7 +22,6 @@ import {
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
->>>>>>> dd10742cf5f0049e1cf13c53f026d7b1ad10b871
 
 type DayPressEvent = {
   dateString: string;
@@ -71,16 +59,18 @@ const calculateDate = (firstDate: string, SecondDate: string) => {
   }
 };
 
-interface BusinessCalendarPostProps {
+interface BusinessCalendarEditProps {
   setAvailability: Dispatch<SetStateAction<string>>;
+  confirmedAvailability: string;
 }
 
 interface Opportunities {
   Availability: string;
 }
 
-const BusinessCalenderPost: React.FC<BusinessCalendarPostProps> = ({
+const BusinessCalenderEdit: React.FC<BusinessCalendarEditProps> = ({
   setAvailability,
+  confirmedAvailability,
 }) => {
   const [firstDay, setFirstDay] = useState<string>("");
   const [secondDay, setSecondDay] = useState<string>("");
@@ -90,72 +80,114 @@ const BusinessCalenderPost: React.FC<BusinessCalendarPostProps> = ({
     []
   );
   const { user, setUser } = useUserContext();
+  console.log(confirmedAvailability);
 
   useEffect(() => {
-    const fetchConfirmedDates = async () => {
-      try {
-        const docRef = doc(db, "Business", user.uid);
+    const splitPair = confirmedAvailability.split(":");
+    let firstDate = splitPair[0];
+    let secondDate = splitPair[1];
 
-        const docSnap = await getDoc(docRef);
+    let alreadyConfirmedDates: Record<string, any> = {};
 
-        let alreadyConfirmedDates: Record<string, any> = {};
-
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-
-          let opportunitiesDatesArray: string[] = [];
-
-          const opportunitiesArray = data.Opportunities;
-
-          opportunitiesArray.forEach((opp: Opportunities) => {
-            opportunitiesDatesArray.push(opp["Availability"]);
-          });
-
-          if (Array.isArray(opportunitiesDatesArray)) {
-            const confirmed = opportunitiesDatesArray;
-            const splitArray = confirmed.map((datePair: string) => {
-              return datePair.split(":");
-            });
-            splitArray.forEach((datePair) => {
-              let firstDate = datePair[0];
-              let secondDate = datePair[1];
-
-              alreadyConfirmedDates[firstDate] = {
-                startingDay: true,
-                color: "red",
-                textColor: "white",
-              };
-              alreadyConfirmedDates[secondDate] = {
-                endingDay: true,
-                color: "red",
-                textColor: "white",
-              };
-
-              let start = new Date(firstDate);
-              let end = new Date(secondDate);
-              let current = new Date(start);
-
-              while (current <= end) {
-                let dateAsString = current.toISOString().split("T")[0];
-
-                alreadyConfirmedDates[dateAsString] = {
-                  color: "red",
-                  textColor: "white",
-                };
-
-                current.setDate(current.getDate() + 1);
-              }
-            });
-          }
-        }
-        setFormattedConfirmedDates(alreadyConfirmedDates);
-        console.log(alreadyConfirmedDates);
-        return alreadyConfirmedDates;
-      } catch (err) {}
+    alreadyConfirmedDates[firstDate] = {
+      startingDay: true,
+      color: "red",
+      textColor: "white",
+    };
+    alreadyConfirmedDates[secondDate] = {
+      endingDay: true,
+      color: "red",
+      textColor: "white",
     };
 
-    fetchConfirmedDates();
-  }, []);
+    let start = new Date(firstDate);
+    let end = new Date(secondDate);
+    let current = new Date(start);
+
+    while (current <= end) {
+      let dateAsString = current.toISOString().split("T")[0];
+
+      alreadyConfirmedDates[dateAsString] = {
+        color: "red",
+        textColor: "white",
+      };
+
+      current.setDate(current.getDate() + 1);
+    }
+    setFormattedConfirmedDates(alreadyConfirmedDates);
+    console.log(alreadyConfirmedDates);
+  }, [confirmedAvailability]);
+
+  // useEffect(() => {
+  //   const fetchConfirmedDates = async () => {
+  //     try {
+  //       // const docRef = doc(db,"Business_Users", currentBusiness);
+  //       const docRef = doc(db, "Business", user.uid);
+
+  //       const docSnap = await getDoc(docRef);
+
+  //       let alreadyConfirmedDates: Record<string, any> = {};
+
+  //       if (docSnap.exists()) {
+  //         const data = docSnap.data();
+
+  //         let opportunitiesDatesArray: string[] = [];
+
+  //         const opportunitiesArray = data.Opportunities;
+
+  //         opportunitiesArray.forEach((opp: Opportunities) => {
+  //           opportunitiesDatesArray.push(opp["Availability"]);
+  //         });
+
+  //         console.log(opportunitiesDatesArray);
+  //         // if(Array.isArray(data["Available dates"])) {
+  //         // const confirmed = data["Available dates"]
+
+  //         if (Array.isArray(opportunitiesDatesArray)) {
+  //           const confirmed = opportunitiesDatesArray;
+  //           const splitArray = confirmed.map((datePair: string) => {
+  //             return datePair.split(":");
+  //           });
+  //           splitArray.forEach((datePair) => {
+  //             let firstDate = datePair[0];
+  //             let secondDate = datePair[1];
+
+  //             alreadyConfirmedDates[firstDate] = {
+  //               startingDay: true,
+  //               color: "red",
+  //               textColor: "white",
+  //             };
+  //             alreadyConfirmedDates[secondDate] = {
+  //               endingDay: true,
+  //               color: "red",
+  //               textColor: "white",
+  //             };
+
+  //             let start = new Date(firstDate);
+  //             let end = new Date(secondDate);
+  //             let current = new Date(start);
+
+  //             while (current <= end) {
+  //               let dateAsString = current.toISOString().split("T")[0];
+
+  //               alreadyConfirmedDates[dateAsString] = {
+  //                 color: "red",
+  //                 textColor: "white",
+  //               };
+
+  //               current.setDate(current.getDate() + 1);
+  //             }
+  //           });
+  //         }
+  //       }
+  //       setFormattedConfirmedDates(alreadyConfirmedDates);
+  //       console.log(alreadyConfirmedDates);
+  //       return alreadyConfirmedDates;
+  //     } catch (err) {}
+  //   };
+
+  //   fetchConfirmedDates();
+  // }, []);
 
   const calculateDate = (firstDate: string, SecondDate: string) => {
     let marked: Record<string, any> = {};
@@ -255,4 +287,4 @@ const BusinessCalenderPost: React.FC<BusinessCalendarPostProps> = ({
   );
 };
 
-export default BusinessCalenderPost;
+export default BusinessCalenderEdit;
