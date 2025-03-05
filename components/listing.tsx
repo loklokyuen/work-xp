@@ -44,7 +44,6 @@ export default function Listing({ listingId }: { listingId: string }) {
                     setProposedDates([]);
                 };
             } else {
-                console.log(user.uid);
                 const unsubcribe = onSnapshot(collection(db, "Business", user.uid, "Opportunities"), (snapshot) => {
                     let dates = {};
                     const query = snapshot.docs.map((doc) => {

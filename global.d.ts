@@ -11,7 +11,7 @@ declare global {
         setAccountType: React.Dispatch<React.SetStateAction<string>>;
     }
     interface OpportunityCardProps {
-        availability: array;
+        availability: string[];
         description: string;
         jobRole: string;
         id: string;
