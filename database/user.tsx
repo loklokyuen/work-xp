@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, getFirestore, doc, getDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
 async function getUserById(uid: string, accountType: string): Promise<User> {
@@ -8,4 +8,9 @@ async function getUserById(uid: string, accountType: string): Promise<User> {
     return user as User;
 }
 
-export { getUserById };
+async function updateUserProfileImage(uid: string, accountType: string, photoUrl: string): Promise<void> {
+    const docRef = doc(db, accountType, uid);
+    await updateDoc(docRef, { photoUrl });
+}
+
+export { getUserById, updateUserProfileImage };
