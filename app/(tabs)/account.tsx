@@ -12,57 +12,18 @@ import SuccessSignIn from "@/components/account/success-sign-in";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AccountScreen() {
-    const [initializing, setInitializing] = useState(true);
-    const { user, setUser } = useUserContext();
+    const { user, setUser, accountType, setAccountType } = useUserContext();
     const [isNewUser, setIsNewUser] = useState<boolean>(true);
-    const [accountType, setAccountType] = useState<string>("");
-    function onAuthStateChanged(user: any) {
-        setUser(user); 
-        setUserAccountType(accountType);
-        if (initializing) setInitializing(false);
-    }
-    
-    useEffect(() => {
-        getUserAccountType();
-        const subscriber = auth.onAuthStateChanged(onAuthStateChanged);
-        return subscriber;
-    }, []);
-
-    useEffect(() => {
-        setUserAccountType(accountType);
-    }, [accountType]);
-    async function getUserAccountType() {
-        try {
-            const value = await AsyncStorage.getItem('accountType')
-            if (value) {
-                setAccountType(value)
-            }
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    async function setUserAccountType(value: string) {
-        try {
-            if (value){
-                await AsyncStorage.setItem('accountType', value)
-            }
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    if (initializing) return null;
 
     if (accountType && !user) { 
         if (isNewUser){
-            return <CreateAccount accountType={accountType} setAccountType={setAccountType} setIsNewUser={setIsNewUser} />;
+            return <CreateAccount setIsNewUser={setIsNewUser} />;
         } else {
-            return <SignIn accountType={accountType} setAccountType={setAccountType} setIsNewUser={setIsNewUser} />;
+            return <SignIn setIsNewUser={setIsNewUser} />;
         }
     }
  
-    if (!user) {
+    if (!user) {ç
         return <View style={{ backgroundColor: "#fff", flex: 1, justifyContent: "center", alignItems: "center" }}>
             <Text>Are you a business or student user?</Text>
             <Button title="Student" onPress={() => { setAccountType("Student")}} />
@@ -70,7 +31,7 @@ export default function AccountScreen() {
             <Button title="Business" onPress={() => { setAccountType("Business")}} />
             </View>
     } else {
-        return  <SuccessSignIn accountType={accountType} setAccountType={setAccountType} setIsNewUser={setIsNewUser}/>
+        return  <SuccessSignIn />
     }
     // if (user.uid) {
     //     return <SuccessSignIn />;
