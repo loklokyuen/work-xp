@@ -77,7 +77,7 @@ export function ReadonlyUserInfo({businessInfo}) {
 export function EditableUserInfo({businessInfo}) {
   const [bio, setBio] = useState<string>(businessInfo.description || "");
   const [industry, setIndustry] = useState<string>(businessInfo.sector || "");
-  const [phoneNum, setPhoneNum] = useState<string>("");
+  const [phoneNum, setPhoneNum] = useState<string>(businessInfo.phoneNum || "");
   const [email, setEmail] = useState<string>(businessInfo.email);
   const [address, setAddress] = useState<string>(businessInfo.address || "");
   const [county, setCounty] = useState<string>(businessInfo.county || "")
