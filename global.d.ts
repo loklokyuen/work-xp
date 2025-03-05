@@ -31,23 +31,27 @@ declare global {
         jobRole: string;
     }
     interface Review {
+        id: string;
+        businessId: string;
+        studentId: string;
         rating: number;
         review: string;
-        author: string;
+        displayName: string;
     }
     interface Student {
         uid: string;
         displayName: string;
         photoUrl: string;
         email: string;
+        county: string;
+        personalStatement: string;
         applications: Application[];
         reviews: Review[];
         subjects: string[];
         experience: Experience[];
-        county: string;
-        personalStatement: string;
     }
     interface Experience {
+        id: string;
         role: string;
         employer: string;
         startDate: string;
@@ -55,6 +59,7 @@ declare global {
         description: string;
     }
     interface Application {
+        id: string;
         opportunityId: string;
         businessId: string;
         studentId: string;
