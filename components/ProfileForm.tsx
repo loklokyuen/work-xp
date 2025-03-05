@@ -3,6 +3,9 @@ import ImageViewer from "./imageViewer";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import { StyleSheet, Platform, View } from "react-native";
+import { db } from "@/database/firebase";
+import { doc, updateDoc } from "firebase/firestore";
+import { useUserContext } from "@/context/UserContext";
 
 export function ReadonlyUserInfo() {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
@@ -77,6 +80,29 @@ export function EditableUserInfo() {
   const [phoneNum, setPhoneNum] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [address, setAddress] = useState<string>("");
+  const [county, setCounty] = useState<string>("")
+
+  const {user} = useUserContext()
+
+//    const function handleSave({bio, industry, phoneNum, email, address}) {
+//     take the edited data and patch the database, then alert user to signify the patch was successful
+//    }
+const updatedData = {
+    description: bio,
+    sector: industry,
+    address: address,
+    county: county,
+}
+console.log(updatedData)
+
+const handleSave = async(updatedData) => {
+    try {
+        const docRef = doc(db, "Business", user.uid)
+        await updateDoc(docRef, updatedData)
+    } catch (error){
+        console.log(error)
+    }
+}
 
   return (
     <>
@@ -112,10 +138,16 @@ export function EditableUserInfo() {
         value={address}
         onChangeText={(text) => setAddress(text)}
       />
+        <TextInput
+        label="County"
+        mode="outlined"
+        value={county}
+        onChangeText={(text) => setCounty(text)}
+      />
       <Button
         mode="contained-tonal"
         onPress={() => {
-          console.log("pressed");
+          handleSave(updatedData);
         }}
       >
         Save Changes
