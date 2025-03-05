@@ -7,7 +7,7 @@ import { db } from "@/database/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { useUserContext } from "@/context/UserContext";
 
-export function ReadonlyUserInfo() {
+export function ReadonlyUserInfo({businessInfo}) {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     undefined
   );
@@ -34,23 +34,23 @@ export function ReadonlyUserInfo() {
       <IconButton icon="camera" size={20} onPress={pickImageAsync} />
       <Text variant="titleMedium">Company Bio:</Text>
       <Text variant="titleSmall" style={styles.data}>
-        Fill this with data from database
+        {businessInfo.description}
       </Text>
       <Text variant="titleMedium">Industry:</Text>
       <Text variant="titleSmall" style={styles.data}>
-        Fill this with data from database
+        {businessInfo.sector}
       </Text>
       <Text variant="titleMedium">Telephone:</Text>
       <Text variant="titleSmall" style={styles.data}>
-        Fill this with data from database
+        {businessInfo.phoneNumber}
       </Text>
       <Text variant="titleMedium">Email:</Text>
       <Text variant="titleSmall" style={styles.data}>
-        Fill this with data from database
+        {businessInfo.email}
       </Text>
       <Text variant="titleMedium">Address:</Text>
       <Text variant="titleSmall" style={styles.data}>
-        Fill this with data from database
+        {businessInfo.address}
       </Text>
       <View style={styles.buttonContainer}>
         <Button
@@ -74,13 +74,13 @@ export function ReadonlyUserInfo() {
   );
 }
 
-export function EditableUserInfo() {
-  const [bio, setBio] = useState<string>("");
-  const [industry, setIndustry] = useState<string>("");
+export function EditableUserInfo({businessInfo}) {
+  const [bio, setBio] = useState<string>(businessInfo.description || "");
+  const [industry, setIndustry] = useState<string>(businessInfo.sector || "");
   const [phoneNum, setPhoneNum] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [address, setAddress] = useState<string>("");
-  const [county, setCounty] = useState<string>("")
+  const [email, setEmail] = useState<string>(businessInfo.email);
+  const [address, setAddress] = useState<string>(businessInfo.address || "");
+  const [county, setCounty] = useState<string>(businessInfo.county || "")
 
   const {user} = useUserContext()
 
@@ -90,15 +90,17 @@ export function EditableUserInfo() {
 const updatedData = {
     description: bio,
     sector: industry,
+    phoneNumber: phoneNum,
+    email: email,
     address: address,
     county: county,
 }
-console.log(updatedData)
 
 const handleSave = async(updatedData) => {
     try {
         const docRef = doc(db, "Business", user.uid)
         await updateDoc(docRef, updatedData)
+        alert("Changes have been saved")
     } catch (error){
         console.log(error)
     }
@@ -162,6 +164,7 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    color: "white",
   },
   buttonContainer: {
     flexDirection: "row",
