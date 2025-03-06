@@ -106,12 +106,14 @@ const handleSave = async(updatedStudentData) => {
       <TextInput
         label="Personal Statement"
         mode="outlined"
+        multiline
         value={bio}
         onChangeText={(text) => setBio(text)}
       />
       <TextInput
         label="Experience"
         mode="outlined"
+        multiline
         value={experience}
         onChangeText={(text) => setExperience(text)}
       />
@@ -131,6 +133,7 @@ const handleSave = async(updatedStudentData) => {
        <TextInput
         label="Subjects (enter separated by commas)"
         mode="outlined"
+        multiline
         value={rawSubjects}
         onChangeText={(text) => setRawSubjects(text)}
       />
@@ -148,7 +151,6 @@ const handleSave = async(updatedStudentData) => {
 
 const styles = StyleSheet.create({
   data: {
-    height: 40,
     margin: 12,
     borderWidth: 1,
     padding: 10,
