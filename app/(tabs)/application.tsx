@@ -142,6 +142,7 @@ export default function Application({ listingId }: { listingId: string }) {
     function handleDay(day: string) {
         if (dates[day]) {
             chooseDates(dates[day].period);
+            console.log("hello");
         }
     }
 
