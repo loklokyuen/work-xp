@@ -22,13 +22,11 @@ export default function Application({ listingId }: { listingId: string }) {
     const [description, setDescription] = useState<string>("");
     const [companyName, setCompanyName] = useState<string>("");
 
-    const [firstDay, setFirstDay] = useState<string>("");
-
     const [dates, setDates] = useState<Record<string, any>>({});
     const [periods, setPeriods] = useState<string[]>([]);
     const [why, setWhy] = useState<string>("");
     const [reason, setReason] = useState<string>("");
-    const [chosenDates, setChosenDates] = useState<Record<string, any>>({});
+    const [chosen, setChosen] = useState<Record<string, any>>({});
 
     const BusinessId = "Qf1ha917fUU7oDmACzZ3msxI5Yk2";
     const OpportunityId = "Knj2eN5H6Qen00vx4kNR";
@@ -115,35 +113,38 @@ export default function Application({ listingId }: { listingId: string }) {
         setDates((prevDates) => ({ ...prevDates, ...markedDates }));
     };
 
-    function handleDay(day: string) {
-        if (dates[day]) {
-            const chosen = dates[day].period;
-
-            setChosenDates((prevChosenDates) => ({ ...prevChosenDates, [dates[day].period]: "" }));
-
-            // console.log("hello", chosen);
-            const start = chosen.split(":")[0];
-            const end = chosen.split(":")[1];
-            // console.log(start, end);
-            let current = new Date(start);
-            // console.log(current);
-            let markedDates = { ...dates };
-            // console.log(markedDates);
-
-            while (current <= new Date(end)) {
-                let dateAsString = current.toISOString().split("T")[0];
-                markedDates[dateAsString].color = "green";
-                current.setDate(current.getDate() + 1);
+    function chooseDates(period: string) {
+        setChosen((prevChosen) => {
+            if (prevChosen[period]) {
+                const copy = { ...prevChosen };
+                delete copy[period];
+                return copy;
+            } else {
+                return { ...prevChosen, [period]: true };
             }
-            setDates((prevDates) => {
-                return markedDates;
-            });
+        });
+
+        const start = period.split(":")[0];
+        const end = period.split(":")[1];
+        let current = new Date(start);
+        let markedDates = { ...dates };
+
+        while (current <= new Date(end)) {
+            let dateAsString = current.toISOString().split("T")[0];
+            markedDates[dateAsString].color === "blue"
+                ? (markedDates[dateAsString] = { ...markedDates[dateAsString], color: "green" })
+                : (markedDates[dateAsString] = { ...markedDates[dateAsString], color: "blue" });
+            current.setDate(current.getDate() + 1);
         }
+        setDates(markedDates);
     }
 
-    useEffect(() => {
-        console.log("dates", dates);
-    }, [dates]);
+    function handleDay(day: string) {
+        if (dates[day]) {
+            chooseDates(dates[day].period);
+            console.log("hello");
+        }
+    }
 
     const handleSubmit = async () => {
         if (periods.length && jobRole && description) {
@@ -201,7 +202,7 @@ export default function Application({ listingId }: { listingId: string }) {
             />
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>Dates Chosen:</Text>
-                {Object.keys(chosenDates).map((date, index) => {
+                {Object.keys(chosen).map((date, index) => {
                     return <Text key={index}> {date}</Text>;
                 })}
             </View>
