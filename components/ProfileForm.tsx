@@ -111,6 +111,7 @@ const handleSave = async(updatedData) => {
       <TextInput
         label="Company Bio"
         mode="outlined"
+        multiline
         value={bio}
         onChangeText={(text) => setBio(text)}
       />
@@ -137,6 +138,7 @@ const handleSave = async(updatedData) => {
       <TextInput
         label="Address"
         mode="outlined"
+        multiline
         value={address}
         onChangeText={(text) => setAddress(text)}
       />
@@ -160,7 +162,6 @@ const handleSave = async(updatedData) => {
 
 const styles = StyleSheet.create({
   data: {
-    height: 40,
     margin: 12,
     borderWidth: 1,
     padding: 10,
