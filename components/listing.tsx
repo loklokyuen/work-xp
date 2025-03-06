@@ -28,7 +28,7 @@ export default function Listing({ listingId }: { listingId: string }) {
 
     const [dates, setDates] = useState<Record<string, any>>({});
     const [periods, setPeriods] = useState<string[]>([]);
-    // const [delete, setDelete] = useState()
+    const [remove, setRemove] = useState<string[]>([]);
 
     useEffect(() => {
         if (user?.uid) {
