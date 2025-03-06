@@ -42,7 +42,7 @@ const publicComProfile: React.FC = () => {
   }, [uid]);
 
   if (loading) {
-    return <View>Loading business profile...</View>;
+    return <Text>Loading business profile...</Text>;
   }
 
   return (
