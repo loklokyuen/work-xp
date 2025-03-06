@@ -3,41 +3,16 @@ import { Searchbar } from "react-native-paper";
 import { View } from "react-native";
 
 interface SearchBarProps {
-  businesses: {
-    displayName: string;
-    county: string;
-    photoUrl: string;
-  }[];
-  handleBusinessSelect: (
-    business: {
-      displayName: string;
-      county: string;
-      photoUrl: string;
-    } | null
-  ) => void;
+  setSearchQuery: (query: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({
-  businesses,
-  handleBusinessSelect,
-}) => {
-  const [searchQuery, setSearchQuery] = React.useState("");
+const SearchBar: React.FC<SearchBarProps> = ({ setSearchQuery }) => {
+  const [searchQuery, setQuery] = React.useState("");
 
   const handleSearch = (query: string) => {
-    setSearchQuery(query);
-
-    if (query.trim() === "") {
-      handleBusinessSelect(null);
-      return;
-    }
-
-    const matchedBusiness = businesses.find((biz) =>
-      biz.displayName.toLowerCase().includes(query.toLowerCase())
-    );
-
-    if (matchedBusiness) {
-      handleBusinessSelect(matchedBusiness);
-    }
+    const trimmedQuery = query.trim();
+    setQuery(trimmedQuery);
+    setSearchQuery(trimmedQuery);
   };
 
   return (
