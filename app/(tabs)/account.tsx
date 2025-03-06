@@ -1,4 +1,3 @@
-import Chat from "@/components/chatComponent";
 import { useUserContext } from "@/context/UserContext";
 import { StyleSheet, Text, View } from "react-native";
 import { useEffect, useState } from "react";
@@ -8,8 +7,8 @@ import { Button } from "react-native";
 import { router } from "expo-router";
 import SignIn from "@/components/account/sign-in";
 import CreateAccount from "../../components/account/create-account";
-import SuccessSignIn from "@/components/account/success-sign-in";
-import AsyncStorage from "@react-native-async-storage/async-storage"; //all this needs to move to usercontext
+import SuccessSignIn from "@/components/account/LogOut";
+import ProfilePage from "@/components/account/account";
 
 export default function AccountScreen() {
     const { user, setUser, accountType, setAccountType } = useUserContext();
@@ -43,14 +42,8 @@ export default function AccountScreen() {
             </View>
         );
     } else {
-        return <SuccessSignIn />;
+        return <ProfilePage />;
     }
-    // if (user.uid) {
-    //     return <SuccessSignIn />;
-    // } else {
-    //     if (account) return <SignIn setAccount={setAccount} />;
-    //     else return <CreateAccount setAccount={setAccount} />;
-    // }
 }
 
 const styles = StyleSheet.create({

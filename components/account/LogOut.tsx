@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { auth } from "@/database/firebase";
 import { setUserAccountType, useUserContext } from "@/context/UserContext";
 
-const SuccessSignIn = () => {
+const LogOut = () => {
     const { user, setUser, accountType } = useUserContext();
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -40,9 +40,6 @@ const SuccessSignIn = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>
-                Successfully Signed In as {user ? user.displayName : null} {accountType ? `(${accountType})` : ""}
-            </Text>
             <View>
                 {showChangePassword && (
                     <View>
@@ -66,4 +63,4 @@ const SuccessSignIn = () => {
     );
 };
 
-export default SuccessSignIn;
+export default LogOut;
