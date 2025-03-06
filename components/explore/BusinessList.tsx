@@ -14,6 +14,7 @@ import CountyDropdown from "./CountyDropdown";
 
 const BusinessList: React.FC = () => {
   interface IndividualBusiness {
+    uid: string;
     displayName: string;
     county: string;
     photoUrl: string;
@@ -107,9 +108,9 @@ const BusinessList: React.FC = () => {
           {loading ? (
             <Text>Loading businesses...</Text>
           ) : filteredBusinesses.length > 0 ? (
-            filteredBusinesses.map((biz, index) => (
+            filteredBusinesses.map((biz) => (
               <BusinessCards
-                key={index}
+                uid={biz.uid}
                 displayName={biz.displayName}
                 county={biz.county}
                 photoUrl={biz.photoUrl}

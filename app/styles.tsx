@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   card: {
+    // backgroundColor: "#07070A",
     width: "100%",
     marginVertical: 10,
     alignItems: "center",
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
 
   headerContainer: {
     height: 100,
-    backgroundColor: "#7958DB",
+    backgroundColor: "#795663",
     elevation: 4,
     justifyContent: "center",
     alignItems: "center",
