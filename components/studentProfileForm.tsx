@@ -93,7 +93,6 @@ useEffect(() => {
 
 const handleSave = async(updatedStudentData) => {
     try {
-        console.log(rawSubjects, subjects)
         const docRef = doc(db, "Student", user.uid)
         await updateDoc(docRef, updatedStudentData)
         alert("Changes have been saved")
