@@ -10,8 +10,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ setSearchQuery }) => {
   const [searchQuery, setQuery] = React.useState("");
 
   const handleSearch = (query: string) => {
-    setQuery(query);
-    setSearchQuery(query); // Updates `searchQuery` in `BusinessList`
+    const trimmedQuery = query.trim();
+    setQuery(trimmedQuery);
+    setSearchQuery(trimmedQuery);
   };
 
   return (
