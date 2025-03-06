@@ -1,4 +1,13 @@
-import { collection, addDoc, getDocs, getFirestore, doc, getDoc, query, where } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  getFirestore,
+  doc,
+  getDoc,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "./firebase";
 const BusinessUsersCollection = collection(db, "Business");
 
@@ -18,21 +27,39 @@ async function getBusinesses(): Promise<Business[]> {
 }
 
 async function getBusinessBySector(sector: string): Promise<Business[]> {
-    const q = query(BusinessUsersCollection, where("sector", "==", sector));
-    const querySnapshot = await getDocs(q);
-    const businessesList = querySnapshot.docs.map((doc) => {
-        return { uid: doc.id, ...doc.data() } as Business;
-    });
-    return businessesList;
+  const q = query(BusinessUsersCollection, where("sector", "==", sector));
+  const querySnapshot = await getDocs(q);
+  const businessesList = querySnapshot.docs.map((doc) => {
+    return { uid: doc.id, ...doc.data() } as Business;
+  });
+  return businessesList;
 }
 
 async function getBusinessOpportunities(uid: string): Promise<Opportunity[]> {
-    const subCollectionRef = collection(db, "Business", uid, "Opportunities");
-    const querySnapshot = await getDocs(subCollectionRef);
-    const opportunitiesList = querySnapshot.docs.map((doc) => {
-        return { id: doc.id, ...doc.data() } as Opportunity;
-    });
-    return opportunitiesList;
+  const subCollectionRef = collection(
+    doc(db, "Business", uid),
+    "Opportunities"
+  );
+  const querySnapshot = await getDocs(subCollectionRef);
+  const opportunitiesList = querySnapshot.docs.map((doc) => {
+    return { id: doc.id, ...doc.data() } as Opportunity;
+  });
+  return opportunitiesList;
 }
 
-export { getBusinessById, getBusinesses, getBusinessBySector, getBusinessOpportunities };
+async function getBusinessByCounty(county: string): Promise<Business[]> {
+  const q = query(BusinessUsersCollection, where("county", "==", county));
+  const querySnapshot = await getDocs(q);
+  const businessesList = querySnapshot.docs.map((doc) => {
+    return { uid: doc.id, ...doc.data() } as Business;
+  });
+  return businessesList;
+}
+
+export {
+  getBusinessById,
+  getBusinesses,
+  getBusinessBySector,
+  getBusinessOpportunities,
+  getBusinessByCounty,
+};

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Avatar, Button, Card, Text } from "react-native-paper";
+import { Button, Card, Text } from "react-native-paper";
 import styles from "@/app/styles";
 
 interface BusinessInfoProps {
