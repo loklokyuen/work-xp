@@ -7,12 +7,14 @@ import {
   getDoc,
   query,
   where,
+  QuerySnapshot,
 } from "firebase/firestore";
 import { db } from "./firebase";
 const ApplicationsCollection = collection(db, "Applications");
 
 async function addApplication(
   oppId: string,
+  businessId: string,
   datesApplied: Record<string, any>,
   studentId: string,
   whyApply: string,
@@ -24,6 +26,7 @@ async function addApplication(
   try {
     await addDoc(ApplicationsCollection, {
       oppId,
+      businessId,
       datesApplied,
       studentId,
       whyApply,
@@ -39,4 +42,40 @@ async function addApplication(
   }
 }
 
-export { addApplication };
+async function getApplications(): Promise<Application1[]> {
+  const querySnapshot = await getDocs(ApplicationsCollection);
+  const applicationsList = querySnapshot.docs.map((doc) => {
+    return { uid: doc.id, ...doc.data() } as Application1;
+  });
+  return applicationsList;
+}
+
+async function getApplicationsByBusinessId(
+  businessId: string
+): Promise<Application1[]> {
+  const q = query(
+    ApplicationsCollection,
+    where("businessId", "==", businessId)
+  );
+  const QuerySnapshot = await getDocs(q);
+  const applicationsList = QuerySnapshot.docs.map((doc) => {
+    return { uid: doc.id, ...doc.data() } as Application1;
+  });
+  return applicationsList;
+}
+
+async function getApplicationsByOppId(oppId: string): Promise<Application1[]> {
+  const q = query(ApplicationsCollection, where("oppId", "==", oppId));
+  const QuerySnapshot = await getDocs(q);
+  const applicationsList = QuerySnapshot.docs.map((doc) => {
+    return { uid: doc.id, ...doc.data() } as Application1;
+  });
+  return applicationsList;
+}
+
+export {
+  addApplication,
+  getApplications,
+  getApplicationsByBusinessId,
+  getApplicationsByOppId,
+};

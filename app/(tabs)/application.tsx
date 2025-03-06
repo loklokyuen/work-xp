@@ -172,6 +172,7 @@ export default function Application({ listingId }: { listingId: string }) {
 
       const data = {
         oppId: OpportunityId,
+        businessId: BusinessId,
         datesApplied: chosen,
         studentId: user.uid,
         whyApply: why,
@@ -184,6 +185,7 @@ export default function Application({ listingId }: { listingId: string }) {
       console.log(data);
       await addApplication(
         data.oppId,
+        data.businessId,
         data.datesApplied,
         data.studentId,
         data.whyApply,
