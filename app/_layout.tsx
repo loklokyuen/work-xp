@@ -32,13 +32,13 @@ export default function RootLayout() {
 
     return (
         <UserProvider>
-            <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+            {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
                 <Stack>
                     <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                     <Stack.Screen name="+not-found" />
                 </Stack>
                 <StatusBar style="auto" />
-            </ThemeProvider>
+            {/* </ThemeProvider> */}
         </UserProvider>
     );
 }
