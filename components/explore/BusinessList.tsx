@@ -90,39 +90,37 @@ const BusinessList: React.FC = () => {
   );
 
   return (
-    <PaperProvider>
-      <ScrollView>
-        <View style={styles.searchContainer}>
-          <SearchBar setSearchQuery={setSearchQuery} />
-          <SectorDropdown
-            selectedSector={selectedSector}
-            setSelectedSector={setSelectedSector}
-            sectors={sectors}
-          />
-          <CountyDropdown
-            selectedCounty={selectedCounty}
-            setSelectedCounty={setSelectedCounty}
-            counties={counties}
-          />
-          <View>
-            {loading ? (
-              <Text>Loading businesses...</Text>
-            ) : filteredBusinesses.length > 0 ? (
-              filteredBusinesses.map((biz, index) => (
-                <BusinessCards
-                  key={index}
-                  displayName={biz.displayName}
-                  county={biz.county}
-                  photoUrl={biz.photoUrl}
-                />
-              ))
-            ) : (
-              <Text>No businesses found.</Text>
-            )}
-          </View>
+    <ScrollView>
+      <View style={styles.searchContainer}>
+        <SearchBar setSearchQuery={setSearchQuery} />
+        <SectorDropdown
+          selectedSector={selectedSector}
+          setSelectedSector={setSelectedSector}
+          sectors={sectors}
+        />
+        <CountyDropdown
+          selectedCounty={selectedCounty}
+          setSelectedCounty={setSelectedCounty}
+          counties={counties}
+        />
+        <View>
+          {loading ? (
+            <Text>Loading businesses...</Text>
+          ) : filteredBusinesses.length > 0 ? (
+            filteredBusinesses.map((biz, index) => (
+              <BusinessCards
+                key={index}
+                displayName={biz.displayName}
+                county={biz.county}
+                photoUrl={biz.photoUrl}
+              />
+            ))
+          ) : (
+            <Text>No businesses found.</Text>
+          )}
         </View>
-      </ScrollView>
-    </PaperProvider>
+      </View>
+    </ScrollView>
   );
 };
 
