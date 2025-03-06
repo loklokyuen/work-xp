@@ -36,12 +36,12 @@ const BusinessList: React.FC = () => {
         setBusinesses(fetchedBusinesses);
         const fetchedSectors = [
           ...new Set(fetchedBusinesses.map((biz) => biz.sector)),
-        ];
+        ].filter((sector) => sector && sector.trim() !== "");
         setSectors(fetchedSectors);
 
         const fetchedCounties = [
           ...new Set(fetchedBusinesses.map((biz) => biz.county)),
-        ];
+        ].filter((county) => county && county.trim() !== "");
         setCounties(fetchedCounties);
       } catch (err) {
         console.error("Error fetching businesses:", err);
