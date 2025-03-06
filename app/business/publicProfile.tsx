@@ -1,7 +1,7 @@
 import OpportunityCards from "@/components/profile/opportuntiesCard";
 import ReviewCard from "@/components/profile/reviewCard";
 import { getBusinessById } from "@/database/business";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -11,11 +11,10 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import {
-  List,
-} from "react-native-paper";
+import { List } from "react-native-paper";
 
 const publicComProfile: React.FC = () => {
+  const navigation = useNavigation();
   const { uid } = useLocalSearchParams<{ uid: string }>();
   const [business, setBusiness] = useState<Business | null>(null);
 
@@ -23,6 +22,10 @@ const publicComProfile: React.FC = () => {
   const [expanded, setExpanded] = React.useState(false);
 
   const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    navigation.setOptions({ headerShown: true, title: 'Back to all' });
+  }, [navigation]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,8 +59,12 @@ const publicComProfile: React.FC = () => {
         <List.Section>
           <List.Accordion
             title="Contact Info"
-            titleStyle={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}
-            style={{backgroundColor: "#3E92CC"}}
+            titleStyle={{
+              textAlign: "center",
+              fontSize: 18,
+              fontWeight: "bold",
+            }}
+            style={{ backgroundColor: "#3E92CC" }}
             expanded={expanded}
             onPress={() => setExpanded(!expanded)}
           >
