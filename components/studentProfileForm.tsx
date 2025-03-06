@@ -91,7 +91,7 @@ useEffect(() => {
     setSubjects(rawSubjects.split(","))
 }, [rawSubjects])
 
-const handleSave = async(updatedData) => {
+const handleSave = async(updatedStudentData) => {
     try {
         console.log(rawSubjects, subjects)
         const docRef = doc(db, "Student", user.uid)
