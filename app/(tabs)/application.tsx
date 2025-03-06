@@ -1,14 +1,9 @@
 import { useUserContext } from "@/context/UserContext";
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from "react-native";
 import { addDoc, collection, getDoc, onSnapshot, doc, updateDoc } from "firebase/firestore";
-import { db } from "../database/firebase";
+import { db } from "../../database/firebase";
 import { useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
-import { router } from "expo-router";
-
-//to fix:
-//bug when pressing twice on same date
-//bug when highlighting over period that is already highlighted - this probably should not be allowed.
 
 type DayPressEvent = {
     dateString: string;
@@ -18,7 +13,7 @@ type DayPressEvent = {
     timestamp: number;
 };
 
-export default function Listing({ listingId }: { listingId: string }) {
+export default function Application({ listingId }: { listingId: string }) {
     const { user } = useUserContext();
 
     const [jobRole, setJobRole] = useState<string>("");
@@ -28,7 +23,6 @@ export default function Listing({ listingId }: { listingId: string }) {
 
     const [dates, setDates] = useState<Record<string, any>>({});
     const [periods, setPeriods] = useState<string[]>([]);
-    // const [delete, setDelete] = useState()
 
     useEffect(() => {
         if (user?.uid) {
@@ -137,47 +131,38 @@ export default function Listing({ listingId }: { listingId: string }) {
             }
         }
     };
-
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            {listingId ? <Text style={styles.title}>Edit an Opportunity...</Text> : <Text style={styles.title}>Post an Opportunity...</Text>}
+            <Text style={styles.title}>Select your dates</Text>
+            <Calendar
+                style={{
+                    borderWidth: 1,
+                    borderColor: "gray",
+                    height: 400,
+                }}
+                theme={{
+                    backgroundColor: "#ffffff",
+                    calendarBackground: "#ffffff",
+                    textSectionTitleColor: "#b6c1cd",
+                    selectedDayBackgroundColor: "#00adf5",
+                    selectedDayTextColor: "#ffffff",
+                    todayTextColor: "#00adf5",
+                    dayTextColor: "#2d4150",
+                    textDisabledColor: "#dd99ee",
+                }}
+                markingType={"period"}
+                markedDates={dates}
+                onDayPress={handleDay}
+            />
 
             <View style={styles.inputContainer}>
-                {listingId ? <Text style={styles.label}>Edit the job role</Text> : <Text style={styles.label}>What is the job role?</Text>}
-                <TextInput style={styles.input} value={jobRole} onChangeText={setJobRole} placeholder="The job role is.." />
+                <Text style={styles.label}>Why do you want to do work experience with us?</Text>
+                <TextInput style={styles.input} value={jobRole} onChangeText={setJobRole} placeholder="" />
             </View>
 
             <View style={styles.inputContainer}>
-                {listingId ? <Text style={styles.label}>Edit the description</Text> : <Text style={styles.label}>What is the description?</Text>}
-                <TextInput style={styles.input} value={description} onChangeText={setDescription} placeholder="The opportunity involves.." />
-            </View>
-
-            <View style={styles.inputContainer}>
-                {listingId ? (
-                    <Text style={styles.label}>What are the new dates for this opportunity</Text>
-                ) : (
-                    <Text style={styles.label}>What dates would like to advertise the opportunity?</Text>
-                )}
-                <Calendar
-                    style={{
-                        borderWidth: 1,
-                        borderColor: "gray",
-                        height: 400,
-                    }}
-                    theme={{
-                        backgroundColor: "#ffffff",
-                        calendarBackground: "#ffffff",
-                        textSectionTitleColor: "#b6c1cd",
-                        selectedDayBackgroundColor: "#00adf5",
-                        selectedDayTextColor: "#ffffff",
-                        todayTextColor: "#00adf5",
-                        dayTextColor: "#2d4150",
-                        textDisabledColor: "#dd99ee",
-                    }}
-                    markingType={"period"}
-                    markedDates={dates}
-                    onDayPress={(day: DayPressEvent) => handleDay(day.dateString)}
-                />
+                <Text style={styles.label}>Why should we pick you?</Text>
+                <TextInput style={styles.input} value={description} onChangeText={setDescription} placeholder="" />
             </View>
 
             <Button title="Submit" onPress={handleSubmit} />
