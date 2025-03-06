@@ -18,8 +18,6 @@ export function EditableBusinessInfo({businessInfo}: BusinessProps) {
   
     const {user} = useUserContext()
   
-
-  
   const handleSave = async() => {
       try {
             if (! user ) return;

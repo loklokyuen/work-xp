@@ -1,12 +1,12 @@
-import { collection, addDoc, getDocs, getFirestore, doc, getDoc, query, where } from "firebase/firestore";
+import { collection, addDoc, getDocs, getFirestore, doc, getDoc, query, where, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 const BusinessUsersCollection = collection(db, "Business");
 
-async function getBusinessById(uid: string): Promise<User> {
+async function getBusinessById(uid: string): Promise<Business> {
     const docRef = doc(db, "Business", uid);
     const docSnap = await getDoc(docRef);
     const business = docSnap.data();
-    return business as User;
+    return business as Business;
 }
 
 async function getBusinesses(): Promise<Business[]> {
@@ -35,4 +35,23 @@ async function getBusinessOpportunities(uid: string): Promise<Opportunity[]> {
     return opportunitiesList;
 }
 
-export { getBusinessById, getBusinesses, getBusinessBySector, getBusinessOpportunities };
+async function updateBusinesInfo(uid: string, email: string, county: string, description: string, phoneNumber: string, sector: string, address: string): Promise<boolean> {
+    try {
+        const docRef = doc(BusinessUsersCollection, uid);
+        await updateDoc(docRef, {
+            email,
+            county,
+            description,
+            phoneNumber,
+            sector,
+            address,
+        });
+        return true;
+    } catch (error) {
+        alert("Error updating business: " + error);
+        return false;
+    }
+    
+}
+
+export { getBusinessById, getBusinesses, getBusinessBySector, getBusinessOpportunities, updateBusinesInfo };

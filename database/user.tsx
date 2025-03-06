@@ -8,9 +8,16 @@ async function getUserById(uid: string, accountType: string): Promise<User> {
     return user as User;
 }
 
-async function updateUserProfileImage(uid: string, accountType: string, photoUrl: string): Promise<void> {
-    const docRef = doc(db, accountType, uid);
-    await updateDoc(docRef, { photoUrl });
+async function updateUserProfileImage(uid: string, accountType: string, photoUrl: string): Promise<boolean> {
+    try {
+        const docRef = doc(db, accountType, uid);
+        await updateDoc(docRef, { photoUrl }).then(() => {
+        })
+        return true;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
 }
 
 export { getUserById, updateUserProfileImage };

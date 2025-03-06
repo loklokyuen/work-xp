@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    marginBottom: 16,
+    margin: 16,
     textAlign: "center",
   },
   input: {
@@ -81,6 +81,58 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     padding: 10,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  modalView: {
+      margin: 20,
+      backgroundColor: 'white',
+      borderRadius: 20,
+      padding: 35,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+  },
+  buttonOpen: {
+      backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+      backgroundColor: '#2196F3',
+  },
+  textStyle: {
+      color: 'white',
+      fontWeight: 'bold',
+      textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  scrollViewContent: {
+    paddingBottom: 75,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  data: {
+    minHeight: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    flexWrap: 'wrap',
+    flex: 1, 
+    width: 1
   },
 });
 
