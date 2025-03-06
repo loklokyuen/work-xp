@@ -91,9 +91,8 @@ useEffect(() => {
     setSubjects(rawSubjects.split(","))
 }, [rawSubjects])
 
-const handleSave = async(updatedData) => {
+const handleSave = async(updatedStudentData) => {
     try {
-        console.log(rawSubjects, subjects)
         const docRef = doc(db, "Student", user.uid)
         await updateDoc(docRef, updatedStudentData)
         alert("Changes have been saved")
@@ -107,12 +106,14 @@ const handleSave = async(updatedData) => {
       <TextInput
         label="Personal Statement"
         mode="outlined"
+        multiline
         value={bio}
         onChangeText={(text) => setBio(text)}
       />
       <TextInput
         label="Experience"
         mode="outlined"
+        multiline
         value={experience}
         onChangeText={(text) => setExperience(text)}
       />
@@ -132,6 +133,7 @@ const handleSave = async(updatedData) => {
        <TextInput
         label="Subjects (enter separated by commas)"
         mode="outlined"
+        multiline
         value={rawSubjects}
         onChangeText={(text) => setRawSubjects(text)}
       />
@@ -149,7 +151,6 @@ const handleSave = async(updatedData) => {
 
 const styles = StyleSheet.create({
   data: {
-    height: 40,
     margin: 12,
     borderWidth: 1,
     padding: 10,

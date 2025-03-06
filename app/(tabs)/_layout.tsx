@@ -47,6 +47,7 @@ export default function TabLayout() {
               size={28}
               color={color}
             />
+
           ),
         }}
       />

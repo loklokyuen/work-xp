@@ -82,6 +82,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: 10,
   },
+
+  headerContainer: {
+    height: 100,
+    backgroundColor: "#7958DB",
+    elevation: 4,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    paddingHorizontal: 16,
+  },
 });
 
 export default styles;
