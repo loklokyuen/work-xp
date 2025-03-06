@@ -14,6 +14,7 @@ import styles from "../../app/styles";
 import { router } from "expo-router";
 import { setUserAccountType, useUserContext } from "@/context/UserContext";
 import { setDoc, doc } from "firebase/firestore";
+import { addStudent } from "@/database/student";
 
 const CreateAccount: React.FC<accountProps> = ({ setIsNewUser }: accountProps) => {
     const { user, setUser, accountType, setAccountType } = useUserContext();
@@ -42,9 +43,8 @@ const CreateAccount: React.FC<accountProps> = ({ setIsNewUser }: accountProps) =
                     });
                     setUser(userData);
                     setUserAccountType(accountType);
-                    setDoc(doc(db, accountType, user.uid), userData);
-
-                    // router.replace("/(tabs)/success-sign-in");
+                    // setDoc(doc(db, accountType, user.uid), userData);
+                    addStudent(user.uid, displayName, user.photoURL || "", user.email || "", "", "");
                     // sendEmailVerification(user)
                     //   .then(() => {
                     //     alert("Email verification sent.");
