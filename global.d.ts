@@ -20,6 +20,7 @@ declare global {
         address: string;
         county: string;
         description: string;
+        phoneNumber: string;
         opportunities: Opportunity[];
         reviews: Review[];
         applications: Application[];
@@ -48,7 +49,7 @@ declare global {
         applications: Application[];
         reviews: Review[];
         subjects: string[];
-        experience: Experience[];
+        experience: string;
     }
     interface Experience {
         id: string;
@@ -79,6 +80,13 @@ declare global {
   personalStatement: string,
   experience: string,
   subjects: string
+    }
+
+    type StudentProps = {
+        studentInfo: Student;
+    } 
+    type BusinessProps = {
+        businessInfo: Business;
     }
 }
 export {};

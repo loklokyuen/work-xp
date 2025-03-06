@@ -2,16 +2,16 @@ import { collection, addDoc, getDocs, doc, getDoc, updateDoc, deleteDoc } from "
 import { db } from "./firebase";
 const StudentUsersCollection = collection(db, 'Student');
 
-async function getStudentById(uid: string): Promise<Student | null> {
-    try {
+async function getStudentById(uid: string): Promise<Student> {
+    // try {
         const docRef = doc(StudentUsersCollection, uid);
         const docSnap = await getDoc(docRef);
         const student = docSnap.data();
         return student as Student;
-    } catch (error) {
-        alert("Error getting student: " + error);
-        return null;
-    }
+    // } catch (error) {
+    //     alert("Error getting student: " + error);
+    //     return null;
+    // }
 }
 
 async function getStudents(): Promise<Student[]> {
@@ -28,9 +28,10 @@ async function getStudents(): Promise<Student[]> {
 }
 
 
-async function addStudent(displayName: string, photoUrl: string, email: string, county: string, personalStatement: string): Promise<boolean> {
+async function addStudent(uid: string, displayName: string, photoUrl: string, email: string, county: string, personalStatement: string): Promise<boolean> {
     try {
         await addDoc(StudentUsersCollection, {
+            uid,
             displayName,
             photoUrl,
             email,
@@ -44,15 +45,15 @@ async function addStudent(displayName: string, photoUrl: string, email: string, 
     }
 }
 
-async function updateStudent(uid: string, displayName: string, photoUrl: string, email: string, county: string, personalStatement: string): Promise<boolean> {
+async function updateStudentInfo(uid: string, email: string, county: string, personalStatement: string, experience: string, subjects: string[]): Promise<boolean> {
     try {
         const docRef = doc(StudentUsersCollection, uid);
         await updateDoc(docRef, {
-            displayName,
-            photoUrl,
             email,
             county,
-            personalStatement
+            personalStatement,
+            experience,
+            subjects
         })
         return true
     } catch (error) {
@@ -145,5 +146,5 @@ async function deleteReviewByID(uid: string, reviewId: string): Promise<boolean>
     }
 }
 
-export { getStudents, addStudent, getStudentById, updateStudent, deleteStudentById, getStudentApplications, getStudentReviews, addReview, updateReviewByID, deleteReviewByID };
+export { getStudents, addStudent, getStudentById, updateStudentInfo, deleteStudentById, getStudentApplications, getStudentReviews, addReview, updateReviewByID, deleteReviewByID };
 
