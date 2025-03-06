@@ -56,7 +56,8 @@ const publicComProfile: React.FC = () => {
         <List.Section>
           <List.Accordion
             title="Contact Info"
-            titleStyle={{ textAlign: "center" }}
+            titleStyle={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}
+            style={{backgroundColor: "#3E92CC"}}
             expanded={expanded}
             onPress={() => setExpanded(!expanded)}
           >
@@ -91,7 +92,7 @@ export default publicComProfile;
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 10,
+    padding: 10,
   },
   bannerImage: {
     width: "100%",
@@ -149,7 +150,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   accordionContent: {
-    padding: 10,
+    backgroundColor: "white",
+    padding: 20,
     alignItems: "center",
   },
   button: {

@@ -107,8 +107,8 @@ const BusinessList: React.FC = () => {
         <View>
           {loading ? (
             <Text>Loading businesses...</Text>
-          ) : filteredBusiness.length > 0 ? (
-            filteredBusiness.map((biz) => (
+          ) : filteredBusinesses.length > 0 ? (
+            filteredBusinesses.map((biz) => (
               <BusinessCards
                 uid={biz.uid}
                 displayName={biz.displayName}
