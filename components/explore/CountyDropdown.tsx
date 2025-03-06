@@ -3,9 +3,9 @@ import { View } from "react-native";
 import { Menu, Button } from "react-native-paper";
 
 interface CountyDropdownProps {
-  selectedCounty: string | null; // Change this to track county
-  setSelectedCounty: (county: string | null) => void; // Update setter to handle counties
-  counties: string[]; // This should be passed as a prop (you will need to fetch counties from businesses)
+  selectedCounty: string | null;
+  setSelectedCounty: (county: string | null) => void;
+  counties: string[];
 }
 
 const CountyDropdown: React.FC<CountyDropdownProps> = ({
