@@ -8,17 +8,17 @@ import { router } from "expo-router";
 
 export default function ViewCurrentOpportunities() {
     const { user } = useUserContext();
-    const [opportunities, setOpportunities] = useState<OpportunityCardProps[]>([]);
+    const [opportunities, setOpportunities] = useState<any[]>([]);
 
     useEffect(() => {
         if (user?.uid) {
             const collectionRef = collection(db, "Business", user.uid, "Opportunities");
             const unsubscribe = onSnapshot(collectionRef, (snapshot) => {
-                let opps: any[] = [];
-                const data = snapshot.docs.map((doc) => {
-                    opps.push({ id: doc.id, ...doc.data() });
-                });
-                setOpportunities(opps);
+                setOpportunities(
+                    snapshot.docs.map((doc) => {
+                        return { id: doc.id, ...doc.data() };
+                    })
+                );
             });
             return () => {
                 setOpportunities([]);
@@ -43,9 +43,9 @@ export default function ViewCurrentOpportunities() {
                         <View style={styles.card} key={index}>
                             <Text style={styles.role}>{opp.jobRole}</Text>
                             <Text style={styles.description}>{opp.description}</Text>
-                            <Text style={styles.availability}>
+                            {/* <Text style={styles.availability}>
                                 availability: {opp.availability[0]}-{opp.availability[1]}
-                            </Text>
+                            </Text> */}
                             <Button
                                 title="Edit Listing"
                                 onPress={() => {

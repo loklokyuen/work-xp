@@ -12,18 +12,18 @@ import { db } from "./firebase";
 const BusinessUsersCollection = collection(db, "Business");
 
 async function getBusinessById(uid: string): Promise<User> {
-  const docRef = doc(db, "Business", uid);
-  const docSnap = await getDoc(docRef);
-  const business = docSnap.data();
-  return business as User;
+    const docRef = doc(db, "Business", uid);
+    const docSnap = await getDoc(docRef);
+    const business = docSnap.data();
+    return business as User;
 }
 
 async function getBusinesses(): Promise<Business[]> {
-  const querySnapshot = await getDocs(BusinessUsersCollection);
-  const businessesList = querySnapshot.docs.map((doc) => {
-    return { uid: doc.id, ...doc.data() } as Business;
-  });
-  return businessesList;
+    const querySnapshot = await getDocs(BusinessUsersCollection);
+    const businessesList = querySnapshot.docs.map((doc) => {
+        return { uid: doc.id, ...doc.data() } as Business;
+    });
+    return businessesList;
 }
 
 async function getBusinessBySector(sector: string): Promise<Business[]> {

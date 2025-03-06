@@ -4,6 +4,11 @@ import { addDoc, collection, getDoc, onSnapshot, doc, updateDoc } from "firebase
 import { db } from "../database/firebase";
 import { useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
+import { router } from "expo-router";
+
+//to fix:
+//bug when pressing twice on same date
+//bug when highlighting over period that is already highlighted - this probably should not be allowed.
 
 type DayPressEvent = {
     dateString: string;
@@ -17,99 +22,116 @@ export default function Listing({ listingId }: { listingId: string }) {
     const { user } = useUserContext();
 
     const [jobRole, setJobRole] = useState<string>("");
-    const [availability, setAvailability] = useState<string[]>([]);
     const [description, setDescription] = useState<string>("");
 
     const [firstDay, setFirstDay] = useState<string>("");
-    const [confirmedDates, setConfirmedDates] = useState<Record<string, any>>([]);
-    const [proposedDates, setProposedDates] = useState<Record<string, any>>([]);
+
+    const [dates, setDates] = useState<Record<string, any>>({});
+    const [periods, setPeriods] = useState<string[]>([]);
+    // const [delete, setDelete] = useState()
 
     useEffect(() => {
         if (user?.uid) {
-            // need to amend this if statement so useeffect runs only if user is business
             if (listingId) {
-                getDoc(doc(db, "Business", user.uid, "Opportunities", listingId)).then((document) => {
-                    const data = document.data();
+                const unsubscribe1 = onSnapshot(doc(db, "Business", user.uid, "Opportunities", listingId), (snapshot) => {
+                    const data = snapshot.data();
                     if (data) {
-                        const availability = data.availability;
                         setJobRole(data.jobRole);
                         setDescription(data.description);
-                        setAvailability(availability);
-                        setConfirmedDates({ ...markDates(availability[0], availability[1], "red") });
                     }
                 });
-
-                return () => {
-                    setConfirmedDates([]);
-                    setProposedDates([]);
-                };
-            } else {
-                const unsubcribe = onSnapshot(collection(db, "Business", user.uid, "Opportunities"), (snapshot) => {
-                    let dates = {};
-                    const query = snapshot.docs.map((doc) => {
-                        const availability = doc.data().availability;
-                        dates = { ...dates, ...markDates(availability[0], availability[1], "red") };
+                const unsubscribe2 = onSnapshot(collection(db, "Business", user.uid, "Opportunities", listingId, "Availabilities"), (snapshot) => {
+                    snapshot.docs.forEach((doc) => {
+                        console.log(doc.id);
+                        const period = doc.data().period;
+                        markDates(period[0], period[1], "red");
                     });
-                    setConfirmedDates(dates);
                 });
-
                 return () => {
-                    unsubcribe();
-                    setConfirmedDates([]);
-                    setProposedDates([]);
+                    unsubscribe1();
+                    unsubscribe2();
+                    setDates({});
+                    setPeriods([]);
                 };
             }
         }
     }, [user?.uid, listingId]);
 
-    const markDates = (startDate: string, endDate: string, color: string) => {
+    const markDates = (start: string, end: string, color: string) => {
         let markedDates: Record<string, any> = {};
-        let current = new Date(startDate);
+        let current = new Date(start);
 
-        while (current <= new Date(endDate)) {
+        const period = start + ":" + end;
+        setPeriods((prevPeriods) => [...prevPeriods, period]);
+
+        while (current <= new Date(end)) {
             let dateAsString = current.toISOString().split("T")[0];
             markedDates[dateAsString] = {
                 color: color,
                 textColor: "white",
-                startingDay: dateAsString === startDate,
-                endingDay: dateAsString === endDate,
+                startingDay: dateAsString === start,
+                endingDay: dateAsString === end,
+                period: period,
             };
             current.setDate(current.getDate() + 1);
         }
-
-        return markedDates;
+        setDates((prevDates) => ({ ...prevDates, ...markedDates }));
     };
 
-    function handleDay(day: DayPressEvent) {
-        if (!firstDay || new Date(firstDay) > new Date(day.dateString)) {
-            setAvailability([]);
-            setProposedDates({ [day.dateString]: { color: "green", textColor: "white", startingDay: true } });
-            setFirstDay(day.dateString);
-        } else if (new Date(firstDay) < new Date(day.dateString)) {
-            setAvailability([firstDay, day.dateString]);
-            setProposedDates(markDates(firstDay, day.dateString, "green"));
-            setFirstDay("");
+    const unMarkDates = (period: string) => {
+        const [start, end] = period.split(":");
+        let current = new Date(start);
+
+        setPeriods((prevPeriods) => {
+            const newPeriods = [...prevPeriods];
+            return newPeriods.filter((p) => p !== period);
+        });
+
+        const newDates = { ...dates };
+        while (current <= new Date(end)) {
+            let dateAsString = current.toISOString().split("T")[0];
+            delete newDates[dateAsString];
+            current.setDate(current.getDate() + 1);
+        }
+        setDates(newDates);
+    };
+
+    function handleDay(day: string) {
+        if (!dates[day]) {
+            if (!firstDay || new Date(firstDay) > new Date(day)) {
+                setFirstDay(day);
+                setDates((prevDates) => ({ ...prevDates, [day]: { color: "green", textColor: "white", startingDay: true } }));
+            } else if (new Date(firstDay) < new Date(day)) {
+                markDates(firstDay, day, "green");
+                setFirstDay("");
+            }
+        } else {
+            unMarkDates(dates[day].period);
         }
     }
 
     const handleSubmit = async () => {
-        if (availability.length && jobRole && description) {
+        if (periods.length && jobRole && description) {
             try {
                 const document = {
                     jobRole: jobRole,
                     description: description,
-                    availability: availability,
                 };
                 if (listingId) {
-                    const docRef = doc(db, "Business", user.uid, "Opportunities", listingId);
-                    await updateDoc(docRef, document);
+                    const opp = await updateDoc(doc(db, "Business", user.uid, "Opportunities", listingId), document);
                 } else {
-                    const collectionRef = collection(db, "Business", user.uid, "Opportunities");
-                    await addDoc(collectionRef, document);
+                    const opp = await addDoc(collection(db, "Business", user.uid, "Opportunities"), document);
+                    for (let period of periods) {
+                        await addDoc(collection(db, "Business", user.uid, "Opportunities", opp.id, "Availabilities"), {
+                            period: period.split(":"),
+                        });
+                    }
                 }
-                setAvailability([]);
-                setJobRole("");
-                setDescription("");
+                // router.replace("/(tabs)/ViewCurrentOpportunities");
+                setDates({});
+                setPeriods([]);
+                // setJobRole("");
+                // setDescription("");
             } catch (err) {
                 console.log(err);
             }
@@ -153,11 +175,8 @@ export default function Listing({ listingId }: { listingId: string }) {
                         textDisabledColor: "#dd99ee",
                     }}
                     markingType={"period"}
-                    markedDates={{
-                        ...proposedDates,
-                        ...confirmedDates,
-                    }}
-                    onDayPress={handleDay}
+                    markedDates={dates}
+                    onDayPress={(day: DayPressEvent) => handleDay(day.dateString)}
                 />
             </View>
 

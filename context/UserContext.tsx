@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getAuth } from "firebase/auth";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Text } from "react-native";
 
 interface UserProviderProps {
     children: React.ReactNode;
