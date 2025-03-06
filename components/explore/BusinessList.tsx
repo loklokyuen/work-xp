@@ -2,51 +2,37 @@ import { View, Text, ScrollView } from "react-native";
 import BusinessCards from "./BusinessCards";
 import styles from "@/app/styles";
 import SearchBar from "./SearchBar";
-import { useState } from "react";
-import { db } from "@/database/firebase";
+import { useState, useEffect } from "react";
+import { getBusinesses } from "@/database/business";
 
 const BusinessList: React.FC = () => {
   interface IndividualBusiness {
     displayName: string;
-    location: string;
+    county: string;
     photoUrl: string;
   }
 
-  const allBusinesses: IndividualBusiness[] = [
-    {
-      displayName: "R&J Mechanics",
-      location: "Sydney",
-      photoUrl:
-        "https://www.cityofbristol.ac.uk/wp-content/uploads/Motor-Vehicle-small-scaled.jpg",
-    },
-    {
-      displayName: "Aardman",
-      location: "UK",
-      photoUrl:
-        "https://i0.wp.com/lomokev.com/wp-content/uploads/2014/03/aardman-animation-12-02-24-eos5D-mrk2-6027.jpg?fit=900%2C600&ssl=1",
-    },
-    {
-      displayName: "Riverside Garden Centre",
-      location: "UK",
-      photoUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBTmtgpkm8OcEHUjmBO3Lb3_195Nuyz6AE7A&s",
-    },
-    {
-      displayName: "Google",
-      location: "USA",
-      photoUrl:
-        "https://static1.thetravelimages.com/wordpress/wp-content/uploads/2023/04/google-headquarters-mountain-view-california.jpg",
-    },
-    {
-      displayName: "Apple",
-      location: "USA",
-      photoUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2Tz8UoGGrGnT_GvfPoHjOBGw4Q-QWACEJhw&s",
-    },
-  ];
+  const [businesses, setBusinesses] = useState<IndividualBusiness[]>([]);
+  const [filteredBusiness, setFilteredBusinesses] = useState<
+    IndividualBusiness[]
+  >([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const [filteredBusiness, setFilteredBusinesses] =
-    useState<IndividualBusiness[]>(allBusinesses);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchedBusinesses = await getBusinesses();
+        setBusinesses(fetchedBusinesses);
+        setFilteredBusinesses(fetchedBusinesses);
+      } catch (error) {
+        console.error("Error fetching businesses:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleBusinessSelect = (
     selectedBusiness: IndividualBusiness | null
@@ -54,7 +40,7 @@ const BusinessList: React.FC = () => {
     if (selectedBusiness) {
       setFilteredBusinesses([selectedBusiness]);
     } else {
-      setFilteredBusinesses(allBusinesses);
+      setFilteredBusinesses(businesses);
     }
   };
 
@@ -62,21 +48,23 @@ const BusinessList: React.FC = () => {
     <ScrollView>
       <View style={styles.searchContainer}>
         <SearchBar
-          businesses={allBusinesses}
+          businesses={businesses}
           handleBusinessSelect={handleBusinessSelect}
         />
-        <View style={styles.cardContainer}>
-          {filteredBusiness.length > 0 ? (
+        <View>
+          {loading ? (
+            <Text>Loading businesses...</Text>
+          ) : filteredBusiness.length > 0 ? (
             filteredBusiness.map((biz, index) => (
               <BusinessCards
                 key={index}
                 displayName={biz.displayName}
-                location={biz.location}
+                county={biz.county}
                 photoUrl={biz.photoUrl}
               />
             ))
           ) : (
-            <Text>Loading business...</Text>
+            <Text>No businesses found.</Text>
           )}
         </View>
       </View>

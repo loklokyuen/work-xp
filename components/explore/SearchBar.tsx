@@ -5,13 +5,13 @@ import { View } from "react-native";
 interface SearchBarProps {
   businesses: {
     displayName: string;
-    location: string;
+    county: string;
     photoUrl: string;
   }[];
   handleBusinessSelect: (
     business: {
       displayName: string;
-      location: string;
+      county: string;
       photoUrl: string;
     } | null
   ) => void;
