@@ -7,6 +7,7 @@ import { getBusinesses } from "@/database/business";
 
 const BusinessList: React.FC = () => {
   interface IndividualBusiness {
+    uid: string;
     displayName: string;
     county: string;
     photoUrl: string;
@@ -55,9 +56,9 @@ const BusinessList: React.FC = () => {
           {loading ? (
             <Text>Loading businesses...</Text>
           ) : filteredBusiness.length > 0 ? (
-            filteredBusiness.map((biz, index) => (
+            filteredBusiness.map((biz) => (
               <BusinessCards
-                key={index}
+                uid={biz.uid}
                 displayName={biz.displayName}
                 county={biz.county}
                 photoUrl={biz.photoUrl}

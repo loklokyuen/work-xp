@@ -3,11 +3,11 @@ import { db } from "./firebase";
 const BusinessUsersCollection = collection(db, 'Business');
 
 
-async function getBusinessById(uid: string): Promise<User> {
+async function getBusinessById(uid: string): Promise<Business> {
     const docRef = doc(db, 'Business', uid);
     const docSnap = await getDoc(docRef);
     const business = docSnap.data();
-    return business as User;
+    return business as Business;
 }
 
 async function getBusinesses(): Promise<Business[]> {

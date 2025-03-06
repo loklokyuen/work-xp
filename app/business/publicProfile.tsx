@@ -1,73 +1,56 @@
 import OpportunityCards from "@/components/profile/opportuntiesCard";
 import ReviewCard from "@/components/profile/reviewCard";
-import React from "react";
+import { getBusinessById } from "@/database/business";
+import { useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   ScrollView,
   StyleSheet,
   Image,
-  Dimensions,
   Pressable,
 } from "react-native";
 import {
-  Banner,
-  Button,
-  Divider,
-  Modal,
-  PaperProvider,
-  Portal,
   List,
 } from "react-native-paper";
 
 const publicComProfile: React.FC = () => {
-  interface IndividualBusiness {
-    uid: string;
-    displayName: string;
-    sector: string;
-    photoUrl: string;
-    email: string;
-    address: string;
-    county: string;
-    description: string;
-    // opportunities: Opportunity[];
-    // reviews: Review[];
-    // applications: Applciations[];
-  }
-
-  // TEST DATA
-  const aBusiness: IndividualBusiness[] = [
-    {
-      uid: "test",
-      displayName: "R&J Mechanics",
-      sector: "Motor",
-      photoUrl:
-        "https://www.cityofbristol.ac.uk/wp-content/uploads/Motor-Vehicle-small-scaled.jpg",
-      email: "test@company.com",
-      address: "1 Lambo Way",
-      county: "London",
-      description: "Some test description about the company here",
-      //   opportunities: ["Mechanic"],
-      //   reviews: [1,"Great!", "Stu"],
-      //   applications: [1],
-    },
-  ];
+  const { uid } = useLocalSearchParams<{ uid: string }>();
+  const [business, setBusiness] = useState<Business | null>(null);
 
   // Accordion state
   const [expanded, setExpanded] = React.useState(false);
+
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchedBusiness = await getBusinessById(uid);
+        setBusiness(fetchedBusiness);
+      } catch (error) {
+        console.error("Error fetching business:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [uid]);
+
+  if (loading) {
+    return <View>Loading business profile...</View>;
+  }
 
   return (
     <>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* banner image */}
-        <Image
-          source={{ uri: aBusiness[0].photoUrl }}
-          style={styles.bannerImage}
-        />
+        <Image source={{ uri: business.photoUrl }} style={styles.bannerImage} />
         <View style={styles.textContainer}>
-          <Text style={styles.title}>{aBusiness[0].displayName} </Text>
-          <Text style={styles.industry}> {aBusiness[0].sector} </Text>
-          <Text style={styles.desc}> {aBusiness[0].description}</Text>
+          <Text style={styles.title}>{business.displayName} </Text>
+          <Text style={styles.industry}> {business.sector} </Text>
+          <Text style={styles.desc}> {business.description}</Text>
         </View>
 
         <List.Section>
@@ -78,9 +61,9 @@ const publicComProfile: React.FC = () => {
             onPress={() => setExpanded(!expanded)}
           >
             <View style={styles.accordionContent}>
-              <Text style={styles.text}>Email: {aBusiness[0].email}</Text>
+              <Text style={styles.text}>Email: {business.email}</Text>
               <Text style={styles.text}>
-                Visit us: {aBusiness[0].address}, {aBusiness[0].county}
+                Visit us: {business.address}, {business.county}
               </Text>
               <Pressable style={styles.button}>
                 <Text style={styles.buttonText}>Chat</Text>

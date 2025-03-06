@@ -1,18 +1,31 @@
 import * as React from "react";
 import { Avatar, Button, Card, Text } from "react-native-paper";
 import styles from "@/app/styles";
+import { useRouter } from "expo-router";
 
 interface BusinessInfoProps {
+  uid: string,
   displayName: string;
   county: string;
   photoUrl: string;
 }
 
-const BusinessCards: React.FC<BusinessInfoProps> = ({
+const BusinessCards = ({
+  uid,
   displayName,
   county,
   photoUrl,
-}) => {
+}: BusinessInfoProps ) => {
+
+  // uses uid from BusienssList map to pass uid to button here to pass to publicProfile to render a buisness profile!
+  const router = useRouter()
+  const handlePress = () => {
+    router.push({
+      pathname: '/business/publicProfile',
+      params: {uid: uid }
+    });
+  }
+  
   return (
     <Card style={styles.card}>
       <Card.Content style={styles.cardContent}>
@@ -28,9 +41,9 @@ const BusinessCards: React.FC<BusinessInfoProps> = ({
         </Text>
 
         <Card.Cover style={styles.cardCover} source={{ uri: photoUrl }} />
-
         <Card.Actions style={styles.cardActions}>
-          <Button style={{ backgroundColor: "#795663" }} textColor="#FFFAFF">
+          <Button style={{ backgroundColor: "#795663" }} textColor="#FFFAFF"
+          onPress={handlePress}>
             View Business
           </Button>
         </Card.Actions>
