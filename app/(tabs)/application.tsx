@@ -20,6 +20,8 @@ import { useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
 import { snapshot } from "node:test";
 import { ColorProperties } from "react-native-reanimated/lib/typescript/Colors";
+import { addApplication } from "@/database/applications";
+import { getStudentById } from "@/database/student";
 
 type DayPressEvent = {
   dateString: string;
@@ -36,12 +38,15 @@ export default function Application({ listingId }: { listingId: string }) {
   const [description, setDescription] = useState<string>("");
   const [companyName, setCompanyName] = useState<string>("");
 
-  const [firstDay, setFirstDay] = useState<string>("");
-
   const [dates, setDates] = useState<Record<string, any>>({});
   const [periods, setPeriods] = useState<string[]>([]);
   const [why, setWhy] = useState<string>("");
   const [reason, setReason] = useState<string>("");
+  const [subjects, setSubjects] = useState<string[] | undefined>([]);
+  const [personalStatement, setPersonalStatement] = useState<string>("");
+  const [experience, setExperience] = useState<string | undefined>("");
+
+  const [chosen, setChosen] = useState<Record<string, any>>({});
 
   const BusinessId = "Qf1ha917fUU7oDmACzZ3msxI5Yk2";
   const OpportunityId = "Knj2eN5H6Qen00vx4kNR";
@@ -85,6 +90,11 @@ export default function Application({ listingId }: { listingId: string }) {
           }
         }
       );
+      getStudentById(user.uid).then((res) => {
+        setSubjects(res?.subjects);
+        setExperience(res?.experience);
+        setPersonalStatement(res?.personalStatement);
+      });
 
       return () => {
         unsubscribe1();
@@ -96,33 +106,6 @@ export default function Application({ listingId }: { listingId: string }) {
     }
   }, [user?.uid, listingId]);
 
-  // useEffect(() => {
-  //     if (user?.uid) {
-  //         if (listingId) {
-  //             const unsubscribe1 = onSnapshot(doc(db, "Business", user.uid, "Opportunities", listingId), (snapshot) => {
-  //                 const data = snapshot.data();
-  //                 if (data) {
-  //                     setJobRole(data.jobRole);
-  //                     setDescription(data.description);
-  //                 }
-  //             });
-  //             const unsubscribe2 = onSnapshot(collection(db, "Business", user.uid, "Opportunities", listingId, "Availabilities"), (snapshot) => {
-  //                 snapshot.docs.forEach((doc) => {
-  //                     console.log(doc.id);
-  //                     const period = doc.data().period;
-  //                     markDates(period[0], period[1], "red");
-  //                 });
-  //             });
-  //             return () => {
-  //                 unsubscribe1();
-  //                 unsubscribe2();
-  //                 setDates({});
-  //                 setPeriods([]);
-  //             };
-  //         }
-  //     }
-  // }, [user?.uid, listingId]);
-
   const markDates = (start: string, end: string, color: string) => {
     let markedDates: Record<string, any> = {};
     let current = new Date(start);
@@ -133,7 +116,7 @@ export default function Application({ listingId }: { listingId: string }) {
     while (current <= new Date(end)) {
       let dateAsString = current.toISOString().split("T")[0];
       markedDates[dateAsString] = {
-        color: color,
+        color: "blue",
         textColor: "white",
         startingDay: dateAsString === start,
         endingDay: dateAsString === end,
@@ -144,62 +127,73 @@ export default function Application({ listingId }: { listingId: string }) {
     setDates((prevDates) => ({ ...prevDates, ...markedDates }));
   };
 
+  function chooseDates(period: string) {
+    setChosen((prevChosen) => {
+      if (prevChosen[period]) {
+        const copy = { ...prevChosen };
+        delete copy[period];
+        return copy;
+      } else {
+        return { ...prevChosen, [period]: true };
+      }
+    });
+
+    const start = period.split(":")[0];
+    const end = period.split(":")[1];
+    let current = new Date(start);
+    let markedDates = { ...dates };
+
+    while (current <= new Date(end)) {
+      let dateAsString = current.toISOString().split("T")[0];
+      markedDates[dateAsString].color === "blue"
+        ? (markedDates[dateAsString] = {
+            ...markedDates[dateAsString],
+            color: "green",
+          })
+        : (markedDates[dateAsString] = {
+            ...markedDates[dateAsString],
+            color: "blue",
+          });
+      current.setDate(current.getDate() + 1);
+    }
+    setDates(markedDates);
+  }
+
   function handleDay(day: string) {
     if (dates[day]) {
-      const chosen = dates[day].period;
-      console.log("hello", chosen);
-      const start = chosen.split(":")[0];
-      const end = chosen.split(":")[1];
-      let current = new Date(start);
-      let markedDates = { ...dates };
-
-      while (current <= new Date(end)) {
-        let dateAsString = current.toISOString().split("T")[0];
-        markedDates[dateAsString].color = "green";
-      }
-      setDates(markedDates);
+      chooseDates(dates[day].period);
+      console.log("hello");
     }
   }
 
   const handleSubmit = async () => {
-    if (periods.length && jobRole && description) {
-      try {
-        const document = {
-          jobRole: jobRole,
-          description: description,
-        };
-        if (listingId) {
-          const opp = await updateDoc(
-            doc(db, "Business", user.uid, "Opportunities", listingId),
-            document
-          );
-        } else {
-          const opp = await addDoc(
-            collection(db, "Business", user.uid, "Opportunities"),
-            document
-          );
-          for (let period of periods) {
-            await addDoc(
-              collection(
-                db,
-                "Business",
-                user.uid,
-                "Opportunities",
-                opp.id,
-                "Availabilities"
-              ),
-              {
-                period: period.split(":"),
-              }
-            );
-          }
-        }
+    if (why && reason && chosen) {
+      console.log("hello");
 
-        setDates({});
-        setPeriods([]);
-      } catch (err) {
-        console.log(err);
-      }
+      const data = {
+        oppId: OpportunityId,
+        businessId: BusinessId,
+        datesApplied: chosen,
+        studentId: user.uid,
+        whyApply: why,
+        whySuitable: reason,
+        personalStatement: personalStatement,
+        experience: experience,
+        subjects: subjects,
+      };
+
+      console.log(data);
+      await addApplication(
+        data.oppId,
+        data.businessId,
+        data.datesApplied,
+        data.studentId,
+        data.whyApply,
+        data.whySuitable,
+        data.personalStatement,
+        data.experience,
+        data.subjects
+      );
     }
   };
   return (
@@ -231,6 +225,12 @@ export default function Application({ listingId }: { listingId: string }) {
           handleDay(day.dateString);
         }}
       />
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Dates Chosen:</Text>
+        {Object.keys(chosen).map((date, index) => {
+          return <Text key={index}> {date}</Text>;
+        })}
+      </View>
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>

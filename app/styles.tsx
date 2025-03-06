@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   card: {
+    // backgroundColor: "#07070A",
     width: "100%",
     marginVertical: 10,
     alignItems: "center",
@@ -133,6 +134,15 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flex: 1, 
     width: 1
+  },
+  headerContainer: {
+    height: 100,
+    backgroundColor: "#795663",
+    elevation: 4,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    paddingHorizontal: 16,
   },
 });
 

@@ -1,13 +1,13 @@
 import { Button, IconButton, Text, TextInput } from "react-native-paper";
 import ImageViewer from "./imageViewer";
 import * as ImagePicker from "expo-image-picker";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { StyleSheet, Platform, View } from "react-native";
 import { db } from "@/database/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { useUserContext } from "@/context/UserContext";
 
-export function ReadonlyStudentInfo({studentInfo}) {
+export function ReadonlyUserInfo({businessInfo}) {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     undefined
   );
@@ -32,27 +32,35 @@ export function ReadonlyStudentInfo({studentInfo}) {
     <>
       <ImageViewer imgSource={selectedImage || placeHolderImage}></ImageViewer>
       <IconButton icon="camera" size={20} onPress={pickImageAsync} />
-      <Text variant="titleMedium">Personal Statement:</Text>
+      <Text variant="titleMedium">Company Bio:</Text>
       <Text variant="titleSmall" style={styles.data}>
-        {studentInfo.personalStatement}
+        {businessInfo.description}
       </Text>
-      <Text variant="titleMedium">Experience:</Text>
+      <Text variant="titleMedium">Industry:</Text>
       <Text variant="titleSmall" style={styles.data}>
-        {studentInfo.experience}
+        {businessInfo.sector}
+      </Text>
+      <Text variant="titleMedium">Telephone:</Text>
+      <Text variant="titleSmall" style={styles.data}>
+        {businessInfo.phoneNumber}
       </Text>
       <Text variant="titleMedium">Email:</Text>
       <Text variant="titleSmall" style={styles.data}>
-        {studentInfo.email}
+        {businessInfo.email}
       </Text>
-      <Text variant="titleMedium">County:</Text>
+      <Text variant="titleMedium">Address:</Text>
       <Text variant="titleSmall" style={styles.data}>
-        {studentInfo.county}
-      </Text>
-      <Text variant="titleMedium">Subjects:</Text>
-      <Text variant="titleSmall" style={styles.data}>
-        {studentInfo.subjects}
+        {businessInfo.address}
       </Text>
       <View style={styles.buttonContainer}>
+        <Button
+          mode="contained-tonal"
+          onPress={() => {
+            console.log("pressed");
+          }}
+        >
+          View ads
+        </Button>
         <Button
           mode="contained-tonal"
           onPress={() => {
@@ -66,35 +74,32 @@ export function ReadonlyStudentInfo({studentInfo}) {
   );
 }
 
-export function EditableStudentInfo({studentInfo}) {
-  const [bio, setBio] = useState<string>(studentInfo.personalStatement || "");
-  const [experience, setExperience] = useState<string>(studentInfo.experience || "")
-  const [email, setEmail] = useState<string>(studentInfo.email);
-  const [county, setCounty] = useState<string>(studentInfo.county || "")
-  const [rawSubjects, setRawSubjects] = useState<string>(studentInfo.subjects ? studentInfo.subjects.join(",") : "")
-  const [subjects, setSubjects] =useState<string[]>(studentInfo.subjects)
+export function EditableUserInfo({businessInfo}) {
+  const [bio, setBio] = useState<string>(businessInfo.description || "");
+  const [industry, setIndustry] = useState<string>(businessInfo.sector || "");
+  const [phoneNum, setPhoneNum] = useState<string>(businessInfo.phoneNum || "");
+  const [email, setEmail] = useState<string>(businessInfo.email);
+  const [address, setAddress] = useState<string>(businessInfo.address || "");
+  const [county, setCounty] = useState<string>(businessInfo.county || "")
 
   const {user} = useUserContext()
 
 //    const function handleSave({bio, industry, phoneNum, email, address}) {
 //     take the edited data and patch the database, then alert user to signify the patch was successful
 //    }
-const updatedStudentData = {
-    personalStatement: bio,
-    experience: experience,
+const updatedData = {
+    description: bio,
+    sector: industry,
+    phoneNumber: phoneNum,
     email: email,
+    address: address,
     county: county,
-    subjects: subjects
 }
 
-useEffect(() => {
-    setSubjects(rawSubjects.split(","))
-}, [rawSubjects])
-
-const handleSave = async(updatedStudentData) => {
+const handleSave = async(updatedData) => {
     try {
-        const docRef = doc(db, "Student", user.uid)
-        await updateDoc(docRef, updatedStudentData)
+        const docRef = doc(db, "Business", user.uid)
+        await updateDoc(docRef, updatedData)
         alert("Changes have been saved")
     } catch (error){
         console.log(error)
@@ -104,18 +109,24 @@ const handleSave = async(updatedStudentData) => {
   return (
     <>
       <TextInput
-        label="Personal Statement"
+        label="Company Bio"
         mode="outlined"
         multiline
         value={bio}
         onChangeText={(text) => setBio(text)}
       />
       <TextInput
-        label="Experience"
+        label="Industry"
         mode="outlined"
-        multiline
-        value={experience}
-        onChangeText={(text) => setExperience(text)}
+        value={industry}
+        onChangeText={(text) => setIndustry(text)}
+      />
+      <TextInput
+        label="Telephone"
+        mode="outlined"
+        value={phoneNum}
+        onChangeText={(text) => setPhoneNum(text)}
+        keyboardType={Platform.OS === "ios" ? "number-pad" : "numeric"}
       />
       <TextInput
         label="Email"
@@ -124,23 +135,23 @@ const handleSave = async(updatedStudentData) => {
         onChangeText={(text) => setEmail(text)}
         keyboardType="email-address"
       />
+      <TextInput
+        label="Address"
+        mode="outlined"
+        multiline
+        value={address}
+        onChangeText={(text) => setAddress(text)}
+      />
         <TextInput
         label="County"
         mode="outlined"
         value={county}
         onChangeText={(text) => setCounty(text)}
       />
-       <TextInput
-        label="Subjects (enter separated by commas)"
-        mode="outlined"
-        multiline
-        value={rawSubjects}
-        onChangeText={(text) => setRawSubjects(text)}
-      />
       <Button
         mode="contained-tonal"
         onPress={() => {
-          handleSave(updatedStudentData);
+          handleSave(updatedData);
         }}
       >
         Save Changes

@@ -68,6 +68,20 @@ declare global {
         applicationMessage: string;
     }
 
+    interface Application1 {
+
+        uid:string,
+        oppId: string,
+        businessId:string,
+  datesApplied: Record<string, any>,
+  studentId: string,
+  whyApply: string,
+  whySuitable: string,
+  personalStatement: string,
+  experience: string,
+  subjects: string
+    }
+
     type StudentProps = {
         studentInfo: Student;
     } 

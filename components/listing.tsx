@@ -1,6 +1,6 @@
 import { useUserContext } from "@/context/UserContext";
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from "react-native";
-import { addDoc, collection, getDoc, onSnapshot, doc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, getDoc, onSnapshot, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../database/firebase";
 import { useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
@@ -27,8 +27,8 @@ export default function Listing({ listingId }: { listingId: string }) {
     const [firstDay, setFirstDay] = useState<string>("");
 
     const [dates, setDates] = useState<Record<string, any>>({});
-    const [periods, setPeriods] = useState<string[]>([]);
-    // const [delete, setDelete] = useState()
+    const [periods, setPeriods] = useState<Record<string, any>>({});
+    const [remove, setRemove] = useState<string[]>([]);
 
     useEffect(() => {
         if (user?.uid) {
@@ -42,30 +42,29 @@ export default function Listing({ listingId }: { listingId: string }) {
                 });
                 const unsubscribe2 = onSnapshot(collection(db, "Business", user.uid, "Opportunities", listingId, "Availabilities"), (snapshot) => {
                     snapshot.docs.forEach((doc) => {
-                        console.log(doc.id);
                         const period = doc.data().period;
-                        markDates(period[0], period[1], "red");
+                        markDates(period, doc.id, "red");
                     });
                 });
                 return () => {
-                    unsubscribe1();
-                    unsubscribe2();
-                    setDates({});
-                    setPeriods([]);
+                    // unsubscribe1();
+                    // unsubscribe2();
+                    // setDates({});
+                    // setPeriods({});
                 };
             }
         }
     }, [user?.uid, listingId]);
 
-    const markDates = (start: string, end: string, color: string) => {
+    const markDates = (period: string, id: string, color: string) => {
         let markedDates: Record<string, any> = {};
-        let current = new Date(start);
 
-        const period = start + ":" + end;
-        setPeriods((prevPeriods) => [...prevPeriods, period]);
+        const [start, end] = period.split(":");
+        let current = new Date(start);
 
         while (current <= new Date(end)) {
             let dateAsString = current.toISOString().split("T")[0];
+            if (dates[dateAsString]) return;
             markedDates[dateAsString] = {
                 color: color,
                 textColor: "white",
@@ -75,6 +74,8 @@ export default function Listing({ listingId }: { listingId: string }) {
             };
             current.setDate(current.getDate() + 1);
         }
+
+        setPeriods((prevPeriods) => ({ ...prevPeriods, [period]: id }));
         setDates((prevDates) => ({ ...prevDates, ...markedDates }));
     };
 
@@ -82,9 +83,14 @@ export default function Listing({ listingId }: { listingId: string }) {
         const [start, end] = period.split(":");
         let current = new Date(start);
 
+        if (periods[period]) {
+            setRemove((prevRemove) => [...prevRemove, periods[period]]);
+        }
+
         setPeriods((prevPeriods) => {
-            const newPeriods = [...prevPeriods];
-            return newPeriods.filter((p) => p !== period);
+            const newPeriods = { ...prevPeriods };
+            delete newPeriods[period];
+            return newPeriods;
         });
 
         const newDates = { ...dates };
@@ -96,40 +102,57 @@ export default function Listing({ listingId }: { listingId: string }) {
         setDates(newDates);
     };
 
+    useEffect(() => {
+        console.log(periods, remove);
+    }, [periods, remove]);
+
     function handleDay(day: string) {
         if (!dates[day]) {
             if (!firstDay || new Date(firstDay) > new Date(day)) {
                 setFirstDay(day);
-                setDates((prevDates) => ({ ...prevDates, [day]: { color: "green", textColor: "white", startingDay: true } }));
-            } else if (new Date(firstDay) < new Date(day)) {
-                markDates(firstDay, day, "green");
+            } else if (new Date(firstDay) <= new Date(day)) {
+                markDates(firstDay + ":" + day, "", "green");
                 setFirstDay("");
             }
         } else {
-            unMarkDates(dates[day].period);
+            if (firstDay) {
+                setFirstDay("");
+            } else {
+                unMarkDates(dates[day].period);
+            }
         }
     }
 
     const handleSubmit = async () => {
-        if (periods.length && jobRole && description) {
+        if ((Object.keys(periods).length || remove.length) && jobRole && description) {
             try {
                 const document = {
                     jobRole: jobRole,
                     description: description,
                 };
                 if (listingId) {
-                    const opp = await updateDoc(doc(db, "Business", user.uid, "Opportunities", listingId), document);
+                    await updateDoc(doc(db, "Business", user.uid, "Opportunities", listingId), document);
+                    for (let id of remove) {
+                        await deleteDoc(doc(db, "Business", user.uid, "Opportunities", listingId, "Availabilities", id));
+                    }
+                    for (let period in periods) {
+                        if (!periods[period]) {
+                            await addDoc(collection(db, "Business", user.uid, "Opportunities", listingId, "Availabilities"), {
+                                period: period,
+                            });
+                        }
+                    }
                 } else {
                     const opp = await addDoc(collection(db, "Business", user.uid, "Opportunities"), document);
-                    for (let period of periods) {
+                    for (let period in periods) {
                         await addDoc(collection(db, "Business", user.uid, "Opportunities", opp.id, "Availabilities"), {
-                            period: period.split(":"),
+                            period: period,
                         });
                     }
                 }
                 // router.replace("/(tabs)/ViewCurrentOpportunities");
-                setDates({});
-                setPeriods([]);
+                // setDates({});
+                // setPeriods([]);
                 // setJobRole("");
                 // setDescription("");
             } catch (err) {
@@ -175,7 +198,7 @@ export default function Listing({ listingId }: { listingId: string }) {
                         textDisabledColor: "#dd99ee",
                     }}
                     markingType={"period"}
-                    markedDates={dates}
+                    markedDates={{ [firstDay]: { color: "green", textColor: "white", startingDay: true }, ...dates }}
                     onDayPress={(day: DayPressEvent) => handleDay(day.dateString)}
                 />
             </View>
