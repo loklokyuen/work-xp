@@ -13,19 +13,18 @@ const BusinessList: React.FC = () => {
   }
 
   const [businesses, setBusinesses] = useState<IndividualBusiness[]>([]);
-  const [filteredBusiness, setFilteredBusinesses] = useState<
-    IndividualBusiness[]
-  >([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const fetchedBusinesses = await getBusinesses();
         setBusinesses(fetchedBusinesses);
-        setFilteredBusinesses(fetchedBusinesses);
-      } catch (error) {
-        console.error("Error fetching businesses:", error);
+      } catch (err) {
+        console.error("Error fetching businesses:", err);
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -34,28 +33,21 @@ const BusinessList: React.FC = () => {
     fetchData();
   }, []);
 
-  const handleBusinessSelect = (
-    selectedBusiness: IndividualBusiness | null
-  ) => {
-    if (selectedBusiness) {
-      setFilteredBusinesses([selectedBusiness]);
-    } else {
-      setFilteredBusinesses(businesses);
-    }
-  };
+  const filteredBusinesses = businesses.filter((biz) =>
+    biz.displayName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <ScrollView>
       <View style={styles.searchContainer}>
-        <SearchBar
-          businesses={businesses}
-          handleBusinessSelect={handleBusinessSelect}
-        />
+        <SearchBar setSearchQuery={setSearchQuery} />
         <View>
           {loading ? (
             <Text>Loading businesses...</Text>
-          ) : filteredBusiness.length > 0 ? (
-            filteredBusiness.map((biz, index) => (
+          ) : error ? (
+            <Text>Error loading businesses. Please try again later.</Text>
+          ) : filteredBusinesses.length > 0 ? (
+            filteredBusinesses.map((biz, index) => (
               <BusinessCards
                 key={index}
                 displayName={biz.displayName}
