@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, getFirestore, doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
 async function getUserById(uid: string, accountType: string): Promise<User> {
@@ -6,6 +6,21 @@ async function getUserById(uid: string, accountType: string): Promise<User> {
     const docSnap = await getDoc(docRef);
     const user = docSnap.data();
     return user as User;
+}
+
+async function addNewUser(uid: string, accountType: string, displayName: string, photoUrl: string, email: string): Promise<boolean> {
+    try {
+        await setDoc(doc(db, accountType, uid), {
+            uid,
+            displayName,
+            photoUrl,
+            email
+        });
+        return true
+    } catch (error) {
+        alert("Error adding new user: " + error);
+        return false;
+    }
 }
 
 async function updateUserProfileImage(uid: string, accountType: string, photoUrl: string): Promise<boolean> {
@@ -20,4 +35,4 @@ async function updateUserProfileImage(uid: string, accountType: string, photoUrl
     }
 }
 
-export { getUserById, updateUserProfileImage };
+export { getUserById, updateUserProfileImage, addNewUser };
