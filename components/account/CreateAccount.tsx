@@ -4,15 +4,14 @@ import { Button, Text, TextInput } from "react-native-paper";
 import {
     createUserWithEmailAndPassword,
     sendEmailVerification,
-    signInAnonymously,
     updateProfile,
 } from "firebase/auth";
 import { auth } from "@/database/firebase";
 import styles from "../../app/styles";
 import { setUserAccountType, useUserContext } from "@/context/UserContext";
-import { addStudent } from "@/database/student";
+import { addNewUser } from "@/database/user";
 
-const CreateAccount: React.FC<accountProps> = ({ setIsNewUser, setIsExistingUser }) => {
+const CreateAccount: React.FC<accountProps> = ({ setIsNewUser }: accountProps) => {
     const { user, setUser, accountType, setAccountType } = useUserContext();
     const [displayName, setDisplayName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -39,7 +38,7 @@ const CreateAccount: React.FC<accountProps> = ({ setIsNewUser, setIsExistingUser
                     });
                     setUser(userData);
                     setUserAccountType(accountType);
-                    addStudent(user.uid, displayName, user.photoURL || "", user.email || "", "", "");
+                    addNewUser(user.uid, accountType, user.displayName || "", user.photoURL || "", user.email || "");
                     // sendEmailVerification(user)
                     //   .then(() => {
                     //     alert("Email verification sent.");
@@ -70,7 +69,7 @@ const CreateAccount: React.FC<accountProps> = ({ setIsNewUser, setIsExistingUser
     return (
         <View style={styles.container}>
             
-            <Text style={styles.title}>Create a{accountType? " " + accountType : "n"} Account</Text>
+            <Text style={styles.title}>Create {accountType} Account</Text>
             <View style={styles.buttonContainer}>
             <Button mode="contained-tonal" onPress={() => setAccountType("Student")} >Student</Button>
             <Text variant="titleMedium" style={{textAlign: "center", alignContent: "center"}}> OR</Text>
@@ -96,7 +95,6 @@ const CreateAccount: React.FC<accountProps> = ({ setIsNewUser, setIsExistingUser
             <Button mode="outlined" 
                 onPress={() => {
                     setIsNewUser(false);
-                    setIsExistingUser(true);
                 }}
             >Sign in</Button>
             </View>

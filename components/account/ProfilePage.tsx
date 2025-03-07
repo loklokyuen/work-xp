@@ -31,7 +31,10 @@ export default function ProfilePage({ setIsNewUser }: accountProps) {
 
     useEffect(() => {
         if (!user) return;
-        getBusinessById(user.uid).then((res) => {
+        setGuestMode(false);
+        // 'Qf1ha917fUU7oDmACzZ3msxI5Yk2'
+         getBusinessById(user.uid).then((res) => {
+           console.log(res);
             if (res) { 
                 setBusinessInfo({ uid: res.uid,
                     displayName: res.displayName || "",
