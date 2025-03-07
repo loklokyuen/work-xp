@@ -1,7 +1,7 @@
 import { ReadonlyBusinessInfo } from "./ReadonlyBusinessInfo";
 import { ReadonlyStudentInfo } from "./ReadonlyStudentInfo";
 import { useEffect, useState } from "react";
-import { Platform, SafeAreaView, StyleSheet, View } from "react-native";
+import { Modal, Platform, SafeAreaView, StyleSheet, View } from "react-native";
 import { ActivityIndicator, Button, IconButton, Text } from "react-native-paper";
 import { getBusinessById } from "@/database/business";
 import { setUserAccountType, useUserContext } from "@/context/UserContext";
@@ -17,6 +17,7 @@ import { ChangePasswordModal } from "@/modal/ChangePasswordModal";
 import { useRouter } from "expo-router";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import GuestModePrompt from "./GuestModePrompt";
+import { ConfirmActionModal } from "@/modal/ConfirmActionModal";
 
 export default function ProfilePage({ setIsNewUser, setIsExistingUser }: accountProps) {
     const [loading, setLoading] = useState<Boolean>(true);
@@ -25,6 +26,7 @@ export default function ProfilePage({ setIsNewUser, setIsExistingUser }: account
     const [businessInfo, setBusinessInfo] = useState<Business>();
     const [studentInfo, setStudentInfo] = useState<Student>();
     const [openAvatarPicker, setOpenAvatarPicker] = useState<boolean>(false);
+    const [openLogout, setOpenLogout] = useState<boolean>(false);
     const [openChangePassword, setOpenChangePassword] = useState<boolean>(false);
     const { user, setUser, accountType, setAccountType } = useUserContext();
     const placeHolderImage = require("@/assets/images/background-image.png");
@@ -228,9 +230,10 @@ export default function ProfilePage({ setIsNewUser, setIsExistingUser }: account
                             onClose={() => setOpenChangePassword(false)}
                             onChangePassword={handleChangePassword}
                         ></ChangePasswordModal>
-                        <Button style={{ margin: 5 }} mode="outlined" onPress={handleLogout}>
+                        <Button style={{ margin: 5 }} mode="outlined" onPress={()=>setOpenLogout(true)}>
                             Log out
                         </Button>
+                        <ConfirmActionModal open={openLogout} onClose={() => setOpenLogout(false)} title="logout" onConfirmAction={handleLogout} />
                     </View>
                 )}
             </KeyboardAwareScrollView>

@@ -12,7 +12,6 @@ export default function ManageBooking() {
     const [bookings, setBookings] = useState<Application1[]>([]);
     useEffect(() => {
         getAcceptedApplicationsByBusinessId(businessId).then((res) => {
-            console.log(res[0].datesApplied);
             setBookings(res);
         });
     }, []);

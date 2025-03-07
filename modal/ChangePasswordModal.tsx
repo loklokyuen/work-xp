@@ -46,8 +46,8 @@ export const ChangePasswordModal= ({ open, onClose, onChangePassword }: ChangePa
                 onChangeText={(text) => setConfirmPassword(text)}
             />
             <View style={styles.buttonContainer}>
+                    <Button  mode="outlined" onPress={onClose}  style={{ margin: 10}}>Cancel</Button>
                     <Button  mode="contained-tonal" onPress={handleSubmit} style={{ margin: 10}}>Submit</Button>
-                    <Button  mode="contained-tonal" onPress={onClose}  style={{ margin: 10}}>Cancel</Button>
             </View>
             </View>
             </View>
