@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Searchbar } from "react-native-paper";
+import { Searchbar, useTheme } from "react-native-paper";
 import { View } from "react-native";
 
 interface SearchBarProps {
@@ -8,6 +8,7 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ setSearchQuery }) => {
   const [searchQuery, setQuery] = React.useState("");
+  const { colors, fonts } = useTheme();
 
   const handleSearch = (query: string) => {
     const trimmedQuery = query.trim();
@@ -19,6 +20,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ setSearchQuery }) => {
     <View>
       <Searchbar
         placeholder="Search for a business..."
+        inputStyle={{ ...fonts.bodyMedium }}
         onChangeText={handleSearch}
         value={searchQuery}
       />
