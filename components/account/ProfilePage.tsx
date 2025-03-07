@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Platform, SafeAreaView, StyleSheet, View } from "react-native";
 import { ActivityIndicator, Button, IconButton, Text } from "react-native-paper";
 import { getBusinessById } from "@/database/business";
-import { useUserContext } from "@/context/UserContext";
+import { setUserAccountType, useUserContext } from "@/context/UserContext";
 import { getStudentById } from "@/database/student";
 import { EditableBusinessInfo } from "./EditableBusinessInfo";
 import { EditableStudentInfo } from "./EditableStudentInfo";
@@ -16,6 +16,7 @@ import AvatarPickingModal from "@/modal/AvatarPickingModal";
 import { ChangePasswordModal } from "@/modal/ChangePasswordModal";
 import { useRouter } from "expo-router";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import GuestModePrompt from "./GuestModePrompt";
 
 export default function ProfilePage({ setIsNewUser }: accountProps) {
     const [loading, setLoading] = useState<Boolean>(true);
@@ -30,22 +31,56 @@ export default function ProfilePage({ setIsNewUser }: accountProps) {
 
     useEffect(() => {
         if (!user) return;
-        if (accountType === "Business") {
-            getBusinessById(user.uid).then((res) => {
-                if (res) setBusinessInfo(res);
+        getBusinessById(user.uid).then((res) => {
+            if (res) { 
+                setBusinessInfo({ uid: res.uid,
+                    displayName: res.displayName || "",
+                    sector: res.sector || "",
+                    photoUrl: res.photoUrl || "",
+                    email: res.email || "",
+                    address: res.address || "",
+                    county: res.county || "",
+                    description: res.description || "",
+                    phoneNumber: res.phoneNumber || "",
+                    opportunities: [],
+                    reviews: [],
+                    applications: []
+                });
+                setAccountType("Business");
+                setUserAccountType("Business");
                 setLoading(false);
                 setGuestMode(false);
-            });
-        } else if (accountType === "Student") {
-            getStudentById(user.uid).then((res) => {
-                if (res) setStudentInfo(res);
+                return true;
+            } else return false;
+            
+        }).then((userFound) => {
+            if (!userFound){
+                return getStudentById(user.uid).then((res) => {
+                    if (res) {
+                        setAccountType("Student");
+                        setUserAccountType("Student");
+                        setStudentInfo({ uid: res.uid,
+                            displayName: res.displayName || "",
+                            photoUrl: res.photoUrl || "",
+                            email: res.email || "",
+                            county: res.county || "",
+                            personalStatement: res.personalStatement || "",
+                            applications: [],
+                            reviews: [],
+                            subjects: res.subjects || [],
+                            experience: res.experience || ""});
+                        setLoading(false);
+                        setGuestMode(false);
+                        return true;
+                    } else return false
+                })
+            } else return true;
+        }).then((userFound) => {
+            if (!userFound){
+                setGuestMode(true);
                 setLoading(false);
-                setGuestMode(false);
-            });
-        } else {
-            setGuestMode(true);
-            setLoading(false);
-        }
+            }
+        });
     }, [user]);
 
     const handleLogout = () => {
@@ -85,31 +120,7 @@ export default function ProfilePage({ setIsNewUser }: accountProps) {
                 <Text variant="titleLarge" style={{ textAlign: "center", margin: 15 }}>
                     {guestMode ? "Guest" : "Profile"}
                 </Text>
-                {guestMode && (
-                    <View>
-                        <Text variant="titleMedium" style={{ textAlign: "center", margin: 20 }}>
-                            You are currently in guest mode. Please sign in to enjoy the full functionalities.
-                        </Text>
-                        <View style={styles.buttonContainer}>
-                            <Button
-                                mode="contained-tonal"
-                                onPress={() => {
-                                    clearGuestMode(true);
-                                }}
-                            >
-                                Create Account
-                            </Button>
-                            <Button
-                                mode="contained-tonal"
-                                onPress={() => {
-                                    clearGuestMode(false);
-                                }}
-                            >
-                                Sign In
-                            </Button>
-                        </View>
-                    </View>
-                )}
+                {guestMode && <GuestModePrompt clearGuestMode={clearGuestMode} />}
                 {!guestMode && (
                     <View style={{ alignItems: "flex-end", marginRight: 20, position: "absolute", right: 2, top: 10 }}>
                         <Button
