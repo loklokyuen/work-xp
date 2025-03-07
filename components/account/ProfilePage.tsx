@@ -217,7 +217,7 @@ export default function ProfilePage({ setIsNewUser, setIsExistingUser }: account
                 {!editMode && !guestMode && (
                     <View style={styles.buttonContainer}>
                         <Button
-                            style={{ margin: 5 }}
+                            style={{ margin: 5, backgroundColor: "#f0f0f0" }}
                             mode="outlined"
                             onPress={() => {
                                 setOpenChangePassword(true);
@@ -230,7 +230,7 @@ export default function ProfilePage({ setIsNewUser, setIsExistingUser }: account
                             onClose={() => setOpenChangePassword(false)}
                             onChangePassword={handleChangePassword}
                         ></ChangePasswordModal>
-                        <Button style={{ margin: 5 }} mode="outlined" onPress={()=>setOpenLogout(true)}>
+                        <Button style={{ margin: 5, backgroundColor: "#f0f0f0" }} mode="outlined" onPress={()=>setOpenLogout(true)}>
                             Log out
                         </Button>
                         <ConfirmActionModal open={openLogout} onClose={() => setOpenLogout(false)} title="logout" onConfirmAction={handleLogout} />

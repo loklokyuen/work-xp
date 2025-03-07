@@ -21,8 +21,6 @@ export default function BookingCard({ studentId, businessId, oppId }: BookingCar
             setStudent(res);
         });
         getBusinessOpportunityById(businessId, oppId).then((res) => {   
-            console.log("opp: ", res);
-                  
             setOpportunity(res);
         });
 

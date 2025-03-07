@@ -8,7 +8,8 @@ import { useState, useEffect } from "react";
 import { useUserContext } from "@/context/UserContext";
 import { useLocalSearchParams } from "expo-router/build/hooks";
 import { StyleSheet, Image } from "react-native";
-import { View, ScrollView, Text, Button } from "react-native";
+import { View, ScrollView } from "react-native";
+import { Text, Button } from "react-native-paper";
 
 export default function Applications() {
   const [applications, setApplications] = useState<Application1[]>();
@@ -57,16 +58,14 @@ export default function Applications() {
                   <Text key={date}> {date}, </Text>
                 ))}
               </Text>
-              <Button
-                title="accept application"
+              <Button mode="contained"
                 onPress={() => updateApplicationAccepted(application.uid, true)}
-              ></Button>
-              <Button
-                title="decline application"
+              >Accept application</Button>
+              <Button mode="contained"
                 onPress={() =>
                   updateApplicationAccepted(application.uid, false)
                 }
-              ></Button>
+              >Decline application</Button>
             </View>
           );
         })}

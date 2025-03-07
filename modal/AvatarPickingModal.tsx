@@ -7,7 +7,7 @@ import { updateUserProfileImage } from "@/database/user";
 import { updateProfile } from "firebase/auth";
 import { useUserContext } from "@/context/UserContext";
 import { uploadImage, deleteImage } from '@/Cloudinary/cloudinaryWrapper';
-import { Button, IconButton, Text, TextInput } from "react-native-paper";
+import { ActivityIndicator, Button, IconButton, Text, TextInput } from "react-native-paper";
 
 interface AvatarPickingModalProps {
     open: boolean;
@@ -15,6 +15,7 @@ interface AvatarPickingModalProps {
 }
 
 export default function AvatarPickingModal({ open, onClose }: AvatarPickingModalProps) {
+    const [loading, setLoading] = useState(false);
     const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null);
     const [selectedAvatar, setSelectedAvatar] = useState<string>('');
     const [error, setError] = useState('');
@@ -41,6 +42,7 @@ export default function AvatarPickingModal({ open, onClose }: AvatarPickingModal
             setError("Please select an image");
             return;
         }
+        setLoading(true);
         let imageURL = '';
         if (image){
             imageURL = await uploadImage(image);
@@ -52,6 +54,7 @@ export default function AvatarPickingModal({ open, onClose }: AvatarPickingModal
                 photoURL: imageURL,
             });
             const isUpdateSuccess = await updateUserProfileImage(auth.currentUser.uid, accountType, imageURL)
+            setLoading(false);
             if (isUpdateSuccess) {
                 alert("Avatar updated successfully");
                 setError("");
@@ -74,7 +77,7 @@ export default function AvatarPickingModal({ open, onClose }: AvatarPickingModal
         
         onClose();
         }
-    
+    if (loading) return <ActivityIndicator animating={true} />
     return  <Modal
         animationType="slide"
         transparent={true}
