@@ -1,7 +1,7 @@
 import { ReadonlyBusinessInfo } from "./ReadonlyBusinessInfo";
 import { ReadonlyStudentInfo } from "./ReadonlyStudentInfo";
 import { useEffect, useState } from "react";
-import { Platform, SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
+import { Platform, SafeAreaView, StyleSheet, View } from "react-native";
 import { ActivityIndicator, Button, IconButton, Text } from "react-native-paper";
 import { getBusinessById } from "@/database/business";
 import { useUserContext } from "@/context/UserContext";
@@ -15,6 +15,7 @@ import ImageViewer from "../expoComponents/imageViewer";
 import AvatarPickingModal from "@/modal/AvatarPickingModal";
 import { ChangePasswordModal } from "@/modal/ChangePasswordModal";
 import { useRouter } from "expo-router";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function ProfilePage({ setIsNewUser }: accountProps) {
     const [loading, setLoading] = useState<Boolean>(true);
@@ -80,7 +81,7 @@ export default function ProfilePage({ setIsNewUser }: accountProps) {
     if (loading) return <ActivityIndicator size="large" style={{ flex: 1, justifyContent: "center", alignItems: "center" }} />;
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+            <KeyboardAwareScrollView enableOnAndroid contentContainerStyle={styles.scrollViewContent}>
                 <Text variant="titleLarge" style={{ textAlign: "center", margin: 15 }}>
                     {guestMode ? "Guest" : "Profile"}
                 </Text>
@@ -179,7 +180,7 @@ export default function ProfilePage({ setIsNewUser }: accountProps) {
                         </Button>
                     </View>
                 )}
-            </ScrollView>
+            </KeyboardAwareScrollView>
         </SafeAreaView>
     );
 }
