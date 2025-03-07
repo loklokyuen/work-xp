@@ -47,7 +47,7 @@ export default function Opportunities() {
                                 title="Edit Listing"
                                 onPress={() => {
                                     router.push({
-                                        pathname: "./edit",
+                                        pathname: "./listingPage",
                                         params: { id: opp.id },
                                     });
                                 }}
@@ -70,7 +70,8 @@ export default function Opportunities() {
                 title="Post Listing"
                 onPress={() => {
                     router.push({
-                        pathname: "./post",
+                        pathname: "./listingPage",
+                        params: { id: "" },
                     });
                 }}
             ></Button>
