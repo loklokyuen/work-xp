@@ -88,7 +88,7 @@ export default function AvatarPickingModal({ open, onClose }: AvatarPickingModal
             }} >Pick from our avatars</Button>:
             <Button mode="contained-tonal" onPress={handleImageSelection} style={{ margin: 10}}>Upload your own image</Button>}
             <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                {image ? <Image source={{uri: image.uri}} style={{width: 200, height: 200}} /> :
+                {image ? <Image source={{uri: image.uri}} style={{width: 200, height: 200, margin: 10, borderRadius: 100}} /> :
                     avatars.map((avatar, index) => (
                         <TouchableOpacity key={index} onPress={() =>{
                         setSelectedAvatar(avatar)}}
@@ -100,8 +100,8 @@ export default function AvatarPickingModal({ open, onClose }: AvatarPickingModal
             </View>
         {error ? <Text style={styles.error}>{error}</Text> : null}
                 <View style={styles.buttonContainer}>
+                    <Button  mode="outlined" onPress={onClose} style={{ margin: 10}}>Cancel</Button>
                     <Button  mode="contained-tonal" onPress={handleImageUpload} style={{ margin: 10}}>Submit</Button>
-                    <Button  mode="contained-tonal" onPress={onClose} style={{ margin: 10}}>Cancel</Button>
                 </View>
             </View>
         </View>
