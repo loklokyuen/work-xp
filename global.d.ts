@@ -7,6 +7,7 @@ declare global {
     }
     interface accountProps {
         setIsNewUser: React.Dispatch<React.SetStateAction<boolean>>;
+        setIsExistingUser: React.Dispatch<React.SetStateAction<boolean>>;
     }
 
     type AccountType = "Student" | "Business" | "Guest" | null;

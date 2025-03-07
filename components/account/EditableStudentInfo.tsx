@@ -10,15 +10,9 @@ export function EditableStudentInfo({studentInfo}: StudentProps) {
     const [experience, setExperience] = useState<string>(studentInfo.experience || "")
     const [email, setEmail] = useState<string>(studentInfo.email);
     const [county, setCounty] = useState<string>(studentInfo.county || "")
-    // const [rawSubjects, setRawSubjects] = useState<string>(studentInfo.subjects ? studentInfo.subjects.join(",") : "")
     const [subjects, setSubjects] =useState<string[]>(studentInfo.subjects)
     const [newSubject, setNewSubject] = useState<string>("")
     const {user} = useUserContext()
-  
-
-  // useEffect(() => {
-  //     setSubjects(rawSubjects.split(","))
-  // }, [rawSubjects])
   
   const handleSave = async() => {
       try {

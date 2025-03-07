@@ -87,7 +87,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    margin: 10,
   },
   modalView: {
       margin: 20,
@@ -130,10 +131,7 @@ const styles = StyleSheet.create({
     minHeight: 40,
     margin: 12,
     borderWidth: 1,
-    padding: 10,
-    flexWrap: 'wrap',
-    flex: 1, 
-    width: 1
+    padding: 10
   },
   headerContainer: {
     height: 100,

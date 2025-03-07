@@ -1,9 +1,7 @@
 import { Button, Chip, IconButton, Text, TextInput } from "react-native-paper";
-import ImageViewer from "../imageViewer";
 import { useEffect, useState } from "react";
 import { StyleSheet, Platform, View } from "react-native";
-import AvatarPickingModal from "@/modal/AvatarPickingModal";
-// import styles from "@/app/styles";
+import styles from "@/app/styles";
 
 export function ReadonlyStudentInfo({ studentInfo }: StudentProps) {
     return (
@@ -11,8 +9,8 @@ export function ReadonlyStudentInfo({ studentInfo }: StudentProps) {
             <Text variant="titleMedium" style={{ marginHorizontal: 10 }}>
                 Personal Statement:
             </Text>
-            <View style={{ flexGrow: 1, flexDirection: "row" }}>
-                <Text variant="bodyMedium" style={{ flex: 1, width: 1, margin: 12, borderWidth: 1, padding: 10 }}>
+            <View style={{ flexDirection: "row" }}>
+                <Text variant="bodyMedium" style={{ flex: 1, margin: 12, borderWidth: 1, padding: 10, minHeight: 40 }}>
                     {studentInfo.personalStatement}
                 </Text>
             </View>
@@ -37,6 +35,7 @@ export function ReadonlyStudentInfo({ studentInfo }: StudentProps) {
             <Text variant="titleMedium" style={{ marginHorizontal: 10 }}>
                 Subjects:
             </Text>
+            {studentInfo.subjects.length === 0? <Text variant="bodyMedium" style={styles.data}>No subjects added yet</Text> :
             <View style={{ flexDirection: "row", flexWrap: "wrap", marginHorizontal: 10 }}>
                 {studentInfo.subjects.map((subject) => {
                     return (
@@ -45,18 +44,7 @@ export function ReadonlyStudentInfo({ studentInfo }: StudentProps) {
                         </Chip>
                     );
                 })}
-            </View>
+            </View>}
         </View>
     );
 }
-const styles = StyleSheet.create({
-    data: {
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-    },
-    buttonContainer: {
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-    },
-});
