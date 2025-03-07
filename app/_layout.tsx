@@ -50,12 +50,8 @@ export default function RootLayout() {
 
   return (
     <PaperProvider theme={theme}>
-      {" "}
       <UserProvider>
         <ThemeProvider value={theme}>
-          {/* <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        > */}
           <Header />
           <Text style={{ fontFamily: "SpaceMono", fontSize: 20 }}>
             Test Font
@@ -66,7 +62,6 @@ export default function RootLayout() {
           </Stack>
           <StatusBar style="auto" />
         </ThemeProvider>
-        {/* </ThemeProvider> */}
       </UserProvider>
     </PaperProvider>
   );
