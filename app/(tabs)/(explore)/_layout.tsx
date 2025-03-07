@@ -5,6 +5,7 @@ const OpportunityLayout = () => {
         <Stack>
             <Stack.Screen name="index" options={{ title: "Explore" }} />
             <Stack.Screen name="publicProfile" />
+            <Stack.Screen name="application" />
         </Stack>
     );
 };
