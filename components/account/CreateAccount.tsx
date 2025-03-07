@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, Button } from "react-native";
+import { View } from "react-native";
+import { Button, Text, TextInput } from "react-native-paper";
 import {
     createUserWithEmailAndPassword,
     sendEmailVerification,
     signInAnonymously,
-    sendPasswordResetEmail,
-    updatePassword,
     updateProfile,
 } from "firebase/auth";
-import { auth, db } from "@/database/firebase";
-import { Link, useLocalSearchParams } from "expo-router";
+import { auth } from "@/database/firebase";
 import styles from "../../app/styles";
-import { router } from "expo-router";
 import { setUserAccountType, useUserContext } from "@/context/UserContext";
-import { setDoc, doc } from "firebase/firestore";
+import { addStudent } from "@/database/student";
 
-const CreateAccount: React.FC<accountProps> = ({ setIsNewUser }: accountProps) => {
+const CreateAccount: React.FC<accountProps> = ({ setIsNewUser, setIsExistingUser }) => {
     const { user, setUser, accountType, setAccountType } = useUserContext();
     const [displayName, setDisplayName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -42,9 +39,7 @@ const CreateAccount: React.FC<accountProps> = ({ setIsNewUser }: accountProps) =
                     });
                     setUser(userData);
                     setUserAccountType(accountType);
-                    setDoc(doc(db, accountType, user.uid), userData);
-
-                    // router.replace("/(tabs)/success-sign-in");
+                    addStudent(user.uid, displayName, user.photoURL || "", user.email || "", "", "");
                     // sendEmailVerification(user)
                     //   .then(() => {
                     //     alert("Email verification sent.");
@@ -70,53 +65,41 @@ const CreateAccount: React.FC<accountProps> = ({ setIsNewUser }: accountProps) =
         }
     };
 
-    const handleGuestSignIn = () => {
-        signInAnonymously(auth)
-            .then(() => {
-                // setUser("Guest");
-                alert("Signed in as guest!");
-                setError("");
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                setError(errorMessage);
-            });
-    };
+
 
     return (
         <View style={styles.container}>
-            {user ? (
-                <Text style={styles.title}>Signed in as {user.displayName ? user.displayName : user.email}</Text>
-            ) : (
-                <Text style={styles.title}>Create {accountType} Account</Text>
-            )}
-            <Button title="Student" onPress={() => setAccountType("Student")} />
-            <Text> OR</Text>
-            <Button title="Business" onPress={() => setAccountType("Business")} />
-
-            <TextInput style={styles.input} placeholder="Display Name" value={displayName} onChangeText={setDisplayName} autoCapitalize="words" />
+            
+            <Text style={styles.title}>Create a{accountType? " " + accountType : "n"} Account</Text>
+            <View style={styles.buttonContainer}>
+            <Button mode="contained-tonal" onPress={() => setAccountType("Student")} >Student</Button>
+            <Text variant="titleMedium" style={{textAlign: "center", alignContent: "center"}}> OR</Text>
+            <Button mode="contained-tonal" onPress={() => setAccountType("Business")} >Business</Button>
+            </View>
+            <TextInput style={styles.input} label="Display Name" value={displayName} onChangeText={setDisplayName} autoCapitalize="words" />
             <TextInput
                 style={styles.input}
-                placeholder="Email"
+                label="Email"
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
                 autoCapitalize="none"
             />
-            <TextInput style={styles.input} placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
+            <TextInput style={styles.input} label="Password" value={password} onChangeText={setPassword} secureTextEntry />
             {error ? <Text style={styles.error}>{error}</Text> : null}
-            <View style={styles.fixToText}>
-                <Button title="Create Account" onPress={handleCreateAccount} />
-                <Button title="Continue as guest" onPress={handleGuestSignIn} />
+            <View style={styles.buttonContainer}>
+                <Button mode="contained-tonal" onPress={handleCreateAccount}>Create Account</Button>
+                {/* <Button mode="outlined" onPress={handleGuestSignIn}>Continue as guest</Button> */}
             </View>
-            <Text>Already have an account?</Text>
-            <Button
-                title="Sign in"
+            <Text variant="titleMedium" style={{textAlign: "center", margin: 10}}>Already have an account?</Text>
+            <View style={styles.buttonContainer}>
+            <Button mode="outlined" 
                 onPress={() => {
                     setIsNewUser(false);
+                    setIsExistingUser(true);
                 }}
-            />
+            >Sign in</Button>
+            </View>
         </View>
     );
 };

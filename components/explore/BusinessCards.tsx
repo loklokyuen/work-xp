@@ -1,5 +1,4 @@
-import * as React from "react";
-import { Button, Card, Text, useTheme } from "react-native-paper";
+import { Button, Card, Text } from "react-native-paper";
 import styles from "@/app/styles";
 import { useRouter } from "expo-router";
 
@@ -16,12 +15,11 @@ const BusinessCards = ({
   county,
   photoUrl,
 }: BusinessInfoProps) => {
-  // uses uid from BusienssList map to pass uid to button here to pass to publicProfile to render a buisness profile!]
-  const { colors, fonts } = useTheme();
+  // uses uid from BusienssList map to pass uid to button here to pass to publicProfile to render a buisness profile!
   const router = useRouter();
   const handlePress = () => {
     router.push({
-      pathname: "/business/publicProfile",
+      pathname: "./publicProfile",
       params: { uid: uid },
     });
   };
@@ -32,7 +30,7 @@ const BusinessCards = ({
         <Card.Title
           titleVariant="titleLarge"
           title={displayName}
-          titleStyle={[styles.cardTitle, { color: colors.primary }]}
+          titleStyle={styles.cardTitle}
           style={{ paddingLeft: 0, paddingRight: 0 }}
         />
 
@@ -43,10 +41,8 @@ const BusinessCards = ({
         <Card.Cover style={styles.cardCover} source={{ uri: photoUrl }} />
         <Card.Actions style={styles.cardActions}>
           <Button
-            mode="contained"
-            buttonColor={colors.tertiary}
-            textColor={colors.onPrimary}
-            labelStyle={{ ...fonts.bodyMedium }}
+            style={{ backgroundColor: "#795663" }}
+            textColor="#FFFAFF"
             onPress={handlePress}
           >
             View Business

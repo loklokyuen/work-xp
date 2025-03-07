@@ -15,14 +15,14 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "../../database/firebase";
+import { db } from "../../../database/firebase";
 import { useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
 import { snapshot } from "node:test";
 import { ColorProperties } from "react-native-reanimated/lib/typescript/Colors";
 import { addApplication } from "@/database/applications";
 import { getStudentById } from "@/database/student";
-
+import { useLocalSearchParams } from "expo-router";
 type DayPressEvent = {
   dateString: string;
   day: number;
@@ -31,9 +31,12 @@ type DayPressEvent = {
   timestamp: number;
 };
 
-export default function Application({ listingId }: { listingId: string }) {
+export default function Application() {
   const { user } = useUserContext();
-
+  const { businessId, oppId } = useLocalSearchParams<{
+    businessId: string;
+    oppId: string;
+  }>();
   const [jobRole, setJobRole] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [companyName, setCompanyName] = useState<string>("");
@@ -48,8 +51,9 @@ export default function Application({ listingId }: { listingId: string }) {
 
   const [chosen, setChosen] = useState<Record<string, any>>({});
 
-  const BusinessId = "Qf1ha917fUU7oDmACzZ3msxI5Yk2";
-  const OpportunityId = "Knj2eN5H6Qen00vx4kNR";
+  console.log(businessId, oppId, "<<<<<");
+  const BusinessId = businessId;
+  const OpportunityId = oppId;
 
   useEffect(() => {
     if (user?.uid) {
@@ -104,7 +108,7 @@ export default function Application({ listingId }: { listingId: string }) {
         setPeriods([]);
       };
     }
-  }, [user?.uid, listingId]);
+  }, [user?.uid]);
 
   const markDates = (start: string, end: string, color: string) => {
     let markedDates: Record<string, any> = {};
@@ -162,16 +166,14 @@ export default function Application({ listingId }: { listingId: string }) {
   function handleDay(day: string) {
     if (dates[day]) {
       chooseDates(dates[day].period);
-      console.log("hello");
     }
   }
 
   const handleSubmit = async () => {
     if (why && reason && chosen) {
-      console.log("hello");
-
       const data = {
         oppId: OpportunityId,
+        businessId: BusinessId,
         datesApplied: chosen,
         studentId: user.uid,
         whyApply: why,
@@ -181,9 +183,9 @@ export default function Application({ listingId }: { listingId: string }) {
         subjects: subjects,
       };
 
-      console.log(data);
       await addApplication(
         data.oppId,
+        data.businessId,
         data.datesApplied,
         data.studentId,
         data.whyApply,

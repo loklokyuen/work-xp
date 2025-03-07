@@ -38,9 +38,9 @@ export default function ReviewCard() {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#795663",
-    padding: 25,
+    padding: 30,
     borderRadius: 20,
-    marginLeft: 30,
+    marginLeft: 10,
     marginRight: 30,
     alignItems: "center",
     justifyContent: "center",

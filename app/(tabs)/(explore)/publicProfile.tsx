@@ -1,6 +1,6 @@
 import OpportunityCards from "@/components/profile/opportuntiesCard";
 import ReviewCard from "@/components/profile/reviewCard";
-import { getBusinessById } from "@/database/business";
+import { getBusinessById, getBusinessOpportunities } from "@/database/business";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
@@ -9,14 +9,14 @@ import {
   ScrollView,
   StyleSheet,
   Image,
-  Pressable,
 } from "react-native";
-import { List } from "react-native-paper";
+import { Button, List } from "react-native-paper";
 
 const publicComProfile: React.FC = () => {
   const navigation = useNavigation();
   const { uid } = useLocalSearchParams<{ uid: string }>();
   const [business, setBusiness] = useState<Business | null>(null);
+  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
 
   // Accordion state
   const [expanded, setExpanded] = React.useState(false);
@@ -24,7 +24,7 @@ const publicComProfile: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    navigation.setOptions({ headerShown: true, title: 'Back to all' });
+    navigation.setOptions({ headerShown: true, title: "Back to all" });
   }, [navigation]);
 
   useEffect(() => {
@@ -38,24 +38,38 @@ const publicComProfile: React.FC = () => {
         setLoading(false);
       }
     };
+    const fetchOpportunities = async () => {
+      try {
+        const fetchedOpportunities = await getBusinessOpportunities(uid);
+        setOpportunities(fetchedOpportunities);
+      } catch (error) {
+        console.error("Error fetching opportunities:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchData();
+    fetchOpportunities();
   }, [uid]);
 
   if (loading) {
-    return <View>Loading business profile...</View>;
+    return <Text>Loading business profile...</Text>;
   }
 
   return (
     <>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* banner image */}
-        <Image source={{ uri: business.photoUrl }} style={styles.bannerImage} />
+        <Image
+          source={{ uri: business?.photoUrl }}
+          style={styles.bannerImage}
+        />
         <View style={styles.textContainer}>
-          <Text style={styles.title}>{business.displayName} </Text>
-          <Text style={styles.industry}> {business.sector} </Text>
-          <Text style={styles.desc}> {business.description}</Text>
+          <Text style={styles.title}>{business?.displayName} </Text>
+          <Text style={styles.industry}> {business?.sector} </Text>
+          <Text style={styles.desc}> {business?.description}</Text>
         </View>
-
+        {/* contact info */}
         <List.Section>
           <List.Accordion
             title="Contact Info"
@@ -69,25 +83,32 @@ const publicComProfile: React.FC = () => {
             onPress={() => setExpanded(!expanded)}
           >
             <View style={styles.accordionContent}>
-              <Text style={styles.text}>Email: {business.email}</Text>
+              <Text style={styles.text}>Email: {business?.email}</Text>
               <Text style={styles.text}>
-                Visit us: {business.address}, {business.county}
+                Visit us: {business?.address}, {business?.county}
               </Text>
-              <Pressable style={styles.button}>
-                <Text style={styles.buttonText}>Chat</Text>
-              </Pressable>
+              <Button
+                    // style={styles.applyButton}
+                    // textColor="#FFFAFF"
+                    // onPress={() => {
+                    //   router.push({
+                    //     pathname: "./chat",
+                    //     params: { id: opp.id },
+                    //   });
+                    // }}
+                  >Chat</Button>
             </View>
           </List.Accordion>
         </List.Section>
 
+        {/* opportunitites (work experience listings per business)*/}
         <View style={styles.textContainer}>
           <Text style={styles.subtitle}>Work Experience Available</Text>
-          {/* opportunitites component to pull in */}
-          <OpportunityCards />
+          <OpportunityCards opportunities={opportunities} businessId={uid} />
         </View>
 
-        <Text style={styles.reviewsHeader}>Hear from past students</Text>
         {/* reviews carousel */}
+        <Text style={styles.reviewsHeader}>Hear from past students</Text>
         <ReviewCard />
       </ScrollView>
     </>

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { useUserContext } from "../../context/UserContext";
+import { useUserContext } from "../../../context/UserContext";
 import { View, ScrollView, Text, Button } from "react-native";
 import { doc, getDoc, onSnapshot, collection, deleteDoc } from "firebase/firestore";
-import { db } from "../../database/firebase";
+import { db } from "../../../database/firebase";
 import { StyleSheet } from "react-native";
 import { router } from "expo-router";
 
-export default function ViewCurrentOpportunities() {
+export default function Opportunities() {
     const { user } = useUserContext();
     const [opportunities, setOpportunities] = useState<any[]>([]);
 
@@ -43,23 +43,37 @@ export default function ViewCurrentOpportunities() {
                         <View style={styles.card} key={index}>
                             <Text style={styles.role}>{opp.jobRole}</Text>
                             <Text style={styles.description}>{opp.description}</Text>
-                            {/* <Text style={styles.availability}>
-                                availability: {opp.availability[0]}-{opp.availability[1]}
-                            </Text> */}
                             <Button
                                 title="Edit Listing"
                                 onPress={() => {
-                                    router.replace({
-                                        pathname: "/(tabs)/EditListing",
+                                    router.push({
+                                        pathname: "./edit",
                                         params: { id: opp.id },
                                     });
                                 }}
                             />
                             <Button title="Delete Listing" onPress={() => handleDelete(opp.id)} />
+                            <Button
+                                title="View Applications"
+                                onPress={() => {
+                                    router.push({
+                                        pathname: "./applications",
+                                        params: { id: opp.id },
+                                    });
+                                }}
+                            ></Button>
                         </View>
                     );
                 })}
             </View>
+            <Button
+                title="Post Listing"
+                onPress={() => {
+                    router.push({
+                        pathname: "./post",
+                    });
+                }}
+            ></Button>
         </ScrollView>
     );
 }
