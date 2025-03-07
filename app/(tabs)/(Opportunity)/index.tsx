@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUserContext } from "../../../context/UserContext";
 import { View, ScrollView, Text, Button } from "react-native";
-import { doc, getDoc, onSnapshot, collection, deleteDoc } from "firebase/firestore";
+import { doc, onSnapshot, collection, deleteDoc } from "firebase/firestore";
 import { db } from "../../../database/firebase";
 import { StyleSheet } from "react-native";
 import { router } from "expo-router";
