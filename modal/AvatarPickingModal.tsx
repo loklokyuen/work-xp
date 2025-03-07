@@ -6,7 +6,7 @@ import { auth } from "@/database/firebase";
 import { updateUserProfileImage } from "@/database/user";
 import { updateProfile } from "firebase/auth";
 import { useUserContext } from "@/context/UserContext";
-import { uploadImage } from '@/Cloudinary/cloudinaryWrapper';
+import { uploadImage, deleteImage } from '@/Cloudinary/cloudinaryWrapper';
 import { Button, IconButton, Text, TextInput } from "react-native-paper";
 
 interface AvatarPickingModalProps {
@@ -41,36 +41,37 @@ export default function AvatarPickingModal({ open, onClose }: AvatarPickingModal
             setError("Please select an image");
             return;
         }
-        if (selectedAvatar){
-            if ( auth.currentUser && accountType){
-                updateProfile(auth.currentUser, {
-                    photoURL: selectedAvatar,
-                });
-                updateUserProfileImage(auth.currentUser.uid, accountType, selectedAvatar);
+        let imageURL = '';
+        if (image){
+            imageURL = await uploadImage(image);
+        } else {
+            imageURL = selectedAvatar;
+        }
+        if ( auth.currentUser && accountType){
+            updateProfile(auth.currentUser, {
+                photoURL: imageURL,
+            });
+            const isUpdateSuccess = await updateUserProfileImage(auth.currentUser.uid, accountType, imageURL)
+            if (isUpdateSuccess) {
                 alert("Avatar updated successfully");
                 setError("");
                 if (user) {
-                    setUser({...user, photoUrl: selectedAvatar || ""});
-                }
-            } else alert("No user signed in");
-        } else if (image) {
-            const imageURL = await uploadImage(image);;
-            if ( auth.currentUser && accountType){
-                updateProfile(auth.currentUser, {
-                    photoURL: imageURL,
-                });
-                const isUpdateSuccess = await updateUserProfileImage(auth.currentUser.uid, accountType, imageURL)
-                if (isUpdateSuccess) {
-                    alert("Avatar updated successfully");
-                    setError("");
-                    if (user) {
-                        setUser({...user, photoUrl: imageURL || ""});
+                    const oldProfileImage = user.photoUrl;
+                    if (oldProfileImage && oldProfileImage.includes("https://res.cloudinary.com/")) {
+                        const publicId = oldProfileImage.split("/").pop()?.split(".")[0];
+                        if (publicId) {
+                            await deleteImage(publicId);
+                            alert("Old image deleted");
+                        }
                     }
-                } else {
-                    alert("Failed to update avatar");
+                    setUser({...user, photoUrl: imageURL || ""});
                 }
-            } else alert("No user signed in");
-        }
+                onClose();
+            } else {
+                alert("Failed to update avatar");
+            }
+        } else alert("No user signed in");
+        
         onClose();
         }
     
