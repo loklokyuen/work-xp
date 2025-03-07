@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
 
 import { addApplication } from "@/database/applications";
-import { getStudentById } from "@/database/student";
 import { useLocalSearchParams } from "expo-router";
+
 type DayPressEvent = {
     dateString: string;
     day: number;
@@ -25,17 +25,11 @@ export default function Application() {
     }>();
 
     const [jobRole, setJobRole] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
     const [companyName, setCompanyName] = useState<string>("");
 
     const [dates, setDates] = useState<Record<string, any>>({});
     const [why, setWhy] = useState<string>("");
     const [reason, setReason] = useState<string>("");
-    const [subjects, setSubjects] = useState<string[] | undefined>([]);
-    const [personalStatement, setPersonalStatement] = useState<string>("");
-    const [experience, setExperience] = useState<string | undefined>("");
-    const [displayName, setDisplayName] = useState<string>("");
-    const [photoUrl, setPhotoUrl] = useState<string>("");
 
     const [chosen, setChosen] = useState<Record<string, any>>({});
 
@@ -48,7 +42,6 @@ export default function Application() {
                 const data = result.data();
                 if (data) {
                     setJobRole(data.jobRole);
-                    setDescription(data.description);
                 }
             });
             getDocs(collection(db, "Business", BusinessId, "Opportunities", OpportunityId, "Availabilities")).then((result) => {
@@ -62,13 +55,6 @@ export default function Application() {
                 if (data) {
                     setCompanyName(data.displayName);
                 }
-            });
-            getStudentById(user.uid).then((res) => {
-                setDisplayName(res?.displayName);
-                setSubjects(res?.subjects);
-                setExperience(res?.experience);
-                setPersonalStatement(res?.personalStatement);
-                setPhotoUrl(res?.photoUrl);
             });
 
             return () => {
@@ -139,33 +125,7 @@ export default function Application() {
 
     const handleSubmit = async () => {
         if (why && reason && chosen) {
-            const data = {
-                oppId: OpportunityId,
-                businessId: BusinessId,
-                datesApplied: chosen,
-                studentId: user.uid,
-                whyApply: why,
-                whySuitable: reason,
-                personalStatement: personalStatement,
-                displayName: displayName,
-                experience: experience,
-                subjects: subjects,
-                photoUrl: photoUrl,
-            };
-
-            await addApplication(
-                data.oppId,
-                data.businessId,
-                data.datesApplied,
-                data.studentId,
-                data.whyApply,
-                data.whySuitable,
-                data.personalStatement,
-                data.experience,
-                data.subjects,
-                data.displayName,
-                data.photoUrl
-            );
+            await addApplication(OpportunityId, BusinessId, user.uid, Object.keys(chosen), why, reason);
         }
     };
     return (
