@@ -1,4 +1,5 @@
 import { useUserContext } from "@/context/UserContext";
+
 import {
   View,
   Text,
@@ -48,6 +49,8 @@ export default function Application() {
   const [subjects, setSubjects] = useState<string[] | undefined>([]);
   const [personalStatement, setPersonalStatement] = useState<string>("");
   const [experience, setExperience] = useState<string | undefined>("");
+  const [displayName, setDisplayName] = useState<string>("");
+  const [photoUrl, setPhotoUrl] = useState<string>("");
 
   const [chosen, setChosen] = useState<Record<string, any>>({});
 
@@ -95,9 +98,11 @@ export default function Application() {
         }
       );
       getStudentById(user.uid).then((res) => {
+        setDisplayName(res?.displayName);
         setSubjects(res?.subjects);
         setExperience(res?.experience);
         setPersonalStatement(res?.personalStatement);
+        setPhotoUrl(res?.photoUrl);
       });
 
       return () => {
@@ -179,8 +184,10 @@ export default function Application() {
         whyApply: why,
         whySuitable: reason,
         personalStatement: personalStatement,
+        displayName: displayName,
         experience: experience,
         subjects: subjects,
+        photoUrl: photoUrl,
       };
 
       await addApplication(
@@ -192,7 +199,9 @@ export default function Application() {
         data.whySuitable,
         data.personalStatement,
         data.experience,
-        data.subjects
+        data.subjects,
+        data.displayName,
+        data.photoUrl
       );
     }
   };
