@@ -23,7 +23,7 @@ const fontConfig: Record<string, TextStyle> = {
   },
 };
 
-export const lightTheme: MD3Theme = {
+const lightTheme: MD3Theme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
@@ -41,7 +41,7 @@ export const lightTheme: MD3Theme = {
   fonts: configureFonts({ config: fontConfig }),
 };
 
-export const darkTheme: MD3Theme = {
+const darkTheme: MD3Theme = {
   ...MD3DarkTheme,
   colors: {
     ...MD3DarkTheme.colors,
@@ -57,3 +57,5 @@ export const darkTheme: MD3Theme = {
   roundness: 8,
   fonts: configureFonts({ config: fontConfig }),
 };
+
+export default { lightTheme, darkTheme };
