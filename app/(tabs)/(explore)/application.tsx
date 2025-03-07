@@ -1,7 +1,7 @@
 import { useUserContext } from "@/context/UserContext";
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from "react-native";
 import { addDoc, collection, getDoc, onSnapshot, doc, updateDoc } from "firebase/firestore";
-import { db } from "../../database/firebase";
+import { db } from "../../../database/firebase";
 import { useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
 import { snapshot } from "node:test";
