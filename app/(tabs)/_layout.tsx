@@ -1,15 +1,13 @@
 import { Tabs } from "expo-router";
-import React from "react";
 import { Platform } from "react-native";
 
 import { HapticTab } from "@/components/expoComponents/HapticTab";
-import { IconSymbol } from "../../components/expoComponents/ui/IconSymbol";
 import TabBarBackground from "../../components/expoComponents/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Feather from "@expo/vector-icons/Feather";
 import AntDesign from "@expo/vector-icons/AntDesign";
+
 export default function TabLayout() {
     const colorScheme = useColorScheme();
 
@@ -33,7 +31,7 @@ export default function TabLayout() {
                 name="(Opportunity)"
                 options={{
                     tabBarLabel: () => null,
-                    tabBarIcon: () => <AntDesign name="pluscircleo" size={30} color="black" />,
+                    tabBarIcon: () => <Feather name="briefcase" size={30} color="black" />,
                 }}
             />
             <Tabs.Screen
