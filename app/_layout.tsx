@@ -18,7 +18,6 @@ import {
 
 import merge from "deepmerge";
 import theme from "./styles/theme";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const { lightTheme, darkTheme } = theme;
 
