@@ -5,7 +5,7 @@ import { db } from "./firebase";
 const BusinessUsersCollection = collection(db, "Business");
 
 async function getBusinessById(uid: string): Promise<Business> {
-    const docRef = doc(db, "Business", uid);
+    const docRef = doc(BusinessUsersCollection, uid);
     const docSnap = await getDoc(docRef);
     const business = docSnap.data();
     return business as Business;
@@ -30,14 +30,30 @@ async function getBusinessBySector(sector: string): Promise<Business[]> {
 
 async function getBusinessOpportunities(uid: string): Promise<Opportunity[]> {
   const subCollectionRef = collection(
-    doc(db, "Business", uid),
-    "Opportunities"
+    doc(db, "Business", uid), "Opportunities"
   );
   const querySnapshot = await getDocs(subCollectionRef);
   const opportunitiesList = querySnapshot.docs.map((doc) => {
     return { id: doc.id, ...doc.data() } as Opportunity;
   });
   return opportunitiesList;
+}
+
+async function getBusinessOpportunityById(uid: string, opportunityId: string): Promise<Opportunity> {
+  const docRef = doc(db, "Business", uid, "Opportunities", opportunityId);
+  const docSnap = await getDoc(docRef);
+  const opportunity = docSnap.data();
+  return opportunity as Opportunity;
+}
+
+async function getAvailabilitiesByOpportunity(uid: string, opportunityId: string): Promise<any[]> {
+    const subCollectionRef = collection(doc(db, "Business", uid), "Opportunities", opportunityId, "Availabilities");
+    const querySnapshot = await getDocs(subCollectionRef);
+    const applicationsList = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() } as any;
+    });
+    console.log(applicationsList);
+    return applicationsList;
 }
 
 async function updateBusinesInfo(uid: string, email: string, county: string, description: string, phoneNumber: string, sector: string, address: string): Promise<boolean> {
@@ -73,6 +89,8 @@ export {
   getBusinesses,
   getBusinessBySector,
   getBusinessOpportunities,
+  getBusinessOpportunityById,
   getBusinessByCounty,
-  updateBusinesInfo
+  updateBusinesInfo,
+  getAvailabilitiesByOpportunity
 };
