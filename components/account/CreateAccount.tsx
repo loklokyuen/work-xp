@@ -38,7 +38,7 @@ const CreateAccount: React.FC<accountProps> = ({ setIsNewUser }: accountProps) =
                     });
                     setUser(userData);
                     setUserAccountType(accountType);
-                    addNewUser(user.uid, accountType, user.displayName || "", user.photoURL || "", user.email || "");
+                    addNewUser(user.uid, accountType, displayName || "", user.photoURL || "", email || "");
                     // sendEmailVerification(user)
                     //   .then(() => {
                     //     alert("Email verification sent.");
@@ -88,7 +88,6 @@ const CreateAccount: React.FC<accountProps> = ({ setIsNewUser }: accountProps) =
             {error ? <Text style={styles.error}>{error}</Text> : null}
             <View style={styles.buttonContainer}>
                 <Button mode="contained-tonal" onPress={handleCreateAccount}>Create Account</Button>
-                {/* <Button mode="outlined" onPress={handleGuestSignIn}>Continue as guest</Button> */}
             </View>
             <Text variant="titleMedium" style={{textAlign: "center", margin: 10}}>Already have an account?</Text>
             <View style={styles.buttonContainer}>
