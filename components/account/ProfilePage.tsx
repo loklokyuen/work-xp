@@ -18,7 +18,7 @@ import { useRouter } from "expo-router";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import GuestModePrompt from "./GuestModePrompt";
 
-export default function ProfilePage({ setIsNewUser }: accountProps) {
+export default function ProfilePage({ setIsNewUser, setIsExistingUser }: accountProps) {
     const [loading, setLoading] = useState<Boolean>(true);
     const [editMode, setEditMode] = useState<Boolean>(false);
     const [guestMode, setGuestMode] = useState<Boolean>(false);
@@ -112,6 +112,7 @@ export default function ProfilePage({ setIsNewUser }: accountProps) {
     const clearGuestMode = (isNewUser: boolean) => {
         setGuestMode(false);
         setIsNewUser(isNewUser);
+        setIsExistingUser(!isNewUser);
         setAccountType(null);
         setUser(null);
     };
