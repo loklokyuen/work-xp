@@ -1,8 +1,8 @@
-import { ReadonlyBusinessInfo } from "@/components/account/ReadonlyBusinessInfo";
-import { ReadonlyStudentInfo } from "@/components/account/ReadonlyStudentInfo";
+import { ReadonlyBusinessInfo } from "./ReadonlyBusinessInfo";
+import { ReadonlyStudentInfo } from "./ReadonlyStudentInfo";
 import { useEffect, useState } from "react";
-import { Platform, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
-import { Button, IconButton } from "react-native-paper";
+import { Platform, SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Button, IconButton, Text } from "react-native-paper";
 import { getBusinessById } from "@/database/business";
 import { useUserContext } from "@/context/UserContext";
 import { getStudentById } from "@/database/student";
@@ -14,10 +14,12 @@ import { updatePassword } from "firebase/auth";
 import ImageViewer from "../imageViewer";
 import AvatarPickingModal from "@/modal/AvatarPickingModal";
 import { ChangePasswordModal } from "@/modal/ChangePasswordModal";
+import { useRouter } from "expo-router";
 
-export default function ProfilePage() {
+export default function ProfilePage({ setIsNewUser }:accountProps) {
     const [loading, setLoading] = useState<Boolean>(true)
-    const [editButtonPressed, setEditButtonPressed] = useState<Boolean>(false)
+    const [editMode, setEditMode] = useState<Boolean>(false)
+    const [guestMode, setGuestMode] = useState<Boolean>(false)
     const [businessInfo, setBusinessInfo] = useState<Business>()
     const [studentInfo, setStudentInfo] = useState<Student>()
     const [openAvatarPicker, setOpenAvatarPicker] = useState<boolean>(false)
@@ -31,12 +33,17 @@ export default function ProfilePage() {
         getBusinessById(user.uid).then((res) => {
           if (res) setBusinessInfo(res)
           setLoading(false)
+          setGuestMode(false)
           })
       } else if (accountType === "Student"){
         getStudentById(user.uid).then((res) => {
           if (res) setStudentInfo(res)
           setLoading(false)
+          setGuestMode(false)
         })
+      } else {
+        setGuestMode(true)
+        setLoading(false)
       }
     }, [user])
 
@@ -62,43 +69,61 @@ export default function ProfilePage() {
             });
         }
     };
-    
 
-    if (loading) return <Text>Loading...</Text>
+    const clearGuestMode = (isNewUser: boolean) => {
+      setGuestMode(false);
+      setIsNewUser(isNewUser); 
+      setAccountType(null);
+      setUser(null);
+    }
+    
+    if (loading) return <ActivityIndicator size="large" style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          <Text style={styles.title}>Profile</Text>
-          <View style={{ alignItems: "flex-end", marginRight: 20, position: "absolute", right: 10, top: 10 }}>
+          <Text variant="titleLarge" style={{textAlign: 'center', margin: 15}}>{guestMode? "Guest":"Profile"}</Text>
+          {guestMode && <View>
+          <Text variant="titleMedium" style={{textAlign: "center", margin: 20}}>You are currently in guest mode. Please sign in to enjoy the full functionalities.</Text>
+          <View style={styles.buttonContainer}>
+            <Button mode="contained-tonal" onPress={()=>{ clearGuestMode(true) }}>Create Account</Button>
+            <Button mode="contained-tonal" onPress={()=>{ clearGuestMode(false) }}>Sign In</Button>
+          </View>
+          </View>}
+          {!guestMode && <View style={{ alignItems: "flex-end", marginRight: 20, position: "absolute", right: 2, top: 10 }}>
             <Button
               mode="contained-tonal"
-              onPress={() => {setEditButtonPressed(!editButtonPressed)}}
+              onPress={() => {setEditMode(!editMode)}}
             >
-              {editButtonPressed ? "Go back" : "Edit"}
+              {editMode ? "Back" : "Edit"}
             </Button>
-          </View>
-          {editButtonPressed? null:
-
-          <View style={{alignItems: "center"}}>
-          <ImageViewer imgSource={studentInfo?.photoUrl || businessInfo?.photoUrl || placeHolderImage} ></ImageViewer>
-          <IconButton icon="camera" size={20} onPress={()=>setOpenAvatarPicker(!openAvatarPicker)} />
-          <AvatarPickingModal open={openAvatarPicker} onClose={()=> setOpenAvatarPicker(false)}></AvatarPickingModal>
           </View>}
-
-          {editButtonPressed ? businessInfo && <EditableBusinessInfo businessInfo={businessInfo}/> 
-          : businessInfo && <ReadonlyBusinessInfo businessInfo={businessInfo}/>}
-          {editButtonPressed? studentInfo && <EditableStudentInfo studentInfo={studentInfo}/> 
-          : studentInfo && <ReadonlyStudentInfo studentInfo={studentInfo}/>}
-          {editButtonPressed? null:
+          {!editMode && !guestMode &&
+          <View style={styles.centeredView}>
+            <View style={{alignItems: "center", position: "relative"}}>
+              <ImageViewer imgSource={studentInfo?.photoUrl || businessInfo?.photoUrl || placeHolderImage} ></ImageViewer>
+              <IconButton icon="camera" size={20} onPress={()=>setOpenAvatarPicker(!openAvatarPicker)} 
+                style={{position: 'absolute', bottom: 0, right: 5, backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: 150, padding: 5}}/>
+              <AvatarPickingModal open={openAvatarPicker} onClose={()=> setOpenAvatarPicker(false)}></AvatarPickingModal>
+            </View>
+          </View>}
+          {!editMode && !guestMode && <Text variant="titleMedium" style={{textAlign: "center", margin: 10}}>{studentInfo?.displayName || businessInfo?.displayName}</Text>}
+          {editMode ? 
+            (businessInfo ? 
+              <EditableBusinessInfo businessInfo={businessInfo} />  
+              : studentInfo && <EditableStudentInfo studentInfo={studentInfo}/>)   
+            : (businessInfo ? 
+              <ReadonlyBusinessInfo businessInfo={businessInfo} />
+            : studentInfo && <ReadonlyStudentInfo studentInfo={studentInfo} />)}
+          {!editMode && !guestMode &&
           <View style={styles.buttonContainer}>
           <Button style={{ margin: 5 }}
-              mode="contained-tonal"
+              mode="outlined"
               onPress={()=>{ setOpenChangePassword(true)}}>
               Change Password
             </Button>
             <ChangePasswordModal open={openChangePassword} onClose={()=> setOpenChangePassword(false)} onChangePassword={handleChangePassword}></ChangePasswordModal>
             <Button  style={{ margin: 5 }}
-              mode="contained-tonal"
+              mode="outlined"
               onPress={handleLogout}
             >
               Log out

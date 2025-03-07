@@ -1,23 +1,24 @@
-import { Button, IconButton, Text, TextInput } from "react-native-paper";
+import { Button, Chip, IconButton, Text, TextInput } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { StyleSheet, Platform, View } from "react-native";
 import { useUserContext } from "@/context/UserContext";
 import { updateStudentInfo } from "@/database/student";
+import styles from "@/app/styles";
 
 export function EditableStudentInfo({studentInfo}: StudentProps) {
     const [bio, setBio] = useState<string>(studentInfo.personalStatement || "");
     const [experience, setExperience] = useState<string>(studentInfo.experience || "")
     const [email, setEmail] = useState<string>(studentInfo.email);
     const [county, setCounty] = useState<string>(studentInfo.county || "")
-    const [rawSubjects, setRawSubjects] = useState<string>(studentInfo.subjects ? studentInfo.subjects.join(",") : "")
+    // const [rawSubjects, setRawSubjects] = useState<string>(studentInfo.subjects ? studentInfo.subjects.join(",") : "")
     const [subjects, setSubjects] =useState<string[]>(studentInfo.subjects)
-  
+    const [newSubject, setNewSubject] = useState<string>("")
     const {user} = useUserContext()
   
 
-  useEffect(() => {
-      setSubjects(rawSubjects.split(","))
-  }, [rawSubjects])
+  // useEffect(() => {
+  //     setSubjects(rawSubjects.split(","))
+  // }, [rawSubjects])
   
   const handleSave = async() => {
       try {
@@ -32,7 +33,12 @@ export function EditableStudentInfo({studentInfo}: StudentProps) {
           console.log(error)
       }
   }
-  
+  const handleDeleteSubject = (subject: string) => {
+    console.log("deleting", subject);
+    
+    const newSubjects = subjects.filter((s) => s !== subject)
+    setSubjects(newSubjects)
+  }
     return (
       <>
         <TextInput  style={{ margin: 10}}
@@ -60,12 +66,32 @@ export function EditableStudentInfo({studentInfo}: StudentProps) {
           value={county}
           onChangeText={(text) => setCounty(text)}
         />
-         <TextInput style={{ margin: 10}}
-          label="Subjects (enter separated by commas)"
+        <Text variant="titleSmall" style={{ marginHorizontal: 20}}>Subjects:</Text>
+
+        <View style={{flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 10}}>
+          {subjects.map((subject) => {
+            return <Chip key={subject} style={{ margin: 3 }} closeIcon="close" onClose={()=>{handleDeleteSubject(subject)}}>{subject}</Chip>
+            })
+          }
+        </View>
+        <View style={{flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: 10, justifyContent: 'center'}}>
+
+         <TextInput style={{ margin: 5, width: "60%"}} dense
+          label="Add a subject" 
           mode="outlined"
-          value={rawSubjects}
-          onChangeText={(text) => setRawSubjects(text)}
+          value={newSubject}
+          onChangeText={(text) => setNewSubject(text)}
         />
+          <Button style={{ margin: 10, justifyContent: 'center'}}
+            mode="outlined"
+            onPress={() => {
+              setSubjects([...subjects, newSubject])
+              setNewSubject("")
+            }}
+          >
+            Add
+          </Button>
+        </View>
         <Button style={{ margin: 10}}
           mode="contained-tonal"
           onPress={handleSave}

@@ -25,11 +25,7 @@ const Header = () => {
   };
 
   const handleProfile = () => {
-    if (user) {
-      router.push("/profilePage");
-    } else {
       router.push("/account");
-    }
   };
 
   return (
