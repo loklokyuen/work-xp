@@ -1,5 +1,6 @@
 import { useUserContext } from "@/context/UserContext";
-import { View, Text, TextInput, Button, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { Text, TextInput, Button } from "react-native-paper";
 import { addDoc, collection, getDoc, doc, updateDoc, deleteDoc, getDocs } from "firebase/firestore";
 import { db } from "../database/firebase";
 import { useEffect, useState } from "react";
@@ -122,6 +123,7 @@ export default function Listing({ listingId }: { listingId: string }) {
     const handleSubmit = async () => {
         if ((Object.keys(periods).length || remove.length) && jobRole && description) {
             try {
+                if (!user) return;
                 const document = {
                     jobRole: jobRole,
                     description: description,
@@ -169,7 +171,7 @@ export default function Listing({ listingId }: { listingId: string }) {
 
             <View style={styles.inputContainer}>
                 {listingId ? <Text style={styles.label}>Edit the description</Text> : <Text style={styles.label}>What is the description?</Text>}
-                <TextInput style={styles.input} value={description} onChangeText={setDescription} placeholder="The opportunity involves.." />
+                <TextInput multiline style={styles.input} value={description} onChangeText={setDescription} placeholder="The opportunity involves.." />
             </View>
 
             <View style={styles.inputContainer}>
@@ -200,7 +202,7 @@ export default function Listing({ listingId }: { listingId: string }) {
                 />
             </View>
 
-            <Button title="Submit" onPress={handleSubmit} />
+            <Button mode="contained" onPress={handleSubmit}>Submit</Button>
         </ScrollView>
     );
 }
@@ -229,8 +231,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#ddd",
         borderRadius: 5,
-        padding: 10,
+        padding: 2,
         fontSize: 16,
-        height: 40,
+        minHeight: 40,
     },
 });
