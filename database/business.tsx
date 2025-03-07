@@ -1,5 +1,5 @@
 
-import { collection, addDoc, getDocs, getFirestore, doc, getDoc, query, where, updateDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, getFirestore, doc, getDoc, query, where, updateDoc, deleteDoc } from "firebase/firestore";
 
 import { db } from "./firebase";
 const BusinessUsersCollection = collection(db, "Business");
@@ -85,6 +85,17 @@ async function getBusinessByCounty(county: string): Promise<Business[]> {
   return businessesList;
 }
 
+async function deleteBusinessById(uid:string): Promise<boolean> {
+  try {
+      const docRef = doc(BusinessUsersCollection, uid);
+      await deleteDoc(docRef);
+      return true;
+  } catch (error) {
+      alert("Error deleting business: " + error);
+      return false;
+  }
+}
+
 export {
   getBusinessById,
   getBusinesses,
@@ -93,5 +104,6 @@ export {
   getBusinessOpportunityById,
   getBusinessByCounty,
   updateBusinesInfo,
-  getAvailabilitiesByOpportunity
+  getAvailabilitiesByOpportunity,
+  deleteBusinessById
 };
