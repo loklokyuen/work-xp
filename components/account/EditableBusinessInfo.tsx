@@ -62,12 +62,12 @@ export function EditableBusinessInfo({
     "Tourism",
     "Creative Arts",
     "Marketing",
-    "Retail",
     "Fashion",
     "Entertainment",
     "Engineering",
     "Sports",
   ];
+
   const counties = [
     "Bedfordshire",
     "Belfast",
@@ -201,9 +201,9 @@ export function EditableBusinessInfo({
             </Button>
           }
         >
-          {industries.map((item) => (
+          {industries.map((item, index) => (
             <Menu.Item
-              key={item}
+              key={`${item}-${index}`}
               title={item}
               onPress={() => {
                 setIndustry(item);
@@ -223,9 +223,9 @@ export function EditableBusinessInfo({
             </Button>
           }
         >
-          {counties.map((item) => (
+          {counties.map((item, index) => (
             <Menu.Item
-              key={item}
+              key={`${item}-${index}`}
               title={item}
               onPress={() => {
                 setCounty(item);
