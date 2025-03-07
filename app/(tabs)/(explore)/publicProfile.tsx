@@ -3,14 +3,8 @@ import ReviewCard from "@/components/profile/reviewCard";
 import { getBusinessById, getBusinessOpportunities } from "@/database/business";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  Image,
-} from "react-native";
-import { Button, List } from "react-native-paper";
+import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
+import { Button, List, useTheme } from "react-native-paper";
 
 const publicComProfile: React.FC = () => {
   const navigation = useNavigation();
@@ -22,6 +16,9 @@ const publicComProfile: React.FC = () => {
   const [expanded, setExpanded] = React.useState(false);
 
   const [loading, setLoading] = useState<boolean>(true);
+
+  // Get the theme
+  const { colors } = useTheme();
 
   useEffect(() => {
     navigation.setOptions({ headerShown: true, title: "Back to all" });
@@ -65,9 +62,17 @@ const publicComProfile: React.FC = () => {
           style={styles.bannerImage}
         />
         <View style={styles.textContainer}>
-          <Text style={styles.title}>{business?.displayName} </Text>
-          <Text style={styles.industry}> {business?.sector} </Text>
-          <Text style={styles.desc}> {business?.description}</Text>
+          <Text style={[styles.title, { color: colors.onSurface }]}>
+            {business?.displayName}{" "}
+          </Text>
+          <Text style={[styles.industry, { color: colors.primary }]}>
+            {" "}
+            {business?.sector}{" "}
+          </Text>
+          <Text style={[styles.desc, { color: colors.onBackground }]}>
+            {" "}
+            {business?.description}
+          </Text>
         </View>
         {/* contact info */}
         <List.Section>
@@ -77,38 +82,43 @@ const publicComProfile: React.FC = () => {
               textAlign: "center",
               fontSize: 18,
               fontWeight: "bold",
+              color: colors.onSurface,
             }}
-            style={{ backgroundColor: "#3E92CC" }}
+            style={{ backgroundColor: colors.primary }}
             expanded={expanded}
             onPress={() => setExpanded(!expanded)}
           >
             <View style={styles.accordionContent}>
-              <Text style={styles.text}>Email: {business?.email}</Text>
-              <Text style={styles.text}>
+              <Text style={[styles.text, { color: colors.onSurface }]}>
+                Email: {business?.email}
+              </Text>
+              <Text style={[styles.text, { color: colors.onSurface }]}>
                 Visit us: {business?.address}, {business?.county}
               </Text>
               <Button
-                    // style={styles.applyButton}
-                    // textColor="#FFFAFF"
-                    // onPress={() => {
-                    //   router.push({
-                    //     pathname: "./chat",
-                    //     params: { id: opp.id },
-                    //   });
-                    // }}
-                  >Chat</Button>
+                mode="contained"
+                onPress={() => {
+                  // Navigate to chat page
+                }}
+              >
+                Chat
+              </Button>
             </View>
           </List.Accordion>
         </List.Section>
 
         {/* opportunitites (work experience listings per business)*/}
         <View style={styles.textContainer}>
-          <Text style={styles.subtitle}>Work Experience Available</Text>
+          <Text style={[styles.subtitle, { color: colors.onSurface }]}>
+            Work Experience Available
+          </Text>
           <OpportunityCards opportunities={opportunities} businessId={uid} />
         </View>
 
         {/* reviews carousel */}
-        <Text style={styles.reviewsHeader}>Hear from past students</Text>
+        <Text style={[styles.reviewsHeader, { color: colors.onSurface }]}>
+          Hear from past students
+        </Text>
         <ReviewCard />
       </ScrollView>
     </>
@@ -142,7 +152,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     fontSize: 18,
     fontWeight: "bold",
-    // marginTop: 60,
   },
   reviewsHeader: {
     textAlign: "center",
@@ -170,31 +179,9 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     fontSize: 16,
   },
-  textOnWhite: {
-    color: "black",
-    textAlign: "center",
-    paddingTop: 10,
-    paddingBottom: 10,
-    fontSize: 15,
-  },
   accordionContent: {
     backgroundColor: "white",
     padding: 20,
     alignItems: "center",
-  },
-  button: {
-    borderRadius: 20,
-    backgroundColor: "#795663",
-    padding: 13,
-    paddingLeft: 20,
-    paddingRight: 20,
-    elevation: 2,
-    width: 125,
-    marginTop: 20,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
   },
 });
