@@ -17,7 +17,10 @@ import {
 } from "@react-navigation/native";
 
 import merge from "deepmerge";
-import { lightTheme, darkTheme } from "./styles/theme";
+import theme from "./styles/theme";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+const { lightTheme, darkTheme } = theme;
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
