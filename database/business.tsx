@@ -56,10 +56,11 @@ async function getAvailabilitiesByOpportunity(uid: string, opportunityId: string
     return applicationsList;
 }
 
-async function updateBusinesInfo(uid: string, email: string, county: string, description: string, phoneNumber: string, sector: string, address: string): Promise<boolean> {
+async function updateBusinesInfo(uid: string, displayName: string, email: string, county: string, description: string, phoneNumber: string, sector: string, address: string): Promise<boolean> {
     try {
         const docRef = doc(BusinessUsersCollection, uid);
         await updateDoc(docRef, {
+            displayName,
             email,
             county,
             description,

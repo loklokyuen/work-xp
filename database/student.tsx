@@ -45,10 +45,11 @@ async function addStudent(uid: string, displayName: string, photoUrl: string, em
     }
 }
 
-async function updateStudentInfo(uid: string, email: string, county: string, personalStatement: string, experience: string, subjects: string[]): Promise<boolean> {
+async function updateStudentInfo(uid: string, displayName: string, email: string, county: string, personalStatement: string, experience: string, subjects: string[]): Promise<boolean> {
     try {
         const docRef = doc(StudentUsersCollection, uid);
         await updateDoc(docRef, {
+            displayName,
             email,
             county,
             personalStatement,
