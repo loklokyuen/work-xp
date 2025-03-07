@@ -1,6 +1,6 @@
 import { useUserContext } from "@/context/UserContext";
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from "react-native";
-import { addDoc, collection, getDoc, onSnapshot, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { addDoc, collection, getDoc, doc, updateDoc, deleteDoc, getDocs } from "firebase/firestore";
 import { db } from "../database/firebase";
 import { useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
@@ -33,15 +33,15 @@ export default function Listing({ listingId }: { listingId: string }) {
     useEffect(() => {
         if (user?.uid) {
             if (listingId) {
-                const unsubscribe1 = onSnapshot(doc(db, "Business", user.uid, "Opportunities", listingId), (snapshot) => {
-                    const data = snapshot.data();
+                getDoc(doc(db, "Business", user.uid, "Opportunities", listingId)).then((result) => {
+                    const data = result.data();
                     if (data) {
                         setJobRole(data.jobRole);
                         setDescription(data.description);
                     }
                 });
-                const unsubscribe2 = onSnapshot(collection(db, "Business", user.uid, "Opportunities", listingId, "Availabilities"), (snapshot) => {
-                    snapshot.docs.forEach((doc) => {
+                getDocs(collection(db, "Business", user.uid, "Opportunities", listingId, "Availabilities")).then((result) => {
+                    result.docs.forEach((doc) => {
                         const period = doc.data().period;
                         markDates(period, doc.id, "red");
                     });
@@ -102,10 +102,6 @@ export default function Listing({ listingId }: { listingId: string }) {
         setDates(newDates);
     };
 
-    useEffect(() => {
-        console.log(periods, remove);
-    }, [periods, remove]);
-
     function handleDay(day: string) {
         if (!dates[day]) {
             if (!firstDay || new Date(firstDay) > new Date(day)) {
@@ -150,7 +146,8 @@ export default function Listing({ listingId }: { listingId: string }) {
                         });
                     }
                 }
-                // router.replace("/(tabs)/ViewCurrentOpportunities");
+                console.log(Object.keys(periods).length, remove.length);
+                router.back();
                 // setDates({});
                 // setPeriods([]);
                 // setJobRole("");
