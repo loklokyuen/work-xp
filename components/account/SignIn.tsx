@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { View, Text, TextInput, Button } from "react-native";
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { View } from "react-native";
+import { Text, TextInput, Button } from "react-native-paper";
+import { signInWithEmailAndPassword, sendPasswordResetEmail, signInAnonymously } from "firebase/auth";
 import { auth } from "@/database/firebase";
 import styles from "../../app/styles";
 import { setUserAccountType, useUserContext } from "@/context/UserContext";
@@ -63,27 +64,32 @@ const SignIn: React.FC<accountProps> = ({ setIsNewUser }) => {
     };
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{accountType} Sign In</Text>
-            <Button title="Student" onPress={() => setAccountType("Student")} />
-            <Text> OR</Text>
-            <Button title="Business" onPress={() => setAccountType("Business")} />
+          <Text style={styles.title}>{accountType} User Sign In</Text>
+            <View style={styles.buttonContainer}>
+            <Button mode="contained-tonal" onPress={() => setAccountType("Student")} >Student</Button>
+            <Text variant="titleMedium" style={{textAlign: "center", alignContent: "center"}}> OR</Text>
+            <Button mode="contained-tonal" onPress={() => setAccountType("Business")} >Business</Button>
+            </View>
             <TextInput
                 style={styles.input}
-                placeholder="Email"
+                label="Email"
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
                 autoCapitalize="none"
             />
-            <TextInput style={styles.input} placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
+            <TextInput style={styles.input} label="Password" value={password} onChangeText={setPassword} secureTextEntry />
             {error ? <Text style={styles.error}>{error}</Text> : null}
-            <Button title="Sign In" onPress={handleSignIn} />
+            <View style={styles.buttonContainer}>
+                <Button mode="contained-tonal" onPress={handleSignIn} >Sign In</Button>
+            </View>
             <Text style={styles.option} onPress={handleForgetPassword}>
                 Forgot password
             </Text>
-            <Text>Don't have an account?</Text>
-
-            <Button title="Create Account" onPress={() => setIsNewUser(true)} />
+            <Text variant="titleMedium" style={{textAlign: "center", margin: 10}}>Don't have an account?</Text>
+            <View style={styles.buttonContainer}>
+                <Button mode="outlined"  onPress={() => setIsNewUser(true)} >Create Account</Button>
+            </View>
         </View>
     );
 };
