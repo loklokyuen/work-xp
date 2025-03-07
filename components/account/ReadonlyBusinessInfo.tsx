@@ -10,7 +10,7 @@ export function ReadonlyBusinessInfo({businessInfo}: BusinessProps) {
     <>
       <Text variant="titleMedium" style={{ marginHorizontal: 10}}>Company Bio:</Text>
       <View style={{flexDirection: 'row'}}>
-        <Text variant="bodyMedium" style={{ flex: 1, width: 1, margin: 12, borderWidth: 1, padding: 10}}>
+        <Text variant="bodyMedium" style={{ flex: 1, width: 1, margin: 12, borderWidth: 1, padding: 10, minHeight: 40}}>
           {businessInfo.description}
         </Text>
       </View>

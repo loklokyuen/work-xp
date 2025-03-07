@@ -61,6 +61,15 @@ async function getApplications(): Promise<Application1[]> {
   return applicationsList;
 }
 
+async function getAcceptedApplicationsByBusinessId(businessId: string): Promise<Application1[]> {
+  const q = query(ApplicationsCollection, where("businessId", "==", businessId), where("isAccepted", "==", true));
+  const QuerySnapshot = await getDocs(q);
+  const AcceptedApplicationsList = QuerySnapshot.docs.map((doc) => {
+    return { uid: doc.id, ...doc.data() } as Application1;
+  });
+  return AcceptedApplicationsList;
+}
+
 async function getApplicationsByBusinessId(
   businessId: string
 ): Promise<Application1[]> {
@@ -111,6 +120,7 @@ async function updateApplicationAccepted(
 export {
   addApplication,
   getApplications,
+  getAcceptedApplicationsByBusinessId,
   getApplicationsByBusinessId,
   getApplicationsByOppId,
   updateApplicationAccepted,
