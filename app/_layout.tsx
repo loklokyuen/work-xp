@@ -1,49 +1,73 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect } from "react";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
 import "react-native-reanimated";
-import Header from "@/components/expoComponents/Header";
-import { Provider } from "react-native-paper";
+import { Text, useColorScheme } from "react-native";
 
-import { useColorScheme } from "@/hooks/useColorScheme";
-
+import Header from "@/components/Header";
 import { UserProvider } from "@/context/UserContext";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+import { PaperProvider, adaptNavigationTheme } from "react-native-paper";
+import {
+  DarkTheme as NavigationDarkTheme,
+  DefaultTheme as NavigationDefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+
+import merge from "deepmerge";
+import { lightTheme, darkTheme } from "./styles/theme";
+
+const { LightTheme, DarkTheme } = adaptNavigationTheme({
+  reactNavigationLight: NavigationDefaultTheme,
+  reactNavigationDark: NavigationDarkTheme,
+});
+
+const CombinedLightTheme = merge(LightTheme, lightTheme);
+const CombinedDarkTheme = merge(DarkTheme, darkTheme);
+
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-    const colorScheme = useColorScheme();
-    const [loaded] = useFonts({
-        SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-    });
+  const colorScheme = useColorScheme();
 
-    useEffect(() => {
-        if (loaded) {
-            SplashScreen.hideAsync();
-        }
-    }, [loaded]);
+  const theme = colorScheme === "dark" ? CombinedDarkTheme : CombinedLightTheme;
 
-    if (!loaded) {
-        return null;
+  const [loaded] = useFonts({
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+  });
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
     }
+  }, [loaded]);
 
-    return (
-        <Provider>
-            <UserProvider>
-                {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
-                    <Header />
-                    <Stack>
-                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                        <Stack.Screen name="+not-found" options={{ headerShown: false }} />
-                    </Stack>
-                    <StatusBar style="auto" />
-                {/* </ThemeProvider> */}
-            </UserProvider>
-        </Provider>
-    );
+  if (!loaded) {
+    return null;
+  }
+
+  return (
+    <PaperProvider theme={theme}>
+      {" "}
+      <UserProvider>
+        <ThemeProvider value={theme}>
+          {/* <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        > */}
+          <Header />
+          <Text style={{ fontFamily: "SpaceMono", fontSize: 20 }}>
+            Test Font
+          </Text>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          <StatusBar style="auto" />
+        </ThemeProvider>
+        {/* </ThemeProvider> */}
+      </UserProvider>
+    </PaperProvider>
+  );
 }
