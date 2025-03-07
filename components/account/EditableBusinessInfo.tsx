@@ -1,6 +1,10 @@
-import React, { useState } from "react";
-import { Button, TextInput, Menu } from "react-native-paper";
+import { Button, IconButton, Text, TextInput, Menu } from "react-native-paper";
+import ImageViewer from "../expoComponents/imageViewer";
+import * as ImagePicker from "expo-image-picker";
+import { useState } from "react";
 import { View, Platform } from "react-native";
+import { db } from "@/database/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 import { useUserContext } from "@/context/UserContext";
 import { updateBusinesInfo } from "@/database/business";
 
