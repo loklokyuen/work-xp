@@ -80,7 +80,10 @@ declare global {
   whySuitable: string,
   personalStatement: string,
   experience: string,
-  subjects: string
+  subjects: string,
+  displayName: string,
+  photoUrl: string,
+  
     }
 
     type StudentProps = {

@@ -7,6 +7,7 @@ import {
   getDoc,
   query,
   where,
+  updateDoc,
   QuerySnapshot,
 } from "firebase/firestore";
 import { db } from "./firebase";
@@ -21,10 +22,12 @@ async function addApplication(
   whySuitable: string,
   personalStatement: string,
   experience: string,
-  subjects: string
+  subjects: string,
+  displayName: string,
+  photoUrl: string
 ): Promise<boolean> {
   try {
-    await addDoc(ApplicationsCollection, {
+    const docRef = await addDoc(ApplicationsCollection, {
       oppId,
       businessId,
       datesApplied,
@@ -34,7 +37,15 @@ async function addApplication(
       personalStatement,
       experience,
       subjects,
+      displayName,
+      photoUrl,
     });
+
+    await updateDoc(doc(db, "Applications", docRef.id), {
+      uid: docRef.id,
+    });
+
+    console.log("Application added with uid:", docRef.id);
     return true;
   } catch (error) {
     alert("Error adding application: " + error);
@@ -73,9 +84,34 @@ async function getApplicationsByOppId(oppId: string): Promise<Application1[]> {
   return applicationsList;
 }
 
+async function updateApplicationAccepted(
+  appId: string,
+  boolean: boolean
+): Promise<boolean> {
+  try {
+    const docRef = doc(ApplicationsCollection, appId);
+    if (boolean) {
+      await updateDoc(docRef, {
+        isAccepted: true,
+      });
+    }
+    if (!boolean) {
+      await updateDoc(docRef, {
+        isAccepted: false,
+      });
+    }
+
+    return true;
+  } catch (error) {
+    alert("Error accepting application" + error);
+    return false;
+  }
+}
+
 export {
   addApplication,
   getApplications,
   getApplicationsByBusinessId,
   getApplicationsByOppId,
+  updateApplicationAccepted,
 };
