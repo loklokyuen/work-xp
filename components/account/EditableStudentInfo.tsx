@@ -11,6 +11,7 @@ type StudentInfoProps = {
 };
 
 export function EditableStudentInfo({studentInfo, onUpdateInfo}: StudentInfoProps) {
+    const [displayName, setDisplayName] = useState<string>(studentInfo.displayName || "");
     const [bio, setBio] = useState<string>(studentInfo.personalStatement || "");
     const [experience, setExperience] = useState<string>(studentInfo.experience || "")
     const [email, setEmail] = useState<string>(studentInfo.email);
@@ -22,7 +23,7 @@ export function EditableStudentInfo({studentInfo, onUpdateInfo}: StudentInfoProp
   const handleSave = async() => {
       try {
           if (! user ) return;
-          const isUpdateSuccess = await updateStudentInfo(user.uid, email, county, bio, experience, subjects);
+          const isUpdateSuccess = await updateStudentInfo(user.uid, displayName, email, county, bio, experience, subjects);
           if (isUpdateSuccess){
             alert("Changes have been saved")
             onUpdateInfo();
@@ -41,6 +42,13 @@ export function EditableStudentInfo({studentInfo, onUpdateInfo}: StudentInfoProp
   }
     return (
       <>
+        <TextInput
+            style={{ margin: 10 }}
+            label="Name"
+            mode="outlined"
+            value={displayName}
+            onChangeText={(text) => setDisplayName(text)}
+        />
         <TextInput  style={{ margin: 10}}
           label="Personal Statement"
           mode="outlined"

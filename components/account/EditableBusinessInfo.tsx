@@ -17,6 +17,7 @@ export function EditableBusinessInfo({
   businessInfo,
   onUpdateInfo,
 }: BusinessInfoProps) {
+  const [displayName, setDisplayName] = useState<string>(businessInfo.displayName || "");
   const [bio, setBio] = useState<string>(businessInfo.description || "");
   const [industry, setIndustry] = useState<string>(businessInfo.sector || "");
   const [phoneNum, setPhoneNum] = useState<string>(
@@ -151,6 +152,7 @@ export function EditableBusinessInfo({
       if (!user) return;
       const isUpdateSuccess = await updateBusinesInfo(
         user.uid,
+        displayName,
         email,
         county,
         bio,
@@ -171,6 +173,13 @@ export function EditableBusinessInfo({
 
   return (
     <>
+      <TextInput
+          style={{ margin: 10 }}
+          label="Name"
+          mode="outlined"
+          value={displayName}
+          onChangeText={(text) => setDisplayName(text)}
+      />
       <TextInput
         style={{ margin: 10 }}
         label="Company Bio"
