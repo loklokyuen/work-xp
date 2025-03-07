@@ -18,7 +18,7 @@ import { useRouter } from "expo-router";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import GuestModePrompt from "./GuestModePrompt";
 
-export default function ProfilePage({ setIsNewUser }: accountProps) {
+export default function ProfilePage({ setIsNewUser, setIsExistingUser }: accountProps) {
     const [loading, setLoading] = useState<Boolean>(true);
     const [editMode, setEditMode] = useState<Boolean>(false);
     const [guestMode, setGuestMode] = useState<Boolean>(false);
@@ -86,6 +86,44 @@ export default function ProfilePage({ setIsNewUser }: accountProps) {
         });
     }, [user]);
 
+    function handleUpdateInfo(){
+        if (!user) return;
+        setLoading(true);
+        if (accountType === "Business"){
+            getBusinessById(user.uid).then((res) => {
+              setBusinessInfo({ uid: res.uid,
+                displayName: res.displayName || "",
+                sector: res.sector || "",
+                photoUrl: res.photoUrl || "",
+                email: res.email || "",
+                address: res.address || "",
+                county: res.county || "",
+                description: res.description || "",
+                phoneNumber: res.phoneNumber || "",
+                opportunities: [],
+                reviews: [],
+                applications: []
+              });
+              setLoading(false);
+            });
+        } else {
+            getStudentById(user.uid).then((res) => {
+              setStudentInfo({ 
+                uid: res.uid,
+                displayName: res.displayName || "",
+                photoUrl: res.photoUrl || "",
+                email: res.email || "",
+                county: res.county || "",
+                personalStatement: res.personalStatement || "",
+                applications: [],
+                reviews: [],
+                subjects: res.subjects || [],
+                experience: res.experience || ""});
+              setLoading(false);
+            });
+        }
+    }
+
     const handleLogout = () => {
         auth.signOut()
             .then(() => {
@@ -112,6 +150,7 @@ export default function ProfilePage({ setIsNewUser }: accountProps) {
     const clearGuestMode = (isNewUser: boolean) => {
         setGuestMode(false);
         setIsNewUser(isNewUser);
+        setIsExistingUser(!isNewUser);
         setAccountType(null);
         setUser(null);
     };
@@ -164,9 +203,9 @@ export default function ProfilePage({ setIsNewUser }: accountProps) {
                 )}
                 {editMode ? (
                     businessInfo ? (
-                        <EditableBusinessInfo businessInfo={businessInfo} />
+                        <EditableBusinessInfo businessInfo={businessInfo} onUpdateInfo={handleUpdateInfo}/>
                     ) : (
-                        studentInfo && <EditableStudentInfo studentInfo={studentInfo} />
+                        studentInfo && <EditableStudentInfo studentInfo={studentInfo}  onUpdateInfo={handleUpdateInfo}/>
                     )
                 ) : businessInfo ? (
                     <ReadonlyBusinessInfo businessInfo={businessInfo} />

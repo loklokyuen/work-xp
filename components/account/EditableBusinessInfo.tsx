@@ -8,7 +8,12 @@ import { doc, updateDoc } from "firebase/firestore";
 import { useUserContext } from "@/context/UserContext";
 import { updateBusinesInfo } from "@/database/business";
 
-export function EditableBusinessInfo({ businessInfo }: BusinessProps) {
+type BusinessInfoProps = {
+  businessInfo: Business;
+  onUpdateInfo: () => void;
+};
+
+export function EditableBusinessInfo({ businessInfo, onUpdateInfo }: BusinessInfoProps) {
     const [bio, setBio] = useState<string>(businessInfo.description || "");
     const [industry, setIndustry] = useState<string>(businessInfo.sector || "");
     const [phoneNum, setPhoneNum] = useState<string>(businessInfo.phoneNumber || "");
@@ -24,6 +29,7 @@ export function EditableBusinessInfo({ businessInfo }: BusinessProps) {
             const isUpdateSuccess = await updateBusinesInfo(user.uid, email, county, bio, phoneNum, industry, address);
             if (isUpdateSuccess) {
                 alert("Changes have been saved");
+                onUpdateInfo();
             } else {
                 alert("Error updating profile");
             }
