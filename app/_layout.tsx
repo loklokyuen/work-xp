@@ -51,9 +51,9 @@ export default function RootLayout() {
   }
 
   return (
-    <PaperProvider theme={theme}>
+    <PaperProvider theme={lightTheme}>
       <UserProvider>
-        <ThemeProvider value={theme}>
+        <ThemeProvider value={lightTheme}>
           <Header />
           <Text style={{ fontFamily: "SpaceMono", fontSize: 20 }}>
             Test Font
