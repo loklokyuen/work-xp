@@ -67,7 +67,7 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
                     onPress={() => {
                       router.push({
                         pathname: "./application",
-                        params: { oppid: opp.id, businessId: businessId },
+                        params: { oppId: opp.id, businessId: businessId },
                       });
                     }}
                   >
