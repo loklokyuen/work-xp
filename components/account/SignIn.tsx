@@ -27,7 +27,7 @@ const SignIn: React.FC<accountProps> = ({ setIsNewUser }) => {
                             uid: user.uid,
                             displayName: user.displayName,
                             email: user.email || "",
-                            photoUrl: user.photoUrl || ""
+                            photoUrl: user.photoUrl || "",
                         });
                         setUserAccountType(accountType);
                         // router.replace("/(tabs)/success-sign-in");
@@ -64,31 +64,37 @@ const SignIn: React.FC<accountProps> = ({ setIsNewUser }) => {
     };
     return (
         <View style={styles.container}>
-          <Text style={styles.title}>{accountType} User Sign In</Text>
+            <Text style={styles.title}>{accountType} User Sign In</Text>
             <View style={styles.buttonContainer}>
-            <Button mode="contained-tonal" onPress={() => setAccountType("Student")} >Student</Button>
-            <Text variant="titleMedium" style={{textAlign: "center", alignContent: "center"}}> OR</Text>
-            <Button mode="contained-tonal" onPress={() => setAccountType("Business")} >Business</Button>
+                <Button mode="contained-tonal" onPress={() => setAccountType("Student")}>
+                    Student
+                </Button>
+                <Text variant="titleMedium" style={{ textAlign: "center", alignContent: "center" }}>
+                    {" "}
+                    OR
+                </Text>
+                <Button mode="contained-tonal" onPress={() => setAccountType("Business")}>
+                    Business
+                </Button>
             </View>
-            <TextInput
-                style={styles.input}
-                label="Email"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-            />
+            <TextInput style={styles.input} label="Email" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
             <TextInput style={styles.input} label="Password" value={password} onChangeText={setPassword} secureTextEntry />
             {error ? <Text style={styles.error}>{error}</Text> : null}
             <View style={styles.buttonContainer}>
-                <Button mode="contained-tonal" onPress={handleSignIn} >Sign In</Button>
+                <Button mode="contained-tonal" onPress={handleSignIn}>
+                    Sign In
+                </Button>
             </View>
             <Text style={styles.option} onPress={handleForgetPassword}>
                 Forgot password
             </Text>
-            <Text variant="titleMedium" style={{textAlign: "center", margin: 10}}>Don't have an account?</Text>
+            <Text variant="titleMedium" style={{ textAlign: "center", margin: 10 }}>
+                Don't have an account?
+            </Text>
             <View style={styles.buttonContainer}>
-                <Button mode="outlined"  onPress={() => setIsNewUser(true)} >Create Account</Button>
+                <Button mode="outlined" onPress={() => setIsNewUser(true)}>
+                    Create Account
+                </Button>
             </View>
         </View>
     );

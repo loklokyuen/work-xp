@@ -37,7 +37,7 @@ export default function TabLayout() {
                 }}
             />
             <Tabs.Screen
-                name="index"
+                name="(explore)"
                 options={{
                     tabBarLabel: () => null,
                     tabBarIcon: () => <Feather name="book-open" size={30} color="black" />,
@@ -51,7 +51,7 @@ export default function TabLayout() {
                 }}
             />
             <Tabs.Screen
-                name="account"
+                name="index"
                 options={{
                     tabBarLabel: () => null,
                     tabBarIcon: () => <AntDesign name="user" size={30} color="black" />,
