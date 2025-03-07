@@ -5,7 +5,12 @@ import { useUserContext } from "@/context/UserContext";
 import { updateStudentInfo } from "@/database/student";
 import styles from "@/app/styles";
 
-export function EditableStudentInfo({studentInfo}: StudentProps) {
+type StudentInfoProps = {
+  studentInfo: Student;
+  onUpdateInfo: () => void;
+};
+
+export function EditableStudentInfo({studentInfo, onUpdateInfo}: StudentInfoProps) {
     const [bio, setBio] = useState<string>(studentInfo.personalStatement || "");
     const [experience, setExperience] = useState<string>(studentInfo.experience || "")
     const [email, setEmail] = useState<string>(studentInfo.email);
@@ -20,6 +25,7 @@ export function EditableStudentInfo({studentInfo}: StudentProps) {
           const isUpdateSuccess = await updateStudentInfo(user.uid, email, county, bio, experience, subjects);
           if (isUpdateSuccess){
             alert("Changes have been saved")
+            onUpdateInfo();
           } else {
             alert("Error updating profile")
           }
