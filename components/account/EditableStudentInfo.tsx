@@ -44,6 +44,7 @@ export function EditableStudentInfo({studentInfo}: StudentProps) {
         <TextInput  style={{ margin: 10}}
           label="Personal Statement"
           mode="outlined"
+          multiline
           value={bio}
           onChangeText={(text) => setBio(text)}
         />

@@ -39,7 +39,7 @@ export function EditableBusinessInfo({ businessInfo }: BusinessProps) {
                 label="Company Bio"
                 mode="outlined"
                 value={bio}
-                multiline={true}
+                multiline
                 onChangeText={(text) => setBio(text)}
             />
             <TextInput style={{ margin: 10 }} label="Industry" mode="outlined" value={industry} onChangeText={(text) => setIndustry(text)} />
@@ -63,7 +63,7 @@ export function EditableBusinessInfo({ businessInfo }: BusinessProps) {
                 style={{ margin: 10 }}
                 label="Address"
                 mode="outlined"
-                multiline={true}
+                multiline
                 value={address}
                 onChangeText={(text) => setAddress(text)}
             />

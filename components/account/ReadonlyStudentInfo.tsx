@@ -51,7 +51,6 @@ export function ReadonlyStudentInfo({ studentInfo }: StudentProps) {
 }
 const styles = StyleSheet.create({
     data: {
-        height: 40,
         margin: 12,
         borderWidth: 1,
         padding: 10,
