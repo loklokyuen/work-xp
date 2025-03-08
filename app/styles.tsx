@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     maxHeight: 80,
-    backgroundColor: "#795663",
     justifyContent: "center",
     textAlign: "center",
     padding: 0,
