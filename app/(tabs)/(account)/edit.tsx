@@ -75,21 +75,24 @@ export default function edit() {
     return (
         <SafeAreaView style={styles.container}>
             <KeyboardAwareScrollView enableOnAndroid contentContainerStyle={styles.scrollViewContent}>
-                <View style={{ alignItems: "flex-end", marginRight: 20, position: "absolute", right: 2, top: 10 }}>
-                    <Button
-                        mode="contained-tonal"
-                        onPress={() => {
-                            router.push("/read");
-                        }}
-                    >
-                        Back
-                    </Button>
-                </View>
                 <View>
-                    <Text variant="titleLarge" style={{ textAlign: "center", margin: 15 }}>
-                        Profile
-                    </Text>
-                    {accountType === "Business" ? <EditBusiness /> : <EditStudent />}
+                    <View style={{ alignItems: "flex-end", marginRight: 20, right: 2, top: 10 }}>
+                        <Button
+                            mode="contained-tonal"
+                            onPress={() => {
+                                console.log("pressed");
+                                router.back();
+                            }}
+                        >
+                            Back
+                        </Button>
+                    </View>
+                    <View>
+                        <Text variant="titleLarge" style={{ textAlign: "center", margin: 15 }}>
+                            Profile
+                        </Text>
+                        {accountType === "Business" ? <EditBusiness /> : <EditStudent />}
+                    </View>
                 </View>
             </KeyboardAwareScrollView>
         </SafeAreaView>

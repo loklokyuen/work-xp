@@ -23,6 +23,7 @@ export function ReadBusiness() {
                         photoUrl: res.photoUrl || "",
                         email: res.email || "",
                         address: res.address || "",
+                        industry: res.industry || "",
                         county: res.county || "",
                         description: res.description || "",
                         phoneNumber: res.phoneNumber || "",

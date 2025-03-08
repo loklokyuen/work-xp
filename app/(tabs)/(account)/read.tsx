@@ -69,7 +69,9 @@ export default function read() {
                         <Button
                             mode="contained-tonal"
                             onPress={() => {
-                                router.push("/edit");
+                                router.push({
+                                    pathname: "./edit",
+                                });
                             }}
                         >
                             Edit

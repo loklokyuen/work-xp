@@ -28,13 +28,6 @@ export default function TabLayout() {
             }}
         >
             <Tabs.Screen
-                name="(account)"
-                options={{
-                    tabBarLabel: () => null,
-                    tabBarIcon: () => <AntDesign name="user" size={30} color="black" />,
-                }}
-            />
-            <Tabs.Screen
                 name="(Opportunity)"
                 options={{
                     tabBarLabel: () => null,
@@ -53,6 +46,13 @@ export default function TabLayout() {
                 options={{
                     tabBarLabel: () => null,
                     tabBarIcon: () => <Feather name="message-square" size={30} color="black" />,
+                }}
+            />
+            <Tabs.Screen
+                name="(account)"
+                options={{
+                    tabBarLabel: () => null,
+                    tabBarIcon: () => <AntDesign name="user" size={30} color="black" />,
                 }}
             />
         </Tabs>
