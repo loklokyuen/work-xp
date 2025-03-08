@@ -37,8 +37,7 @@ export function EditableStudentInfo({studentInfo, onUpdateInfo, setChangesMade}:
       }
   }
   const handleDeleteSubject = (subject: string) => {
-    console.log("deleting", subject);
-    
+    setChangesMade(true)
     const newSubjects = subjects.filter((s) => s !== subject)
     setSubjects(newSubjects)
   }
@@ -91,11 +90,12 @@ export function EditableStudentInfo({studentInfo, onUpdateInfo, setChangesMade}:
           label="Add a subject" 
           mode="outlined"
           value={newSubject}
-          onChangeText={(text) => {setNewSubject(text); setChangesMade(true)}}
+          onChangeText={(text) => {setNewSubject(text); }}
         />
           <Button style={{ margin: 10, justifyContent: 'center'}}
             mode="outlined"
             onPress={() => {
+              setChangesMade(true)
               setSubjects([...subjects, newSubject])
               setNewSubject("")
             }}
