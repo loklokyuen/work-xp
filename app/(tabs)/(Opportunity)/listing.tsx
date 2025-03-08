@@ -2,10 +2,11 @@ import { useUserContext } from "@/context/UserContext";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Text, TextInput, Button } from "react-native-paper";
 import { addDoc, collection, getDoc, doc, updateDoc, deleteDoc, getDocs } from "firebase/firestore";
-import { db } from "../database/firebase";
+import { db } from "../../../database/firebase";
 import { useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
 import { router } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 
 //to fix:
 //bug when pressing twice on same date
@@ -19,8 +20,9 @@ type DayPressEvent = {
     timestamp: number;
 };
 
-export default function Listing({ listingId }: { listingId: string }) {
+export default function Listing() {
     const { user } = useUserContext();
+    const { listingId } = useLocalSearchParams<Record<string, string>>();
 
     const [jobRole, setJobRole] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -171,7 +173,13 @@ export default function Listing({ listingId }: { listingId: string }) {
 
             <View style={styles.inputContainer}>
                 {listingId ? <Text style={styles.label}>Edit the description</Text> : <Text style={styles.label}>What is the description?</Text>}
-                <TextInput multiline style={styles.input} value={description} onChangeText={setDescription} placeholder="The opportunity involves.." />
+                <TextInput
+                    multiline
+                    style={styles.input}
+                    value={description}
+                    onChangeText={setDescription}
+                    placeholder="The opportunity involves.."
+                />
             </View>
 
             <View style={styles.inputContainer}>
@@ -202,7 +210,9 @@ export default function Listing({ listingId }: { listingId: string }) {
                 />
             </View>
 
-            <Button mode="contained" onPress={handleSubmit}>Submit</Button>
+            <Button mode="contained" onPress={handleSubmit}>
+                Submit
+            </Button>
         </ScrollView>
     );
 }
