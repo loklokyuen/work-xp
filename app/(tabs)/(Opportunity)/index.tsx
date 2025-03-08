@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useUserContext } from "../../../context/UserContext";
 import { View, ScrollView } from "react-native";
 import { Text, Button } from "react-native-paper";
-import { doc, onSnapshot, collection, deleteDoc } from "firebase/firestore";
+import { doc, getDocs, collection, deleteDoc } from "firebase/firestore";
 import { db } from "../../../database/firebase";
 import { StyleSheet } from "react-native";
 import { router } from "expo-router";
@@ -13,25 +13,22 @@ export default function Opportunities() {
 
     useEffect(() => {
         if (user?.uid) {
-            const collectionRef = collection(db, "Business", user.uid, "Opportunities");
-            const unsubscribe = onSnapshot(collectionRef, (snapshot) => {
+            getDocs(collection(db, "Business", user.uid, "Opportunities")).then((result) => {
                 setOpportunities(
-                    snapshot.docs.map((doc) => {
+                    result.docs.map((doc) => {
                         return { id: doc.id, ...doc.data() };
                     })
                 );
             });
             return () => {
                 setOpportunities([]);
-                unsubscribe();
             };
         }
     }, [user?.uid]);
 
     const handleDelete = async (id: string) => {
         try {
-            if (user)
-                await deleteDoc(doc(db, "Business", user.uid, "Opportunities", id));
+            if (user) await deleteDoc(doc(db, "Business", user.uid, "Opportunities", id));
         } catch (err) {
             console.log(err);
         }
@@ -40,43 +37,53 @@ export default function Opportunities() {
     return (
         <ScrollView>
             <View>
-                {opportunities.length === 0? <Text variant="bodyMedium" style={{padding: 20, textAlign: "center"}}>You have not posted any opportunity yet.</Text> :
+                {opportunities.length === 0 ? (
+                    <Text variant="bodyMedium" style={{ padding: 20, textAlign: "center" }}>
+                        You have not posted any opportunity yet.
+                    </Text>
+                ) : (
                     opportunities.map((opp, index) => {
-                    return (
-                        <View style={styles.card} key={index}>
-                            <Text style={styles.role}>{opp.jobRole}</Text>
-                            <Text style={styles.description}>{opp.description}</Text>
-                            <Button
-                                onPress={() => {
-                                    router.push({
-                                        pathname: "./listingPage",
-                                        params: { id: opp.id },
-                                    });
-                                }}
-                            >Edit Listing</Button>
-                            <Button onPress={() => handleDelete(opp.id)}>
-                                Delete Listing
+                        return (
+                            <View style={styles.card} key={index}>
+                                <Text style={styles.role}>{opp.jobRole}</Text>
+                                <Text style={styles.description}>{opp.description}</Text>
+                                <Button
+                                    onPress={() => {
+                                        router.push({
+                                            pathname: "./listingPage",
+                                            params: { id: opp.id },
+                                        });
+                                    }}
+                                >
+                                    Edit Listing
                                 </Button>
-                            <Button
-                                onPress={() => {
-                                    router.push({
-                                        pathname: "./applications",
-                                        params: { id: opp.id },
-                                    });
-                                }}
-                            >View Applications</Button>
-                        </View>
-                    );
-                })}
+                                <Button onPress={() => handleDelete(opp.id)}>Delete Listing</Button>
+                                <Button
+                                    onPress={() => {
+                                        router.push({
+                                            pathname: "./applications",
+                                            params: { id: opp.id },
+                                        });
+                                    }}
+                                >
+                                    View Applications
+                                </Button>
+                            </View>
+                        );
+                    })
+                )}
             </View>
-            <Button mode="contained"
+            <Button
+                mode="contained"
                 onPress={() => {
                     router.push({
                         pathname: "./listingPage",
                         params: { id: "" },
                     });
                 }}
-            >Post Listing</Button>
+            >
+                Post Listing
+            </Button>
         </ScrollView>
     );
 }

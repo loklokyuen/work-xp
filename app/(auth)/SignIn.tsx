@@ -3,22 +3,25 @@ import { View } from "react-native";
 import { Text, TextInput, Button } from "react-native-paper";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/database/firebase";
-import styles from "../../app/styles";
-import {  useUserContext } from "@/context/UserContext";
-import e from "express";
+import styles from "../styles";
+import { useUserContext } from "@/context/UserContext";
+import { router } from "expo-router";
+import { getDoc, doc } from "firebase/firestore";
+import { db } from "@/database/firebase";
 
-const SignIn: React.FC<accountProps> = ({ setIsNewUser, setIsExistingUser }) => {
+const SignIn = () => {
     const { setUser } = useUserContext();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const { setAccountType } = useUserContext();
 
     const handleSignIn = () => {
         if (!email || !password) {
             setError("Please fill out all fields.");
             return;
         }
-        
+
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
@@ -29,6 +32,12 @@ const SignIn: React.FC<accountProps> = ({ setIsNewUser, setIsExistingUser }) => 
                     photoUrl: user.photoURL || "",
                 });
                 setError("");
+                return getDoc(doc(db, "Users", user.uid));
+            })
+            .then((document) => {
+                const data = document.data();
+                setAccountType(data?.accountType);
+                router.replace("/(tabs)/(account)");
                 // if (!user.emailVerified) {
                 //     sendEmailVerification(user)
                 //     alert('Please verify your email before signing in.');
@@ -44,7 +53,6 @@ const SignIn: React.FC<accountProps> = ({ setIsNewUser, setIsExistingUser }) => 
                     setError("Incorrect password. Please check.");
                 }
             });
-
     };
 
     const handleForgetPassword = () => {
@@ -78,7 +86,12 @@ const SignIn: React.FC<accountProps> = ({ setIsNewUser, setIsExistingUser }) => 
                 Don't have an account?
             </Text>
             <View style={styles.buttonContainer}>
-                <Button mode="outlined" onPress={() => {setIsNewUser(true); setIsExistingUser(false);}}>
+                <Button
+                    mode="outlined"
+                    onPress={() => {
+                        router.replace("/CreateAccount");
+                    }}
+                >
                     Create Account
                 </Button>
             </View>

@@ -7,12 +7,10 @@ interface UserProviderProps {
     children: React.ReactNode;
 }
 
-async function getUserAccountType() {
+export async function getUserAccountType() {
     try {
-        const value = await AsyncStorage.getItem("accountType");
-        if (value) {
-            return value;
-        }
+        const value = (await AsyncStorage.getItem("accountType")) || "";
+        return value;
     } catch (e) {
         console.log(e);
     }
@@ -20,9 +18,7 @@ async function getUserAccountType() {
 
 export async function setUserAccountType(value: string) {
     try {
-        if (value) {
-            await AsyncStorage.setItem("accountType", value);
-        }
+        await AsyncStorage.setItem("accountType", value);
     } catch (e) {
         console.log(e);
     }
@@ -63,11 +59,12 @@ export function UserProvider({ children }: UserProviderProps) {
         const subscriber = auth.onAuthStateChanged(onAuthStateChanged);
         return subscriber;
     }, []);
-    if (initializing) return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <ActivityIndicator size="large" />
-        </View>
-    );
+    if (initializing)
+        return (
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <ActivityIndicator size="large" />
+            </View>
+        );
     return <UserContext.Provider value={{ user, setUser, accountType, setAccountType }}>{children}</UserContext.Provider>;
 }
 

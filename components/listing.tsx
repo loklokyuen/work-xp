@@ -48,8 +48,6 @@ export default function Listing({ listingId }: { listingId: string }) {
                     });
                 });
                 return () => {
-                    // unsubscribe1();
-                    // unsubscribe2();
                     // setDates({});
                     // setPeriods({});
                 };
@@ -171,7 +169,13 @@ export default function Listing({ listingId }: { listingId: string }) {
 
             <View style={styles.inputContainer}>
                 {listingId ? <Text style={styles.label}>Edit the description</Text> : <Text style={styles.label}>What is the description?</Text>}
-                <TextInput multiline style={styles.input} value={description} onChangeText={setDescription} placeholder="The opportunity involves.." />
+                <TextInput
+                    multiline
+                    style={styles.input}
+                    value={description}
+                    onChangeText={setDescription}
+                    placeholder="The opportunity involves.."
+                />
             </View>
 
             <View style={styles.inputContainer}>
@@ -202,7 +206,9 @@ export default function Listing({ listingId }: { listingId: string }) {
                 />
             </View>
 
-            <Button mode="contained" onPress={handleSubmit}>Submit</Button>
+            <Button mode="contained" onPress={handleSubmit}>
+                Submit
+            </Button>
         </ScrollView>
     );
 }

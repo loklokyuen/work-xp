@@ -14,9 +14,12 @@ async function addNewUser(uid: string, accountType: string, displayName: string,
             uid,
             displayName,
             photoUrl,
-            email
+            email,
         });
-        return true
+        await setDoc(doc(db, "Users", uid), {
+            accountType,
+        });
+        return true;
     } catch (error) {
         alert("Error adding new user: " + error);
         return false;
@@ -26,8 +29,7 @@ async function addNewUser(uid: string, accountType: string, displayName: string,
 async function updateUserProfileImage(uid: string, accountType: string, photoUrl: string): Promise<boolean> {
     try {
         const docRef = doc(db, accountType, uid);
-        await updateDoc(docRef, { photoUrl }).then(() => {
-        })
+        await updateDoc(docRef, { photoUrl }).then(() => {});
         return true;
     } catch (error) {
         console.log(error);

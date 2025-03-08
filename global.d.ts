@@ -20,6 +20,7 @@ declare global {
         email: string;
         address: string;
         county: string;
+        industry: string;
         description: string;
         phoneNumber: string;
         opportunities: Opportunity[];
@@ -70,27 +71,25 @@ declare global {
     }
 
     interface Application1 {
-
-        uid:string,
-        oppId: string,
-        businessId:string,
-        datesApplied: Record<string, any>,
-        studentId: string,
-        whyApply: string,
-        whySuitable: string,
-        personalStatement: string,
-        experience: string,
-        subjects: string,
-        displayName: string,
-        photoUrl: string,
-  
+        uid: string;
+        oppId: string;
+        businessId: string;
+        datesApplied: Record<string, any>;
+        studentId: string;
+        whyApply: string;
+        whySuitable: string;
+        personalStatement: string;
+        experience: string;
+        subjects: string;
+        displayName: string;
+        photoUrl: string;
     }
 
     type StudentProps = {
         studentInfo: Student;
-    } 
+    };
     type BusinessProps = {
         businessInfo: Business;
-    }
+    };
 }
 export {};

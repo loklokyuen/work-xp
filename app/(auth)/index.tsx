@@ -1,31 +1,16 @@
-import Chat from "@/components/chatComponent";
 import { setUserAccountType, useUserContext } from "@/context/UserContext";
-import {  View } from "react-native";
-import {  useState } from "react";
-import {  auth } from "@/database/firebase";
+
+import { View } from "react-native";
 import { Button, Text } from "react-native-paper";
-import { router } from "expo-router";
-import SignIn from "@/components/account/SignIn";
-import CreateAccount from "../../components/account/CreateAccount";
-import ProfilePage from "@/components/account/ProfilePage";
+import { useState } from "react";
+
+import { auth } from "@/database/firebase";
 import { signInAnonymously } from "firebase/auth";
+import { router } from "expo-router";
 
 export default function AccountScreen() {
     const { user, setUser, setAccountType } = useUserContext();
-    const [isNewUser, setIsNewUser] = useState<boolean>(false);
-    const [isExistingUser, setIsExistingUser] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
-    if (user) {
-        return <ProfilePage setIsNewUser={setIsNewUser} setIsExistingUser={setIsExistingUser}/>;
-    }
-
-    if (isNewUser) {
-        return <CreateAccount setIsNewUser={setIsNewUser} setIsExistingUser={setIsExistingUser}/>;
-    } 
-    if (isExistingUser) {
-        return <SignIn setIsNewUser={setIsNewUser} setIsExistingUser={setIsExistingUser}/>;
-    } 
-    
 
     const handleGuestSignIn = () => {
         signInAnonymously(auth)
@@ -39,8 +24,8 @@ export default function AccountScreen() {
                 });
                 setUserAccountType("Guest");
                 setAccountType("Guest");
-                alert("Signed in as guest!");
                 setError("");
+                router.replace("/(tabs)/(account)");
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -75,24 +60,34 @@ export default function AccountScreen() {
                 Business
             </Button>
             </View> */}
-              <Text variant="titleLarge" style={{ margin: 10, color: "#3E92CC" }}>
+            <Text variant="titleLarge" style={{ margin: 10, color: "#3E92CC" }}>
                 Welcome to Work-XP!
             </Text>
             <Text variant="titleMedium" style={{ margin: 20, color: "#07070A", textAlign: "center" }}>
-            Find the work experience opportunity that's perfect for you, from the comfort of your phone!
+                Find the work experience opportunity that's perfect for you, from the comfort of your phone!
             </Text>
             <Text variant="titleMedium" style={{ margin: 10, color: "#3E92CC" }}>
                 New to the app?
             </Text>
-            <Button mode="contained-tonal" style={{ margin: 10 }} onPress={()=>{
-                setIsNewUser(true);}}>
+            <Button
+                mode="contained-tonal"
+                style={{ margin: 10 }}
+                onPress={() => {
+                    router.replace("/CreateAccount");
+                }}
+            >
                 Create an account
             </Button>
             <Text variant="titleMedium" style={{ margin: 10, color: "#3E92CC" }}>
                 Already have an account?
             </Text>
-            <Button mode="contained-tonal" style={{ margin: 10 }} onPress={()=>{
-                setIsExistingUser(true);}}>
+            <Button
+                mode="contained-tonal"
+                style={{ margin: 10 }}
+                onPress={() => {
+                    router.replace("/SignIn");
+                }}
+            >
                 Sign in to your account
             </Button>
             <Text variant="titleMedium" style={{ margin: 10, color: "#3E92CC" }}>
