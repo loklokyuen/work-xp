@@ -5,40 +5,57 @@ import styles from '@/app/styles';
 interface ChangePasswordModalProps {
     open: boolean;
     onClose: () => void;
-    onChangePassword: (newPassword: string) => void;
+    onChangePassword: (oldPassword: string, newPassword: string) => void;
 }
 
 export const ChangePasswordModal= ({ open, onClose, onChangePassword }: ChangePasswordModalProps) => {
+    const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const handleSubmit = () => {
-        if (newPassword === confirmPassword) {
-            onChangePassword(newPassword);
-            onClose();
-        } else {
+        if (newPassword !== confirmPassword) {
             alert('New passwords do not match!');
+        } else if (newPassword.length < 6){
+            alert('Password must be at least 6 characters')
+        } else if (newPassword.toUpperCase() === newPassword || newPassword.toLowerCase() === newPassword){
+            alert('Password must contain at least one uppercase and one lowercase letter')
+        } else {
+            onChangePassword(oldPassword, newPassword);
+            onClose();
         }
     };
+    const handleClose = () => {
+        setNewPassword('');
+        setConfirmPassword('');
+        onClose();
+    }
 
     return (
         <Modal
             animationType="slide"
             transparent={true}
             visible={open}
-            onRequestClose={onClose}
+            onRequestClose={handleClose}
         >
         <View style={styles.centeredView}>
             <View style={styles.modalView}>
             <Text>Change Password</Text>
-            <TextInput style={{ margin: 10 }}
+            <TextInput style={{ margin: 10, maxHeight: 50, width: 200 }}
+                secureTextEntry={true}
+                label="Old Password"
+                mode="outlined"
+                value={oldPassword}
+                onChangeText={(text) => setOldPassword(text)}
+            />
+            <TextInput style={{ margin: 10, maxHeight: 50, width: 200 }}
                 secureTextEntry={true}
                 label="New Password"
                 mode="outlined"
                 value={newPassword}
                 onChangeText={(text) => setNewPassword(text)}
             />
-            <TextInput style={{ margin: 10 }}
+            <TextInput style={{ margin: 10, maxHeight: 50, width: 200 }}
                 secureTextEntry={true}
                 label="Confirm New Password"
                 mode="outlined"
@@ -46,7 +63,7 @@ export const ChangePasswordModal= ({ open, onClose, onChangePassword }: ChangePa
                 onChangeText={(text) => setConfirmPassword(text)}
             />
             <View style={styles.buttonContainer}>
-                    <Button  mode="outlined" onPress={onClose}  style={{ margin: 10}}>Cancel</Button>
+                    <Button  mode="outlined" onPress={handleClose}  style={{ margin: 10}}>Cancel</Button>
                     <Button  mode="contained-tonal" onPress={handleSubmit} style={{ margin: 10}}>Submit</Button>
             </View>
             </View>
