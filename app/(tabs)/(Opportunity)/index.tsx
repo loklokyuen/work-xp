@@ -69,7 +69,7 @@ export default function Opportunities() {
                     );
                 })}
             </View>
-            <Button mode="contained"
+            <Button mode="contained" style={{ marginHorizontal: 20 }}
                 onPress={() => {
                     router.push({
                         pathname: "./listingPage",

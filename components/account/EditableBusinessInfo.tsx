@@ -11,11 +11,13 @@ import { updateBusinesInfo } from "@/database/business";
 type BusinessInfoProps = {
   businessInfo: Business;
   onUpdateInfo: () => void;
+  setChangesMade: (value: boolean) => void;
 };
 
 export function EditableBusinessInfo({
   businessInfo,
   onUpdateInfo,
+  setChangesMade
 }: BusinessInfoProps) {
   const [displayName, setDisplayName] = useState<string>(businessInfo.displayName || "");
   const [bio, setBio] = useState<string>(businessInfo.description || "");
@@ -163,6 +165,7 @@ export function EditableBusinessInfo({
       if (isUpdateSuccess) {
         alert("Changes have been saved");
         onUpdateInfo();
+        setChangesMade(false);
       } else {
         alert("Error updating profile");
       }
@@ -178,7 +181,7 @@ export function EditableBusinessInfo({
           label="Name"
           mode="outlined"
           value={displayName}
-          onChangeText={(text) => setDisplayName(text)}
+          onChangeText={(text) => {setDisplayName(text); setChangesMade(true)}}
       />
       <TextInput
         style={{ margin: 10 }}
@@ -186,7 +189,7 @@ export function EditableBusinessInfo({
         mode="outlined"
         value={bio}
         multiline
-        onChangeText={(text) => setBio(text)}
+        onChangeText={(text) => {setBio(text); setChangesMade(true)}}
       />
       <View style={{ margin: 10 }}>
         <Menu
@@ -206,6 +209,7 @@ export function EditableBusinessInfo({
               key={`${item}-${index}`}
               title={item}
               onPress={() => {
+                if (industry !== item) setChangesMade(true);
                 setIndustry(item);
                 setIndustryMenuVisible(false);
               }}
@@ -228,6 +232,7 @@ export function EditableBusinessInfo({
               key={`${item}-${index}`}
               title={item}
               onPress={() => {
+                if (county !== item) setChangesMade(true);
                 setCounty(item);
                 setCountyMenuVisible(false);
               }}
@@ -240,7 +245,7 @@ export function EditableBusinessInfo({
         label="Telephone"
         mode="outlined"
         value={phoneNum}
-        onChangeText={(text) => setPhoneNum(text)}
+        onChangeText={(text) => {setPhoneNum(text); setChangesMade(true)}}
         keyboardType={Platform.OS === "ios" ? "number-pad" : "numeric"}
       />
       <TextInput
@@ -248,7 +253,7 @@ export function EditableBusinessInfo({
         label="Email"
         mode="outlined"
         value={email}
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={(text) => {setEmail(text); setChangesMade(true)}}
         keyboardType="email-address"
       />
       <TextInput
@@ -257,7 +262,7 @@ export function EditableBusinessInfo({
         mode="outlined"
         multiline
         value={address}
-        onChangeText={(text) => setAddress(text)}
+        onChangeText={(text) => {setAddress(text); setChangesMade(true)}}
       />
 
       <Button

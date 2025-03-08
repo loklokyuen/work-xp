@@ -24,7 +24,7 @@ export const ConfirmActionModal= ({ open, onClose, title, onConfirmAction }: Con
         >
         <View style={styles.centeredView}>
             <View style={styles.modalView}>
-            <Text variant='titleMedium' style={{ marginBottom: 10}}>Confirm {title}?</Text>
+            <Text variant='titleMedium' style={{ margin: 10, padding: 2}}>{title}</Text>
             <View style={styles.buttonContainer}>
                     <Button  mode="outlined" onPress={onClose}  style={{ margin: 10}}>Cancel</Button>
                     <Button  mode="contained-tonal" onPress={handleConfirm} style={{ margin: 10}}>Confirm</Button>
