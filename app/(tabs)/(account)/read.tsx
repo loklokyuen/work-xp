@@ -11,7 +11,7 @@ import styles from "@/app/styles";
 import { auth } from "@/database/firebase";
 import { getBusinessById } from "@/database/business";
 import { getStudentById } from "@/database/student";
-import { updatePassword } from "firebase/auth";
+import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from "firebase/auth";
 
 import { setUserAccountType, useUserContext } from "@/context/UserContext";
 
@@ -32,15 +32,25 @@ export default function read() {
     const { user, setUser, accountType, setAccountType } = useUserContext();
     const placeHolderImage = require("@/assets/images/background-image.png");
 
-    const handleChangePassword = (newPassword: string) => {
+    const handleChangePassword = async (oldPassword: string, newPassword: string) => {
         const user = auth.currentUser;
-        if (user) {
+        if (user && user.email) {
+            const credential = EmailAuthProvider.credential(user.email, oldPassword);
+            await reauthenticateWithCredential(user, credential);
             updatePassword(user, newPassword)
                 .then(() => {
                     alert("Password changed successfully!");
                 })
                 .catch((error) => {
-                    // setError(error.message);
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    if (errorCode === "auth/wrong-password") {
+                        alert("Error: The current password is incorrect.");
+                    } else if (errorCode === "auth/weak-password") {
+                        alert("Error: The new password is too weak.");
+                    } else {
+                        alert("Error" + errorMessage);
+                    }
                 });
         }
     };
@@ -124,4 +134,35 @@ export default function read() {
             </KeyboardAwareScrollView>
         </SafeAreaView>
     );
+}
+
+{
+    // const [openConfirmBack, setOpenConfirmBack] = useState<boolean>(false);
+    //      const [openConfirmBack, setOpenConfirmBack] = useState<boolean>(false);
+    /* <View style={{ alignItems: "flex-end", marginRight: 20, position: "absolute", right: 2, top: 10 }}>
+                        {editMode ? <Button
+                            mode="contained-tonal"
+                            onPress={() => {
+                                if (changesMade) {
+                                    setOpenConfirmBack(true);
+                                } else{
+                                    setEditMode(!editMode);
+                                }
+                            }}>Back</Button>:                         
+                        <Button
+                            mode="contained-tonal"
+                            onPress={() => {setEditMode(!editMode); }}>Edit</Button>}
+
+                    </View>
+                )}
+                <ConfirmActionModal
+                    open={openConfirmBack}
+                    onClose={() => setOpenConfirmBack(false)}
+                    title="Confirm going back? Your unsaved changes will be lost."
+                    onConfirmAction={() => {
+                        setChangesMade(false);
+                        setEditMode(false);
+                        setOpenConfirmBack(false);
+                        handleUpdateInfo();
+                    }} /> */
 }
