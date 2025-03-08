@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { View } from "react-native";
-import { Text, TextInput, Button } from "react-native-paper";
+import { View, TouchableOpacity } from "react-native";
+import { Text, TextInput, Button, useTheme } from "react-native-paper";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/database/firebase";
 import styles from "../styles";
@@ -15,6 +15,8 @@ const SignIn = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const { setAccountType } = useUserContext();
+    const [isHovered, setIsHovered] = useState(false);
+    const { colors, fonts } = useTheme();
 
     const handleSignIn = () => {
         if (!email || !password) {
@@ -69,27 +71,109 @@ const SignIn = () => {
             });
     };
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>User Sign In</Text>
-            <TextInput style={styles.input} label="Email" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
-            <TextInput style={styles.input} label="Password" value={password} onChangeText={setPassword} secureTextEntry />
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <Text style={[styles.title, { color: colors.primary, ...fonts.titleLarge }]}>User Sign In</Text>
+            <TextInput
+                style={[
+                    styles.input,
+                    {
+                        backgroundColor: colors.primaryContainer,
+                        color: colors.primary,
+                        ...fonts.bodyLarge,
+                    },
+                ]}
+                label="Email"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+            />
+            <TextInput
+                style={[
+                    styles.input,
+                    {
+                        backgroundColor: colors.primaryContainer,
+                        color: colors.primary,
+                        ...fonts.bodyLarge,
+                    },
+                ]}
+                label="Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+            />
             {error ? <Text style={styles.error}>{error}</Text> : null}
             <View style={styles.buttonContainer}>
-                <Button mode="contained-tonal" onPress={handleSignIn}>
+                <Button
+                    mode="contained-tonal"
+                    onPress={handleSignIn}
+                    style={{
+                        backgroundColor: colors.secondary, // Background color
+                        borderRadius: 8, // Optional: For rounded edges
+                    }}
+                    labelStyle={{
+                        fontFamily: "SpaceMono", // Apply custom font
+                        fontSize: 16, // Adjust font size as needed
+                        fontWeight: "normal", // Set font weight
+                        color: colors.tertiary, // Text color (onPrimary works well for contrast)
+                    }}
+                >
                     Sign In
                 </Button>
             </View>
-            <Text style={styles.option} onPress={handleForgetPassword}>
-                Forgot password
-            </Text>
-            <Text variant="titleMedium" style={{ textAlign: "center", margin: 10 }}>
+            <TouchableOpacity
+                onPress={handleForgetPassword}
+                style={{
+                    backgroundColor: colors.primaryContainer,
+                    paddingVertical: 8, // Adds vertical padding for height
+                    paddingHorizontal: 16, // Adds horizontal padding for width
+                    borderRadius: 20, // Makes the box rounded (adjust as needed)
+                    justifyContent: "center", // Centers the text vertically
+                    alignItems: "center", // Centers the text horizontally
+                    marginVertical: 10, // Optional: Adds vertical spacing between elements
+                }}
+            >
+                <Text
+                    style={[
+                        styles.option,
+                        {
+                            fontFamily: "SpaceMono", // Apply custom font
+                            fontSize: 16, // Adjust font size as needed
+                            color: colors.primary, // Set text color to primary or other color
+                            textAlign: "center", // Centers the text horizontally
+                        },
+                    ]}
+                >
+                    Forgot password
+                </Text>
+            </TouchableOpacity>
+            <Text
+                style={[
+                    {
+                        textAlign: "center",
+                        margin: 10,
+                        fontFamily: "SpaceMono", // Apply custom font
+                        fontSize: 20, // Adjust font size as needed
+                        color: colors.primary, // Set text color to primary or other color
+                    },
+                ]}
+            >
                 Don't have an account?
             </Text>
             <View style={styles.buttonContainer}>
                 <Button
-                    mode="outlined"
                     onPress={() => {
                         router.replace("/CreateAccount");
+                    }}
+                    labelStyle={{
+                        fontFamily: "SpaceMono", // Apply custom font
+                        fontSize: 16, // Adjust font size as needed
+                        fontWeight: "normal", // Font weight (use 'bold' or 'normal' as needed)
+                        color: colors.tertiary, // Set the text color to primary or other color
+                    }}
+                    style={{
+                        borderRadius: 8, // Optional: rounded corners for the button
+                        backgroundColor: colors.secondary, // Set border color to match the primary color
                     }}
                 >
                     Create Account

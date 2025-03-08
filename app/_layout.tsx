@@ -60,9 +60,9 @@ export default function RootLayout() {
     }
 
     return (
-        <PaperProvider theme={lightTheme}>
+        <PaperProvider theme={CombinedLightTheme}>
             <UserProvider>
-                <ThemeProvider value={lightTheme}>
+                <ThemeProvider value={CombinedLightTheme}>
                     <Header />
                     {/* <Text style={{ fontFamily: "SpaceMono", fontSize: 20 }}>Test Font</Text> */}
                     <Stack>

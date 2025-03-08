@@ -36,30 +36,6 @@ export default function AccountScreen() {
 
     return (
         <View style={{ backgroundColor: "#FFFAFF", flex: 1, justifyContent: "center", alignItems: "center" }}>
-            {/* <Text variant="titleLarge" style={{ margin: 20 }}>
-                Are you a business or a student user?
-            </Text>
-            <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-            <Button 
-                mode="contained-tonal"
-                onPress={() => {
-                    setAccountType("Student");
-                }}
-            >
-                Student
-            </Button>
-            <Text variant="titleLarge" style={{ margin: 10 }}>
-                OR
-            </Text>
-            <Button
-                mode="contained-tonal"
-                onPress={() => {
-                    setAccountType("Business");
-                }}
-            >
-                Business
-            </Button>
-            </View> */}
             <Text variant="titleLarge" style={{ margin: 10, color: "#3E92CC" }}>
                 Welcome to Work-XP!
             </Text>

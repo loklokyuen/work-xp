@@ -91,10 +91,10 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   modalView: {
-    margin: 20,
+    margin: 10,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: 20,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
+    gap: 5,
   },
   data: {
     minHeight: 40,
@@ -134,8 +135,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   headerContainer: {
-    height: 100,
-    backgroundColor: "#795663",
+    maxHeight: 80,
     justifyContent: "center",
     textAlign: "center",
     padding: 0,

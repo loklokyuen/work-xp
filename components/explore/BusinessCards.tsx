@@ -17,6 +17,7 @@ const BusinessCards = ({
 }: BusinessInfoProps) => {
   // uses uid from BusienssList map to pass uid to button here to pass to publicProfile to render a buisness profile!
   const router = useRouter();
+  const placeholderImage = "https://res.cloudinary.com/dyu00bdps/image/upload/v1740651936/samples/cup-on-a-table.jpg"
   const handlePress = () => {
     router.push({
       pathname: "./publicProfile",
@@ -38,7 +39,7 @@ const BusinessCards = ({
           {county}
         </Text>
 
-        <Card.Cover style={styles.cardCover} source={{ uri: photoUrl }} />
+        <Card.Cover style={styles.cardCover} source={{ uri: photoUrl ||  placeholderImage}} />
         <Card.Actions style={styles.cardActions}>
           <Button
             style={{ backgroundColor: "#795663" }}
