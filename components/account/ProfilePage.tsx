@@ -199,6 +199,7 @@ export default function ProfilePage({ setIsNewUser, setIsExistingUser }: account
                     onClose={() => setOpenConfirmBack(false)}
                     title="Confirm going back? Your unsaved changes will be lost."
                     onConfirmAction={() => {
+                        setChangesMade(false);
                         setEditMode(false);
                         setOpenConfirmBack(false);
                         handleUpdateInfo();

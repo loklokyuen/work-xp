@@ -14,7 +14,11 @@ export const ChangePasswordModal= ({ open, onClose, onChangePassword }: ChangePa
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const handleSubmit = () => {
-        if (newPassword !== confirmPassword) {
+        if (oldPassword === '' || newPassword === '' || confirmPassword === '') {
+            alert('Please fill in all fields');
+        } else if (oldPassword === newPassword) {
+            alert('New password must be different from old password!');
+        } else if (newPassword !== confirmPassword) {
             alert('New passwords do not match!');
         } else if (newPassword.length < 6){
             alert('Password must be at least 6 characters')
