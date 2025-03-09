@@ -1,6 +1,7 @@
 import OpportunityCards from "@/components/profile/opportuntiesCard";
 import ReviewCard from "@/components/profile/reviewCard";
 import { getBusinessById, getBusinessOpportunities } from "@/database/business";
+import { color } from "@cloudinary/url-gen/qualifiers/background";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
@@ -62,14 +63,29 @@ const publicComProfile: React.FC = () => {
           style={styles.bannerImage}
         />
         <View style={styles.textContainer}>
-          <Text style={[styles.title, { color: colors.onSurface }]}>
+          <Text
+            style={[
+              styles.title,
+              { color: colors.onSurface, fontFamily: "SpaceMono" },
+            ]}
+          >
             {business?.displayName}{" "}
           </Text>
-          <Text style={[styles.industry, { color: colors.primary }]}>
+          <Text
+            style={[
+              styles.industry,
+              { color: colors.primary, fontFamily: "SpaceMono" },
+            ]}
+          >
             {" "}
             {business?.sector}{" "}
           </Text>
-          <Text style={[styles.desc, { color: colors.onBackground }]}>
+          <Text
+            style={[
+              styles.desc,
+              { color: colors.onBackground, fontFamily: "SpaceMono" },
+            ]}
+          >
             {" "}
             {business?.description}
           </Text>
@@ -82,21 +98,39 @@ const publicComProfile: React.FC = () => {
               textAlign: "center",
               fontSize: 18,
               fontWeight: "bold",
-              color: colors.onSurface,
+              color: colors.onPrimary,
+              fontFamily: "SpaceMono",
             }}
             style={{ backgroundColor: colors.primary }}
             expanded={expanded}
             onPress={() => setExpanded(!expanded)}
           >
             <View style={styles.accordionContent}>
-              <Text style={[styles.text, { color: colors.onSurface }]}>
+              <Text
+                style={[
+                  styles.text,
+                  { color: colors.onSurface, fontFamily: "SpaceMono" },
+                ]}
+              >
                 Email: {business?.email}
               </Text>
-              <Text style={[styles.text, { color: colors.onSurface }]}>
+              <Text
+                style={[
+                  styles.text,
+                  { color: colors.onSurface, fontFamily: "SpaceMono" },
+                ]}
+              >
                 Visit us: {business?.address}, {business?.county}
               </Text>
               <Button
                 mode="contained"
+                labelStyle={{
+                  fontFamily: "SpaceMono",
+                  color: colors.onSecondary,
+                }}
+                style={{
+                  backgroundColor: colors.secondary,
+                }}
                 onPress={() => {
                   // Navigate to chat page
                 }}
@@ -109,14 +143,24 @@ const publicComProfile: React.FC = () => {
 
         {/* opportunitites (work experience listings per business)*/}
         <View style={styles.textContainer}>
-          <Text style={[styles.subtitle, { color: colors.onSurface }]}>
+          <Text
+            style={[
+              styles.subtitle,
+              { color: colors.onSurface, fontFamily: "SpaceMono" },
+            ]}
+          >
             Work Experience Available
           </Text>
           <OpportunityCards opportunities={opportunities} businessId={uid} />
         </View>
 
         {/* reviews carousel */}
-        <Text style={[styles.reviewsHeader, { color: colors.onSurface }]}>
+        <Text
+          style={[
+            styles.reviewsHeader,
+            { color: colors.tertiary, fontFamily: "SpaceMono", flex: 10 },
+          ]}
+        >
           Hear from past students
         </Text>
         <ReviewCard />

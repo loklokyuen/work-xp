@@ -1,4 +1,4 @@
-import { Button, Card, Text } from "react-native-paper";
+import { Button, Card, Text, useTheme } from "react-native-paper";
 import styles from "@/app/styles";
 import { useRouter } from "expo-router";
 
@@ -17,7 +17,8 @@ const BusinessCards = ({
 }: BusinessInfoProps) => {
   // uses uid from BusienssList map to pass uid to button here to pass to publicProfile to render a buisness profile!
   const router = useRouter();
-  const placeholderImage = "https://res.cloudinary.com/dyu00bdps/image/upload/v1740651936/samples/cup-on-a-table.jpg"
+  const placeholderImage =
+    "https://res.cloudinary.com/dyu00bdps/image/upload/v1740651936/samples/cup-on-a-table.jpg";
   const handlePress = () => {
     router.push({
       pathname: "./publicProfile",
@@ -25,8 +26,17 @@ const BusinessCards = ({
     });
   };
 
+  const { colors, fonts } = useTheme();
+
   return (
-    <Card style={styles.card}>
+    <Card
+      style={[
+        styles.card,
+        {
+          backgroundColor: colors.primaryContainer,
+        },
+      ]}
+    >
       <Card.Content style={styles.cardContent}>
         <Card.Title
           titleVariant="titleLarge"
@@ -39,11 +49,19 @@ const BusinessCards = ({
           {county}
         </Text>
 
-        <Card.Cover style={styles.cardCover} source={{ uri: photoUrl ||  placeholderImage}} />
+        <Card.Cover
+          style={styles.cardCover}
+          source={{ uri: photoUrl || placeholderImage }}
+        />
         <Card.Actions style={styles.cardActions}>
           <Button
-            style={{ backgroundColor: "#795663" }}
-            textColor="#FFFAFF"
+            labelStyle={{
+              fontFamily: "SpaceMono",
+              color: colors.onPrimary,
+            }}
+            style={{
+              backgroundColor: colors.primary,
+            }}
             onPress={handlePress}
           >
             View Business

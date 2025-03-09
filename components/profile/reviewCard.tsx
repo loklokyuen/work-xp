@@ -1,14 +1,40 @@
 import React, { useState } from "react";
 import { View, Text, Dimensions, StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import Carousel from "react-native-reanimated-carousel";
+import { useTheme } from "react-native-paper";
+import { styleTransfer } from "@cloudinary/url-gen/actions/effect";
+import { bold } from "@cloudinary/url-gen/qualifiers/fontWeight";
 
 export default function ReviewCard() {
   const screenWidth = Dimensions.get("window").width;
+  const { colors, fonts } = useTheme();
 
   const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <Text style={styles.review}>"{item.review}"</Text>
-      <Text style={styles.name}>{item.name}</Text>
+    <View
+      style={StyleSheet.compose(styles.card, {
+        backgroundColor: colors.primaryContainer,
+      })}
+    >
+      <Text
+        style={StyleSheet.compose(styles.review, {
+          color: colors.primary,
+          fontFamily: "SpaceMono",
+          fontWeight: "normal",
+        })}
+      >
+        "{item.review}"
+      </Text>
+      <Text
+        style={StyleSheet.compose(styles.name, {
+          color: colors.tertiary,
+          fontFamily: "SpaceMono",
+          fontSize: 15,
+          fontWeight: "bold",
+        })}
+      >
+        {item.name}
+      </Text>
     </View>
   );
 
@@ -31,13 +57,15 @@ export default function ReviewCard() {
       renderItem={renderItem}
       width={screenWidth}
       height={screenWidth / 2}
+      loop={true}
+      autoPlay={true}
+      autoPlayInterval={2000}
     />
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#795663",
     padding: 30,
     borderRadius: 20,
     marginLeft: 10,
@@ -54,5 +82,8 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 14,
     color: "#FFFAFF",
+  },
+  carouselContainer: {
+    flex: 1, // Allow the carousel to take up available space
   },
 });

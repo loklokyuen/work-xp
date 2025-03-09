@@ -109,14 +109,13 @@ const SignIn: React.FC<accountProps> = ({
           mode="contained-tonal"
           onPress={handleSignIn}
           style={{
-            backgroundColor: colors.secondary, // Background color
-            borderRadius: 8, // Optional: For rounded edges
+            backgroundColor: colors.secondary,
           }}
           labelStyle={{
-            fontFamily: "SpaceMono", // Apply custom font
-            fontSize: 16, // Adjust font size as needed
-            fontWeight: "normal", // Set font weight
-            color: colors.tertiary, // Text color (onPrimary works well for contrast)
+            fontFamily: "SpaceMono",
+            fontSize: 16,
+            fontWeight: "normal",
+            color: colors.tertiary,
           }}
         >
           Sign In
@@ -138,10 +137,10 @@ const SignIn: React.FC<accountProps> = ({
           style={[
             styles.option,
             {
-              fontFamily: "SpaceMono", // Apply custom font
-              fontSize: 16, // Adjust font size as needed
-              color: colors.primary, // Set text color to primary or other color
-              textAlign: "center", // Centers the text horizontally
+              fontFamily: "SpaceMono",
+              fontSize: 16,
+              color: colors.primary,
+              textAlign: "center",
             },
           ]}
         >
@@ -153,9 +152,9 @@ const SignIn: React.FC<accountProps> = ({
           {
             textAlign: "center",
             margin: 10,
-            fontFamily: "SpaceMono", // Apply custom font
-            fontSize: 20, // Adjust font size as needed
-            color: colors.primary, // Set text color to primary or other color
+            fontFamily: "SpaceMono",
+            fontSize: 20,
+            color: colors.primary,
           },
         ]}
       >
@@ -168,14 +167,13 @@ const SignIn: React.FC<accountProps> = ({
             setIsExistingUser(false);
           }}
           labelStyle={{
-            fontFamily: "SpaceMono", // Apply custom font
-            fontSize: 16, // Adjust font size as needed
-            fontWeight: "normal", // Font weight (use 'bold' or 'normal' as needed)
-            color: colors.tertiary, // Set the text color to primary or other color
+            fontFamily: "SpaceMono",
+            fontSize: 16,
+            fontWeight: "normal",
+            color: colors.tertiary,
           }}
           style={{
-            borderRadius: 8, // Optional: rounded corners for the button
-            backgroundColor: colors.secondary, // Set border color to match the primary color
+            backgroundColor: colors.secondary,
           }}
         >
           Create Account
