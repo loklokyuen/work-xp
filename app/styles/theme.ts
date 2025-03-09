@@ -47,7 +47,7 @@ export const lightTheme = {
     surfaceVariant: "#E7E0EC",
     onSurfaceVariant: "#49454F",
     outline: "#79747E",
-    error: "#B3261E",
+    error: "#FF5470",
     onError: "#FFFFFF",
     errorContainer: "#F9DEDC",
     onErrorContainer: "#410E0B",
