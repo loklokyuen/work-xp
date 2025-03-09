@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { Platform } from "react-native";
 
 import { HapticTab } from "@/components/expoComponents/HapticTab";
@@ -7,9 +7,16 @@ import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import Feather from "@expo/vector-icons/Feather";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { useUserContext } from "@/context/UserContext";
 
 export default function TabLayout() {
     const colorScheme = useColorScheme();
+    const { accountType } = useUserContext();
+
+    if (!accountType) {
+        console.log("accounttype", accountType);
+        return <Redirect href="/(auth)/main" />;
+    }
 
     return (
         <Tabs
@@ -28,14 +35,14 @@ export default function TabLayout() {
             }}
         >
             <Tabs.Screen
-                name="(Opportunity)"
+                name="opportunity"
                 options={{
                     tabBarLabel: () => null,
                     tabBarIcon: () => <Feather name="briefcase" size={30} color="black" />,
                 }}
             />
             <Tabs.Screen
-                name="(explore)"
+                name="explore"
                 options={{
                     tabBarLabel: () => null,
                     tabBarIcon: () => <Feather name="book-open" size={30} color="black" />,

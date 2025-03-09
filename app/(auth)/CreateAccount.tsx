@@ -46,7 +46,7 @@ const CreateAccount = () => {
                     //     console.error("Error sending email verification:", error);
                     //   });
                     setError("");
-                    router.replace("/(tabs)/(account)");
+                    router.replace("/(tabs)");
                 })
                 .catch((error) => {
                     const errorCode = error.code;

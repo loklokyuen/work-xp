@@ -8,10 +8,6 @@ import { Calendar } from "react-native-calendars";
 import { router } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
 
-//to fix:
-//bug when pressing twice on same date
-//bug when highlighting over period that is already highlighted - this probably should not be allowed.
-
 type DayPressEvent = {
     dateString: string;
     day: number;
