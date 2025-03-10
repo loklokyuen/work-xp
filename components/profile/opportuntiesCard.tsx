@@ -1,7 +1,13 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
-import { Button, Modal, PaperProvider, Portal } from "react-native-paper";
+import {
+  Button,
+  Modal,
+  PaperProvider,
+  Portal,
+  useTheme,
+} from "react-native-paper";
 
 interface OpportunityCardProps {
   opportunities: Opportunity[];
@@ -26,6 +32,8 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
     height: modalHeight,
   };
 
+  const { colors, fonts } = useTheme();
+
   // when the opportunities array is empty, loads alternate message
   if (opportunities.length === 0) {
     return (
@@ -44,8 +52,12 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
           <View key={index} style={styles.card}>
             <Text style={styles.text}></Text>
             <Button
-              style={styles.oppButtons}
-              textColor="#FFFAFF"
+              style={{ backgroundColor: colors.primary }}
+              labelStyle={{
+                fontFamily: "SpaceMono",
+                color: colors.onPrimary,
+                padding: 10,
+              }}
               onPress={() => showOppModal(index)}
             >
               {opp.jobRole}
@@ -58,12 +70,34 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
                 contentContainerStyle={containerStyle}
               >
                 <View style={styles.modalView}>
-                  <Text style={styles.subtitle}>{opp.jobRole}</Text>
-                  <Text style={styles.text}>{opp.description}</Text>
+                  <Text
+                    style={{
+                      fontFamily: "SpaceMono",
+                      fontSize: 20,
+                      padding: 20,
+                    }}
+                  >
+                    {opp.jobRole}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: "SpaceMono",
+                      fontSize: 15,
+                      textAlign: "center",
+                      padding: 20,
+                    }}
+                  >
+                    {opp.description}
+                  </Text>
                   {/* <Text style={styles.text}>Availability: {opp.availability}</Text> */}
                   <Button
-                    style={styles.applyButton}
-                    textColor="#FFFAFF"
+                    labelStyle={{
+                      fontFamily: "SpaceMono",
+                      color: colors.onSecondary,
+                    }}
+                    style={{
+                      backgroundColor: colors.secondary,
+                    }}
                     onPress={() => {
                       router.push({
                         pathname: "./application",
@@ -73,7 +107,10 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
                   >
                     Apply
                   </Button>
-                  <Button onPress={hideOppModal} textColor="#3E92CC">
+                  <Button
+                    onPress={hideOppModal}
+                    labelStyle={{ color: colors.quarternary }}
+                  >
                     Close
                   </Button>
                 </View>
