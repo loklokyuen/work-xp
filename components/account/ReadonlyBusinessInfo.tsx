@@ -46,7 +46,7 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
                             router.push({ pathname: "/(tabs)/opportunity/(Business)/Opportunities" });
                         }}
                     >
-                        View ads
+                        Manage Listings
                     </Button>
                     <Button
                         mode="contained-tonal"
@@ -54,7 +54,7 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
                             router.push({ pathname: "/(tabs)/opportunity/(Business)/manageBooking" });
                         }}
                     >
-                        Manage Booking
+                        Manage Bookings
                     </Button>
                 </View>
             </>
