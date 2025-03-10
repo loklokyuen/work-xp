@@ -21,7 +21,10 @@ const SectorDropdown: React.FC<SectorDropdownProps> = ({
         visible={visible}
         onDismiss={() => setVisible(false)}
         anchor={
-          <Button onPress={() => setVisible(true)}>
+          <Button
+            labelStyle={{ fontFamily: "SpaceMono" }}
+            onPress={() => setVisible(true)}
+          >
             {selectedSector
               ? `Filtered by Sector: ${selectedSector}`
               : "Filter by Sector"}
