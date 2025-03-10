@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useUserContext } from "../../../context/UserContext";
+import { useUserContext } from "../../../../context/UserContext";
 import { View, ScrollView } from "react-native";
 import { Text, Button, useTheme } from "react-native-paper";
 import { doc, onSnapshot, collection, deleteDoc } from "firebase/firestore";
-import { db } from "../../../database/firebase";
+import { db } from "../../../../database/firebase";
 import { StyleSheet } from "react-native";
 import { Redirect, router } from "expo-router";
 
