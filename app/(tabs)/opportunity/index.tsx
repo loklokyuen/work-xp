@@ -52,7 +52,7 @@ export default function Opportunities() {
                                 <Button
                                     onPress={() => {
                                         router.push({
-                                            pathname: "./listing",
+                                            pathname: "/(tabs)/opportunity/listing",
                                             params: { listingId: opp.id },
                                         });
                                     }}
@@ -63,7 +63,7 @@ export default function Opportunities() {
                                 <Button
                                     onPress={() => {
                                         router.push({
-                                            pathname: "./applications",
+                                            pathname: "/(tabs)/opportunity/applications",
                                             params: { id: opp.id },
                                         });
                                     }}
@@ -80,7 +80,7 @@ export default function Opportunities() {
                 style={{ marginHorizontal: 20 }}
                 onPress={() => {
                     router.push({
-                        pathname: "./listing",
+                        pathname: "/(tabs)/opportunity/listing",
                         params: { listingId: "" },
                     });
                 }}
