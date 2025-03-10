@@ -1,10 +1,10 @@
 import Chat from "@/components/chatComponent";
 import { useUserContext } from "@/context/UserContext";
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Text, Button } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "@/database/firebase";
-import { Button } from "react-native";
 
 export default function ChatScreen() {
     const { user, setUser } = useUserContext();
@@ -13,6 +13,7 @@ export default function ChatScreen() {
     const [message, setMessage] = useState<string>("");
 
     useEffect(() => {
+
         onSnapshot(collection(db, "Student"), (snapshot) => {
             const query = snapshot.docs.map((doc) => {
                 const data = doc.data();
@@ -29,13 +30,15 @@ export default function ChatScreen() {
     }, []);
 
     return (
-        <View>
+        <ScrollView>
             <Text>students</Text>
             {students.map((student, index) => {
-                return <Button key={index} title={student.displayName} onPress={() => setReceiver(student.uid)}></Button>;
+                return <Button mode="outlined" key={index} onPress={() => setReceiver(student.uid)}
+                    style={{ margin: 10, backgroundColor: "#f0f0f0" }}
+                >{student.displayName}</Button>;
             })}
             {receiver ? <Chat receiver={receiver} /> : null}
-        </View>
+        </ScrollView>
     );
 }
 

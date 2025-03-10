@@ -52,7 +52,6 @@ async function getAvailabilitiesByOpportunity(uid: string, opportunityId: string
     const applicationsList = querySnapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() } as any;
     });
-    console.log(applicationsList);
     return applicationsList;
 }
 

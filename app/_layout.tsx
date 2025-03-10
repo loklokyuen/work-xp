@@ -51,13 +51,11 @@ export default function RootLayout() {
   }
 
   return (
-    <PaperProvider theme={lightTheme}>
+    <PaperProvider theme={CombinedLightTheme}>
       <UserProvider>
-        <ThemeProvider value={lightTheme}>
+        <ThemeProvider value={CombinedLightTheme}>
           <Header />
-          <Text style={{ fontFamily: "SpaceMono", fontSize: 20 }}>
-            Test Font
-          </Text>
+          {/* <Text style={{ fontFamily: "SpaceMono", fontSize: 20 }}>Test Font</Text> */}
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="+not-found" />

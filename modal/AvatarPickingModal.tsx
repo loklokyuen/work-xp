@@ -7,7 +7,7 @@ import { updateUserProfileImage } from "@/database/user";
 import { updateProfile } from "firebase/auth";
 import { useUserContext } from "@/context/UserContext";
 import { uploadImage, deleteImage } from '@/Cloudinary/cloudinaryWrapper';
-import { Button, IconButton, Text, TextInput } from "react-native-paper";
+import { ActivityIndicator, Button, IconButton, Text, TextInput } from "react-native-paper";
 
 interface AvatarPickingModalProps {
     open: boolean;
@@ -15,6 +15,7 @@ interface AvatarPickingModalProps {
 }
 
 export default function AvatarPickingModal({ open, onClose }: AvatarPickingModalProps) {
+    const [loading, setLoading] = useState(false);
     const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null);
     const [selectedAvatar, setSelectedAvatar] = useState<string>('');
     const [error, setError] = useState('');
@@ -41,6 +42,7 @@ export default function AvatarPickingModal({ open, onClose }: AvatarPickingModal
             setError("Please select an image");
             return;
         }
+        setLoading(true);
         let imageURL = '';
         if (image){
             imageURL = await uploadImage(image);
@@ -52,6 +54,7 @@ export default function AvatarPickingModal({ open, onClose }: AvatarPickingModal
                 photoURL: imageURL,
             });
             const isUpdateSuccess = await updateUserProfileImage(auth.currentUser.uid, accountType, imageURL)
+            setLoading(false);
             if (isUpdateSuccess) {
                 alert("Avatar updated successfully");
                 setError("");
@@ -72,35 +75,50 @@ export default function AvatarPickingModal({ open, onClose }: AvatarPickingModal
             }
         } else alert("No user signed in");
         
+        handleClose();
+    }
+
+    function handleClose(){
+        setImage(null);
+        setSelectedAvatar('');
         onClose();
-        }
-    
+    }
+    if (loading) return <ActivityIndicator animating={true} />
     return  <Modal
         animationType="slide"
         transparent={true}
         visible={open}
-        onRequestClose={onClose}>
+        onRequestClose={handleClose}>
         <View style={styles.centeredView}>
             <View style={styles.modalView}>
-            <Text style={{ margin: 10}}>Pick your Avatar</Text>
-            { image ? <Button mode="contained-tonal" onPress={()=>{
-                setImage(null);  setError('')
-            }} >Pick from our avatars</Button>:
-            <Button mode="contained-tonal" onPress={handleImageSelection} style={{ margin: 10}}>Upload your own image</Button>}
+            <Text style={{ margin: 10, fontWeight: "600", fontSize: 18}}>Pick your Avatar</Text>
+            
             <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                 {image ? <Image source={{uri: image.uri}} style={{width: 200, height: 200, margin: 10, borderRadius: 100}} /> :
                     avatars.map((avatar, index) => (
                         <TouchableOpacity key={index} onPress={() =>{
                         setSelectedAvatar(avatar)}}
-                        style={{margin: 5, borderWidth: selectedAvatar === avatar ? 2 : 0, borderColor: 'blue'}}>
+                        style={{margin: 2, borderWidth: selectedAvatar === avatar ? 2 : 0, borderColor: 'blue'}}>
                             <Image key={avatar} source={{uri:avatar}} style={{width: 80, height: 80}} />
                         </TouchableOpacity>
                     ))
                 }
             </View>
+            { image ? 
+                <View style={styles.buttonContainer}>
+                    <Button mode="contained" onPress={()=>{
+                        setImage(null);  setError('')
+                    }} >Pick from our avatars</Button>
+                    <Button mode="outlined" onPress={()=>{
+                        setImage(null);  setError('')
+                    }} >Clear Image</Button>
+                </View>
+            :
+            <Button mode="contained" onPress={handleImageSelection} style={{ margin: 10}}>Upload your own image</Button>}
+
         {error ? <Text style={styles.error}>{error}</Text> : null}
                 <View style={styles.buttonContainer}>
-                    <Button  mode="outlined" onPress={onClose} style={{ margin: 10}}>Cancel</Button>
+                    <Button  mode="outlined" onPress={handleClose} style={{ margin: 10}}>Cancel</Button>
                     <Button  mode="contained-tonal" onPress={handleImageUpload} style={{ margin: 10}}>Submit</Button>
                 </View>
             </View>

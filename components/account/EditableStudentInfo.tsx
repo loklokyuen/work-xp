@@ -7,10 +7,11 @@ import styles from "@/app/styles";
 
 type StudentInfoProps = {
   studentInfo: Student;
+  setChangesMade: (value: boolean) => void;
   onUpdateInfo: () => void;
 };
 
-export function EditableStudentInfo({studentInfo, onUpdateInfo}: StudentInfoProps) {
+export function EditableStudentInfo({studentInfo, onUpdateInfo, setChangesMade}: StudentInfoProps) {
     const [displayName, setDisplayName] = useState<string>(studentInfo.displayName || "");
     const [bio, setBio] = useState<string>(studentInfo.personalStatement || "");
     const [experience, setExperience] = useState<string>(studentInfo.experience || "")
@@ -27,6 +28,7 @@ export function EditableStudentInfo({studentInfo, onUpdateInfo}: StudentInfoProp
           if (isUpdateSuccess){
             alert("Changes have been saved")
             onUpdateInfo();
+            setChangesMade(false)
           } else {
             alert("Error updating profile")
           }
@@ -35,8 +37,7 @@ export function EditableStudentInfo({studentInfo, onUpdateInfo}: StudentInfoProp
       }
   }
   const handleDeleteSubject = (subject: string) => {
-    console.log("deleting", subject);
-    
+    setChangesMade(true)
     const newSubjects = subjects.filter((s) => s !== subject)
     setSubjects(newSubjects)
   }
@@ -47,33 +48,33 @@ export function EditableStudentInfo({studentInfo, onUpdateInfo}: StudentInfoProp
             label="Name"
             mode="outlined"
             value={displayName}
-            onChangeText={(text) => setDisplayName(text)}
+            onChangeText={(text) => {setDisplayName(text); setChangesMade(true)}}
         />
         <TextInput  style={{ margin: 10}}
           label="Personal Statement"
           mode="outlined"
           multiline
           value={bio}
-          onChangeText={(text) => setBio(text)}
+          onChangeText={(text) => {setBio(text); setChangesMade(true)}}
         />
         <TextInput style={{ margin: 10}}
           label="Experience"
           mode="outlined"
           value={experience}
-          onChangeText={(text) => setExperience(text)}
+          onChangeText={(text) => {setExperience(text); setChangesMade(true)}}
         />
         <TextInput style={{ margin: 10}}
           label="Email"
           mode="outlined"
           value={email}
-          onChangeText={(text) => setEmail(text)}
+          onChangeText={(text) => {setEmail(text); setChangesMade(true)}}
           keyboardType="email-address"
         />
           <TextInput style={{ margin: 10}}
           label="County"
           mode="outlined"
           value={county}
-          onChangeText={(text) => setCounty(text)}
+          onChangeText={(text) => {setCounty(text); setChangesMade(true)}}
         />
         <Text variant="titleSmall" style={{ marginHorizontal: 20}}>Subjects:</Text>
 
@@ -89,11 +90,12 @@ export function EditableStudentInfo({studentInfo, onUpdateInfo}: StudentInfoProp
           label="Add a subject" 
           mode="outlined"
           value={newSubject}
-          onChangeText={(text) => setNewSubject(text)}
+          onChangeText={(text) => {setNewSubject(text); }}
         />
           <Button style={{ margin: 10, justifyContent: 'center'}}
             mode="outlined"
             onPress={() => {
+              setChangesMade(true)
               setSubjects([...subjects, newSubject])
               setNewSubject("")
             }}

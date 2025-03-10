@@ -21,8 +21,6 @@ export default function BookingCard({ studentId, businessId, oppId }: BookingCar
             setStudent(res);
         });
         getBusinessOpportunityById(businessId, oppId).then((res) => {   
-            console.log("opp: ", res);
-                  
             setOpportunity(res);
         });
 
@@ -38,7 +36,7 @@ export default function BookingCard({ studentId, businessId, oppId }: BookingCar
             <Text variant="bodyMedium" style={{ margin: 10 }}>Opportunity: {opportunity?.jobRole}</Text>
             {/* <Text variant="bodyMedium" style={{ margin: 10 }}>Date: {startDate} - {endDate}</Text> */}
             <Button mode="contained-tonal"  style={{ margin: 10 }} onPress={() => { setOpenCancel(true) }}>Cancel</Button>
-            <ConfirmActionModal open={openCancel} onClose={()=>{setOpenCancel(false)}} title="cancel booking" onConfirmAction={handleCancel} />
+            <ConfirmActionModal open={openCancel} onClose={()=>{setOpenCancel(false)}} title="Confirm cancel booking?" onConfirmAction={handleCancel} />
         </Card.Content>
     </Card>
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUserContext } from "../../../context/UserContext";
-import { View, ScrollView, Text, Button } from "react-native";
+import { View, ScrollView } from "react-native";
+import { Text, Button } from "react-native-paper";
 import { doc, onSnapshot, collection, deleteDoc } from "firebase/firestore";
 import { db } from "../../../database/firebase";
 import { StyleSheet } from "react-native";
@@ -29,7 +30,8 @@ export default function Opportunities() {
 
     const handleDelete = async (id: string) => {
         try {
-            await deleteDoc(doc(db, "Business", user.uid, "Opportunities", id));
+            if (user)
+                await deleteDoc(doc(db, "Business", user.uid, "Opportunities", id));
         } catch (err) {
             console.log(err);
         }
@@ -38,43 +40,43 @@ export default function Opportunities() {
     return (
         <ScrollView>
             <View>
-                {opportunities.map((opp, index) => {
+                {opportunities.length === 0? <Text variant="bodyMedium" style={{padding: 20, textAlign: "center"}}>You have not posted any opportunity yet.</Text> :
+                    opportunities.map((opp, index) => {
                     return (
                         <View style={styles.card} key={index}>
                             <Text style={styles.role}>{opp.jobRole}</Text>
                             <Text style={styles.description}>{opp.description}</Text>
                             <Button
-                                title="Edit Listing"
                                 onPress={() => {
                                     router.push({
                                         pathname: "./listingPage",
                                         params: { id: opp.id },
                                     });
                                 }}
-                            />
-                            <Button title="Delete Listing" onPress={() => handleDelete(opp.id)} />
+                            >Edit Listing</Button>
+                            <Button onPress={() => handleDelete(opp.id)}>
+                                Delete Listing
+                                </Button>
                             <Button
-                                title="View Applications"
                                 onPress={() => {
                                     router.push({
                                         pathname: "./applications",
                                         params: { id: opp.id },
                                     });
                                 }}
-                            ></Button>
+                            >View Applications</Button>
                         </View>
                     );
                 })}
             </View>
-            <Button
-                title="Post Listing"
+            <Button mode="contained" style={{ marginHorizontal: 20 }}
                 onPress={() => {
                     router.push({
                         pathname: "./listingPage",
                         params: { id: "" },
                     });
                 }}
-            ></Button>
+            >Post Listing</Button>
         </ScrollView>
     );
 }
