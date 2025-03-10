@@ -76,8 +76,9 @@ const styles = StyleSheet.create({
   cardCover: {
     width: 320,
     height: 200,
-    resizeMode: "cover",
+    // resizeMode: "cover",
     alignSelf: "center",
+    margin: 0,
   },
   text: {
     textAlign: "center",

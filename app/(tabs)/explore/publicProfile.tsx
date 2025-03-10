@@ -2,6 +2,7 @@ import OpportunityCards from "@/components/profile/opportuntiesCard";
 import ReviewCard from "@/components/profile/reviewCard";
 import { getBusinessById, getBusinessOpportunities } from "@/database/business";
 import { color } from "@cloudinary/url-gen/qualifiers/background";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
@@ -31,10 +32,8 @@ const publicComProfile: React.FC = () => {
       try {
         const fetchedBusiness = await getBusinessById(uid);
         setBusiness(fetchedBusiness);
-        console.log(fetchedBusiness);
         setBusinessName(fetchedBusiness.displayName);
       } catch (error) {
-        console.error("Error fetching business:", error);
       } finally {
         setLoading(false);
       }
@@ -44,7 +43,6 @@ const publicComProfile: React.FC = () => {
         const fetchedOpportunities = await getBusinessOpportunities(uid);
         setOpportunities(fetchedOpportunities);
       } catch (error) {
-        console.error("Error fetching opportunities:", error);
       } finally {
         setLoading(false);
       }
@@ -107,6 +105,13 @@ const publicComProfile: React.FC = () => {
             style={{ backgroundColor: colors.primary }}
             expanded={expanded}
             onPress={() => setExpanded(!expanded)}
+            right={() => (
+              <MaterialCommunityIcons
+                name={expanded ? "chevron-up" : "chevron-down"}
+                size={24}
+                color={colors.onPrimary}
+              />
+            )}
           >
             <View style={styles.accordionContent}>
               <Text
@@ -154,7 +159,7 @@ const publicComProfile: React.FC = () => {
           >
             Work Experience Available
           </Text>
-          <OpportunityCards
+          <OpportunityCards 
             opportunities={opportunities}
             businessId={uid}
             businessName={businessName}
@@ -171,6 +176,14 @@ const publicComProfile: React.FC = () => {
           Hear from past students
         </Text>
         <ReviewCard />
+        <Text
+          style={[
+            styles.text,
+            { color: colors.onSurface, fontFamily: "SpaceMono" },
+          ]}
+        >
+          🎉
+        </Text>
       </ScrollView>
     </>
   );
@@ -186,7 +199,7 @@ const styles = StyleSheet.create({
   bannerImage: {
     width: "100%",
     height: 200,
-    resizeMode: "cover",
+    // resizeMode: "cover",
   },
   textContainer: {
     marginTop: 50,
@@ -206,7 +219,7 @@ const styles = StyleSheet.create({
   },
   reviewsHeader: {
     textAlign: "center",
-    paddingTop: 50,
+    paddingTop: 70,
     paddingBottom: 40,
     fontSize: 18,
     fontWeight: "bold",
@@ -214,7 +227,7 @@ const styles = StyleSheet.create({
   industry: {
     textAlign: "center",
     paddingBottom: 10,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     marginTop: 10,
   },
@@ -232,7 +245,7 @@ const styles = StyleSheet.create({
   },
   accordionContent: {
     backgroundColor: "white",
-    padding: 20,
+    padding: 30,
     alignItems: "center",
   },
 });

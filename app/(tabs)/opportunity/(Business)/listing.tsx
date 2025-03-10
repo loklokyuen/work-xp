@@ -2,7 +2,7 @@ import { useUserContext } from "@/context/UserContext";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Text, TextInput, Button } from "react-native-paper";
 import { addDoc, collection, getDoc, doc, updateDoc, deleteDoc, getDocs } from "firebase/firestore";
-import { db } from "../../../database/firebase";
+import { db } from "../../../../database/firebase";
 import { useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
 import { router, Redirect } from "expo-router";

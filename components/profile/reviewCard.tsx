@@ -49,6 +49,11 @@ export default function ReviewCard() {
       review: "Loved it",
       name: "Hue",
     },
+    {
+      id: 3,
+      review: "Best experience ever!",
+      name: "Lou",
+    },
   ];
 
   return (
@@ -66,7 +71,7 @@ export default function ReviewCard() {
 
 const styles = StyleSheet.create({
   card: {
-    padding: 30,
+    padding: 35,
     borderRadius: 20,
     marginLeft: 10,
     marginRight: 30,
@@ -77,12 +82,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#FFFAFF",
+    // color: "#FFFAFF",
   },
-  name: {
-    fontSize: 14,
-    color: "#FFFAFF",
-  },
+  // name: {
+  //   fontSize: 14,
+  //   color: "#FFFAFF",
+  // },
   carouselContainer: {
     flex: 1, // Allow the carousel to take up available space
   },
