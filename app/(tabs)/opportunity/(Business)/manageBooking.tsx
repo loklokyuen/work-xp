@@ -20,7 +20,7 @@ export default function ManageBooking() {
     return (
         <View style={styles.container}>
             <Text variant="titleLarge" style={styles.title}>
-                Manage Booking
+                Manage Bookings
             </Text>
             {bookings.map((booking) => {
                 return <BookingCard key={booking.uid} studentId={booking.studentId} oppId={booking.oppId} businessId={user?.uid} />;
