@@ -5,13 +5,14 @@ import BookingCard from "@/components/BookingCard";
 import { useEffect, useState } from "react";
 import { getAcceptedApplicationsByBusinessId } from "@/database/applications";
 import { useLocalSearchParams } from "expo-router";
+import { useUserContext } from "@/context/UserContext";
+
 export default function ManageBooking() {
-    const { businessId } = useLocalSearchParams<{
-        businessId: string;
-    }>();
+    const { user } = useUserContext();
+
     const [bookings, setBookings] = useState<Application1[]>([]);
     useEffect(() => {
-        getAcceptedApplicationsByBusinessId(businessId).then((res) => {
+        getAcceptedApplicationsByBusinessId(user?.uid).then((res) => {
             setBookings(res);
         });
     }, []);
@@ -22,7 +23,7 @@ export default function ManageBooking() {
                 Manage Booking
             </Text>
             {bookings.map((booking) => {
-                return <BookingCard key={booking.uid} studentId={booking.studentId} oppId={booking.oppId} businessId={businessId} />;
+                return <BookingCard key={booking.uid} studentId={booking.studentId} oppId={booking.oppId} businessId={user?.uid} />;
             })}
         </View>
     );

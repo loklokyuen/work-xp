@@ -31,10 +31,10 @@ export default function ViewAcceptedApplications() {
     }, [user]);
     return (
         <List.Section>
-            {" "}
-            {applications.map((application) => {
+            {applications.map((application, index) => {
                 return (
                     <List.Accordion
+                        key={index}
                         title={application.businessName}
                         titleStyle={{
                             textAlign: "center",
