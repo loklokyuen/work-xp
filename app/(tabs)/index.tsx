@@ -42,7 +42,6 @@ export default function ProfilePage() {
         // 'Qf1ha917fUU7oDmACzZ3msxI5Yk2'
         getBusinessById(user.uid)
             .then((res) => {
-                console.log(res);
                 if (res) {
                     setBusinessInfo({
                         uid: res.uid,
@@ -66,7 +65,6 @@ export default function ProfilePage() {
                 } else return false;
             })
             .then((userFound) => {
-                console.log("userfound1", userFound);
                 if (!userFound) {
                     return getStudentById(user.uid).then((res) => {
                         if (res) {
@@ -92,7 +90,6 @@ export default function ProfilePage() {
                 } else return true;
             })
             .then((userFound) => {
-                console.log("userfound2", userFound);
                 if (!userFound) {
                     setGuestMode(true);
                     setLoading(false);

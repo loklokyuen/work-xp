@@ -11,13 +11,10 @@ import { useUserContext } from "@/context/UserContext";
 
 export default function TabLayout() {
     const colorScheme = useColorScheme();
-    const { accountType } = useUserContext();
+    const { user, accountType } = useUserContext();
 
     if (!accountType) {
-        console.log("accounttype", accountType);
         return <Redirect href="/(auth)/main" />;
-    } else {
-        console.log("accounttype", accountType);
     }
 
     return (
