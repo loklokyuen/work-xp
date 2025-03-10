@@ -9,13 +9,14 @@ import { useUserContext } from "@/context/UserContext";
 import { useLocalSearchParams } from "expo-router/build/hooks";
 import { StyleSheet, Image } from "react-native";
 import { View, ScrollView } from "react-native";
-import { Text, Button } from "react-native-paper";
+import { Text, Button, useTheme } from "react-native-paper";
 import { Redirect } from "expo-router";
 
 export default function Applications() {
   const [applications, setApplications] = useState<Application1[]>();
   const { user, accountType } = useUserContext();
   const { id } = useLocalSearchParams<Record<string, string>>();
+  const { colors, fonts } = useTheme();
 
   if (accountType === "Student") {
     return <Redirect href="/+not-found" />;
@@ -38,38 +39,129 @@ export default function Applications() {
         {applications?.map((application, index) => {
           return (
             <View style={styles.card} key={index}>
-              <Text style={styles.text}>
-                Username:{application.displayName}
+              <Text
+                style={StyleSheet.compose(styles.text, {
+                  fontFamily: "SpaceMono",
+                  color: colors.primary,
+                  fontWeight: "bold",
+                })}
+              >
+                Username:
+              </Text>
+              <Text
+                style={StyleSheet.compose(styles.text, {
+                  fontFamily: "SpaceMono",
+                })}
+              >
+                {application.displayName}
               </Text>
               <Image
                 source={{ uri: application.photoUrl }}
                 style={{ width: 200, height: 200 }}
               ></Image>
-              <Text style={styles.text}>
-                Why they applied:{application.whyApply}
+              <Text
+                style={StyleSheet.compose(styles.text, {
+                  fontFamily: "SpaceMono",
+                  fontWeight: "bold",
+                  color: colors.primary,
+                })}
+              >
+                Why they applied:
               </Text>
-              <Text style={styles.text}>
-                Why they think they're suitable:{application.whySuitable}
+              <Text
+                style={StyleSheet.compose(styles.text, {
+                  fontFamily: "SpaceMono",
+                  fontStyle: "italic",
+                  color: colors.tertiary,
+                })}
+              >
+                {application.whyApply}
               </Text>
-              <Text style={styles.text}>
-                Chosen subjects:{application.subjects}
+
+              <Text
+                style={StyleSheet.compose(styles.text, {
+                  fontFamily: "SpaceMono",
+                  fontWeight: "bold",
+                  color: colors.primary,
+                })}
+              >
+                Why they think they're suitable:
               </Text>
-              <Text style={styles.text}>
-                Previous experience:{application.experience}
+              <Text
+                style={StyleSheet.compose(styles.text, {
+                  fontFamily: "SpaceMono",
+                  fontStyle: "italic",
+                  color: colors.tertiary,
+                })}
+              >
+                {application.whySuitable}
               </Text>
-              <Text style={styles.text}>
+              <Text
+                style={StyleSheet.compose(styles.text, {
+                  fontFamily: "SpaceMono",
+                  fontWeight: "bold",
+                  color: colors.primary,
+                })}
+              >
+                Chosen subjects:
+              </Text>
+              <Text
+                style={StyleSheet.compose(styles.text, {
+                  fontFamily: "SpaceMono",
+                  fontStyle: "italic",
+                  color: colors.tertiary,
+                })}
+              >
+                {application.subjects}
+              </Text>
+              <Text
+                style={StyleSheet.compose(styles.text, {
+                  fontFamily: "SpaceMono",
+                  fontWeight: "bold",
+                  color: colors.primary,
+                })}
+              >
+                Previous experience:
+              </Text>
+              <Text
+                style={StyleSheet.compose(styles.text, {
+                  fontFamily: "SpaceMono",
+                  fontStyle: "italic",
+                  color: colors.tertiary,
+                })}
+              >
+                {application.experience}
+              </Text>
+              <Text
+                style={StyleSheet.compose(styles.text, {
+                  fontFamily: "SpaceMono",
+                  fontWeight: "bold",
+                  color: colors.primary,
+                })}
+              >
                 Dates applied for:{" "}
                 {application.datesApplied.map((date: string) => (
                   <Text key={date}> {date} </Text>
                 ))}
               </Text>
               <Button
+                labelStyle={{
+                  fontFamily: "SpaceMono",
+                  color: colors.tertiary,
+                }}
+                style={{ backgroundColor: colors.secondary, margin: 5 }}
                 mode="contained"
                 onPress={() => updateApplicationAccepted(application.uid, true)}
               >
                 Accept application
               </Button>
               <Button
+
+                labelStyle={{
+                  fontFamily: "SpaceMono",
+                  color: colors.onPrimary,
+                }}
+                style={{ backgroundColor: colors.error, margin: 5 }}
                 mode="contained"
                 onPress={() =>
                   updateApplicationAccepted(application.uid, false)
