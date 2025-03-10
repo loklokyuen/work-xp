@@ -1,16 +1,21 @@
 import { useUserContext } from "@/context/UserContext";
 import { getApplicationByStudentId } from "@/database/applications";
+import { getBusinessOpportunityById } from "@/database/business";
 import { unsubscribe } from "diagnostics_channel";
 import { useEffect, useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, ScrollView } from "react-native";
 import React, { Button, List, useTheme } from "react-native-paper";
 import { Redirect } from "expo-router";
+import Accordion from "./Accordian";
 
 export default function ViewAcceptedApplications() {
   const { user, accountType } = useUserContext();
-  const [applications, setApplications] = useState<Application1[]>([]);
-  const [expanded, setExpanded] = useState(false);
-  const { colors, fonts } = useTheme();
+  const [applications, setApplications] = useState<any[]>([]);
+  const [opportunities, setOpportunities] = useState<any[]>([]);
+  const [expandedAccordion, setExpandedAccordion] = useState<string | null>(
+    null
+  );
+  const { colors } = useTheme();
 
   if (accountType === "Business") {
     return <Redirect href="/+not-found" />;
@@ -23,60 +28,59 @@ export default function ViewAcceptedApplications() {
           const fetchedApplications = await getApplicationByStudentId(user.uid);
           setApplications(fetchedApplications);
         } catch (error) {
-          console.log("error fetching applications" + error);
+          console.log("Error fetching applications:", error);
         }
       }
     };
 
     fetchApplications();
   }, [user]);
+
+  // Fetch opportunities for the applications
+  useEffect(() => {
+    const fetchOpportunities = async () => {
+      if (applications.length > 0) {
+        try {
+          const opps = [];
+          for (let application of applications) {
+            const opportunity = await getBusinessOpportunityById(
+              application.businessId,
+              application.oppId
+            );
+            opps.push(opportunity);
+          }
+          setOpportunities(opps);
+        } catch (error) {
+          console.log("Error fetching opportunities:", error);
+        }
+      }
+    };
+
+    fetchOpportunities();
+  }, [applications]);
+
+  const handleAccordionPress = (uid: string) => {
+    setExpandedAccordion((prev) => (prev === uid ? null : uid));
+  };
+
   return (
-    <List.Section>
-      {" "}
-      {applications.map((application) => {
-        return (
-          <List.Accordion
-            title={application.businessName}
-            titleStyle={{
-              textAlign: "center",
-              fontSize: 18,
-              fontWeight: "bold",
-              fontFamily: "SpaceMono",
-            }}
-            style={
-              application.isAccepted
-                ? { backgroundColor: colors.secondary }
-                : { backgroundColor: "#F5CA6B" }
-            }
-            expanded={expanded}
-            onPress={() => setExpanded(!expanded)}
-          >
-            <View style={styles.accordionContent}>
-              <Text
-                style={{
-                  fontFamily: "SpaceMono",
-                  color: colors.tertiary,
-                  padding: 20,
-                }}
-              >
-                Applied to: {application?.businessName}
-              </Text>
-              {application.isAccepted && (
-                <Text
-                  style={{
-                    fontFamily: "SpaceMono",
-                    color: colors.tertiary,
-                    padding: 20,
-                  }}
-                >
-                  You have been accepted for this role!
-                </Text>
-              )}
-            </View>
-          </List.Accordion>
-        );
-      })}
-    </List.Section>
+    <ScrollView>
+      <List.Section>
+        {" "}
+        {applications.map((application, index) => {
+          const opportunity = opportunities[index];
+          return (
+            <Accordion
+              key={application.uid}
+              application={application}
+              opportunity={opportunity}
+              expanded={expandedAccordion === application.uid}
+              onPress={() => handleAccordionPress(application.uid)}
+            />
+          );
+        })}
+      </List.Section>
+    </ScrollView>
   );
 }
 
