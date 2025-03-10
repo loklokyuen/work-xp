@@ -10,6 +10,9 @@ import { setUserAccountType, useUserContext } from "@/context/UserContext";
 
 import { router } from "expo-router";
 
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "@/database/firebase";
+
 const CreateAccount = () => {
     const { user, setUser, accountType, setAccountType } = useUserContext();
     const [displayName, setDisplayName] = useState<string>("");
@@ -17,48 +20,50 @@ const CreateAccount = () => {
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
 
-    const handleCreateAccount = () => {
+    const handleCreateAccount = async () => {
         if (!email || !password || !displayName) {
             setError("Please fill out all fields.");
             return;
         }
         if (accountType) {
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    const userData: User = {
-                        uid: user.uid,
-                        displayName: displayName,
-                        email: email,
-                        photoUrl: "",
-                    };
-                    updateProfile(user, {
-                        displayName: displayName,
-                    });
-                    setUser(userData);
-                    setUserAccountType(accountType);
-                    addNewUser(user.uid, accountType, displayName || "", user.photoURL || "", email || "");
-                    // sendEmailVerification(user)
-                    //   .then(() => {
-                    //     alert("Email verification sent.");
-                    //   })
-                    //   .catch((error) => {
-                    //     console.error("Error sending email verification:", error);
-                    //   });
-                    setError("");
-                    router.replace("/(tabs)");
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    setError(errorMessage);
-                    if (errorCode === "auth/email-already-in-use") {
-                        setError("Email already in use.");
-                    }
-                    if (errorCode === "auth/weak-password") {
-                        setError("Password should include at least an upper case letter, a lower case letter and needs to be at least 6 digits.");
-                    }
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                const userData: User = {
+                    uid: user.uid,
+                    displayName: displayName,
+                    email: email,
+                    photoUrl: "",
+                };
+                await updateProfile(user, {
+                    displayName: displayName,
                 });
+                setUser(userData);
+                setUserAccountType(accountType);
+                await addNewUser(user.uid, accountType, displayName || "", user.photoURL || "", email || "");
+                // sendEmailVerification(user)
+                //   .then(() => {
+                //     alert("Email verification sent.");
+                //   })
+                //   .catch((error) => {
+                //     console.error("Error sending email verification:", error);
+                //   });
+                setError("");
+                await setDoc(doc(db, "Users", user.uid), {
+                    accountType: accountType,
+                });
+                router.replace("/(tabs)/account");
+            } catch (error) {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                setError(errorMessage);
+                if (errorCode === "auth/email-already-in-use") {
+                    setError("Email already in use.");
+                }
+                if (errorCode === "auth/weak-password") {
+                    setError("Password should include at least an upper case letter, a lower case letter and needs to be at least 6 digits.");
+                }
+            }
         } else {
             setError("Please choose your account type.");
         }
