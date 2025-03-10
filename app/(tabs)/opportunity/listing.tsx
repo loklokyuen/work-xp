@@ -5,7 +5,7 @@ import { addDoc, collection, getDoc, doc, updateDoc, deleteDoc, getDocs } from "
 import { db } from "../../../database/firebase";
 import { useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
-import { router } from "expo-router";
+import { router, Redirect } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
 
 type DayPressEvent = {
@@ -17,7 +17,7 @@ type DayPressEvent = {
 };
 
 export default function Listing() {
-    const { user } = useUserContext();
+    const { user, accountType } = useUserContext();
     const { listingId } = useLocalSearchParams<Record<string, string>>();
 
     const [jobRole, setJobRole] = useState<string>("");
@@ -28,6 +28,10 @@ export default function Listing() {
     const [dates, setDates] = useState<Record<string, any>>({});
     const [periods, setPeriods] = useState<Record<string, any>>({});
     const [remove, setRemove] = useState<string[]>([]);
+
+    if (accountType === "Student") {
+        return <Redirect href="/+not-found" />;
+    }
 
     useEffect(() => {
         if (user?.uid) {
