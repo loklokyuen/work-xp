@@ -11,6 +11,7 @@ const publicComProfile: React.FC = () => {
   const navigation = useNavigation();
   const { uid } = useLocalSearchParams<{ uid: string }>();
   const [business, setBusiness] = useState<Business | null>(null);
+  const [businessName, setBusinessName] = useState<string>("");
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
 
   // Accordion state
@@ -30,6 +31,8 @@ const publicComProfile: React.FC = () => {
       try {
         const fetchedBusiness = await getBusinessById(uid);
         setBusiness(fetchedBusiness);
+        console.log(fetchedBusiness);
+        setBusinessName(fetchedBusiness.displayName);
       } catch (error) {
         console.error("Error fetching business:", error);
       } finally {
@@ -151,7 +154,11 @@ const publicComProfile: React.FC = () => {
           >
             Work Experience Available
           </Text>
-          <OpportunityCards opportunities={opportunities} businessId={uid} />
+          <OpportunityCards
+            opportunities={opportunities}
+            businessId={uid}
+            businessName={businessName}
+          />
         </View>
 
         {/* reviews carousel */}
