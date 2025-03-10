@@ -12,14 +12,18 @@ import {
 interface OpportunityCardProps {
   opportunities: Opportunity[];
   businessId: string;
+  businessName: string;
 }
 
 const OpportunityCards: React.FC<OpportunityCardProps> = ({
   opportunities,
   businessId,
+  businessName,
 }) => {
   const screenHeight = Dimensions.get("window").height;
   const modalHeight = screenHeight * 0.2;
+
+  console.log(businessName, "<<<<<");
 
   // modal states
   const [oppModalvisible, setOppModalVisible] = useState<number | null>(null);
@@ -101,7 +105,11 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
                     onPress={() => {
                       router.push({
                         pathname: "./application",
-                        params: { oppId: opp.id, businessId: businessId },
+                        params: {
+                          oppId: opp.id,
+                          businessId: businessId,
+                          businessName: businessName,
+                        },
                       });
                     }}
                   >
