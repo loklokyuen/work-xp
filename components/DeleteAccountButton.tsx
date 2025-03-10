@@ -2,9 +2,12 @@ import { deleteApplicationsById, getApplications } from "@/database/applications
 import { Button } from "react-native-paper"
 import { useUserContext } from "@/context/UserContext"
 import { deleteStudentById } from "@/database/student"
+import { ConfirmActionModal } from "@/modal/ConfirmActionModal"
+import { useState } from "react"
 
 export function DeleteAccountButton() {
     const {user} = useUserContext()
+    const [openDelete, setOpenDelete] = useState<boolean>(false)
 
     const handleDelete = () => {
         getApplications().then((res) => {
@@ -14,7 +17,7 @@ export function DeleteAccountButton() {
                 }
             })
         }).then(() => {
-            deleteStudentById(user?.uid)
+            deleteStudentById(user.uid)
         }).catch((err) => {
             console.log(err)
         })
@@ -22,7 +25,13 @@ export function DeleteAccountButton() {
 
     return (
         <>
-        <Button mode="contained-tonal" onPress={handleDelete}>Delete Account</Button>
+        <Button mode="contained-tonal" onPress={() => setOpenDelete(true)}>Delete Account</Button>
+        <ConfirmActionModal 
+        open={openDelete}
+        onClose={() => setOpenDelete(false)}
+        title="Are you sure?"
+        onConfirmAction={handleDelete}
+        />
         </>
     )
 }
