@@ -21,7 +21,10 @@ const CountyDropdown: React.FC<CountyDropdownProps> = ({
         visible={visible}
         onDismiss={() => setVisible(false)}
         anchor={
-          <Button onPress={() => setVisible(true)}>
+          <Button
+            labelStyle={{ fontFamily: "SpaceMono" }}
+            onPress={() => setVisible(true)}
+          >
             {selectedCounty
               ? `Filtered by County: ${selectedCounty}`
               : "Filter by County"}
