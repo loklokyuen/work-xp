@@ -3,64 +3,83 @@ import { Platform } from "react-native";
 
 import { HapticTab } from "@/components/expoComponents/HapticTab";
 import TabBarBackground from "../../components/expoComponents/ui/TabBarBackground";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
 import Feather from "@expo/vector-icons/Feather";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useUserContext } from "@/context/UserContext";
+import { useTheme } from "react-native-paper";
 
 export default function TabLayout() {
-    const colorScheme = useColorScheme();
-    const { user, accountType } = useUserContext();
+  const { user, accountType } = useUserContext();
+  const { colors } = useTheme();
 
-    if (!accountType) {
-        return <Redirect href="/(auth)/main" />;
-    }
+  if (!accountType) {
+    return <Redirect href="/(auth)/main" />;
+  }
 
-    return (
-        <Tabs
-            screenOptions={{
-                tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-                headerShown: false,
-                tabBarButton: HapticTab,
-                tabBarBackground: TabBarBackground,
-                tabBarStyle: Platform.select({
-                    ios: {
-                        // Use a transparent background on iOS to show the blur effect
-                        position: "absolute",
-                    },
-                    default: {},
-                }),
-            }}
-        >
-            <Tabs.Screen
-                name="opportunity"
-                options={{
-                    tabBarLabel: () => null,
-                    tabBarIcon: () => <Feather name="briefcase" size={30} color="black" />,
-                }}
+  return (
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarButton: HapticTab,
+        tabBarBackground: TabBarBackground,
+        tabBarStyle: {
+          backgroundColor: colors.surface,
+          position: Platform.OS === "ios" ? "absolute" : "relative",
+        },
+      }}
+    >
+      <Tabs.Screen
+        name="opportunity"
+        options={{
+          tabBarLabel: () => null,
+          tabBarIcon: ({ focused }) => (
+            <Feather
+              name="briefcase"
+              size={30}
+              color={focused ? colors.tabIconSelected : colors.tabIconDefault}
             />
-            <Tabs.Screen
-                name="explore"
-                options={{
-                    tabBarLabel: () => null,
-                    tabBarIcon: () => <Feather name="book-open" size={30} color="black" />,
-                }}
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="explore"
+        options={{
+          tabBarLabel: () => null,
+          tabBarIcon: ({ focused }) => (
+            <Feather
+              name="book-open"
+              size={30}
+              color={focused ? colors.tabIconSelected : colors.tabIconDefault}
             />
-            <Tabs.Screen
-                name="chat"
-                options={{
-                    tabBarLabel: () => null,
-                    tabBarIcon: () => <Feather name="message-square" size={30} color="black" />,
-                }}
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="chat"
+        options={{
+          tabBarLabel: () => null,
+          tabBarIcon: ({ focused }) => (
+            <Feather
+              name="message-square"
+              size={30}
+              color={focused ? colors.tabIconSelected : colors.tabIconDefault}
             />
-            <Tabs.Screen
-                name="index"
-                options={{
-                    tabBarLabel: () => null,
-                    tabBarIcon: () => <AntDesign name="user" size={30} color="black" />,
-                }}
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="index"
+        options={{
+          tabBarLabel: () => null,
+          tabBarIcon: ({ focused }) => (
+            <AntDesign
+              name="user"
+              size={30}
+              color={focused ? colors.tabIconSelected : colors.tabIconDefault}
             />
-        </Tabs>
-    );
+          ),
+        }}
+      />
+    </Tabs>
+  );
 }
