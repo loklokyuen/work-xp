@@ -6,6 +6,9 @@ import { router } from "expo-router";
 export default function GuestModePrompt() {
     return (
         <View>
+            <Text variant="titleLarge" style={{ textAlign: "center", margin: 15 }}>
+                Guest
+            </Text>
             <Text variant="titleMedium" style={{ textAlign: "center", margin: 20 }}>
                 You are currently in guest mode. Please sign in to enjoy the full functionalities.
             </Text>

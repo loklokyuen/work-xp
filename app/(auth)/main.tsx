@@ -25,7 +25,7 @@ export default function AccountScreen() {
                 setUserAccountType("Guest");
                 setAccountType("Guest");
                 setError("");
-                router.replace("/(tabs)");
+                router.replace("/(tabs)/account");
             })
             .catch((error) => {
                 const errorCode = error.code;
