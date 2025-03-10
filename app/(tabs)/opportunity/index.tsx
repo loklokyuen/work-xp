@@ -1,5 +1,5 @@
 import { useUserContext } from "../../../context/UserContext";
-import { Redirect } from "expo-router";
+import { Redirect, router } from "expo-router";
 
 //need to add guest option here
 

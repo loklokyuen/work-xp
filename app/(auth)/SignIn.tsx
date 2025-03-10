@@ -1,21 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Text, TextInput, Button, useTheme } from "react-native-paper";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/database/firebase";
 import styles from "../styles";
+import { useUserContext } from "@/context/UserContext";
+import e from "express";
 import { router } from "expo-router";
-import { doc, getDoc, getDocs, collection, setDoc } from "firebase/firestore";
-import { db } from "@/database/firebase";
-import { setUserAccountType, useUserContext } from "@/context/UserContext";
 
 const SignIn = () => {
+    const { setUser } = useUserContext();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isHovered, setIsHovered] = useState(false);
     const { colors, fonts } = useTheme();
-    const { user, setUser, accountType, setAccountType } = useUserContext();
 
     const handleSignIn = () => {
         if (!email || !password) {
@@ -33,19 +32,13 @@ const SignIn = () => {
                     photoUrl: user.photoURL || "",
                 });
                 setError("");
+                router.replace("/(tabs)");
                 // if (!user.emailVerified) {
                 //     sendEmailVerification(user)
                 //     alert('Please verify your email before signing in.');
                 // } else {
                 //     alert('Signed in successfully!');
                 // }
-                return getDoc(doc(db, "Users", user.uid));
-            })
-            .then((doc) => {
-                const data = doc.data();
-                setAccountType(data?.accountType);
-                setUserAccountType(data?.accountType);
-                router.replace("/(tabs)/account");
             })
             .catch((error) => {
                 const errorCode = error.code;

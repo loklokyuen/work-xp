@@ -1,8 +1,10 @@
 import { Button, IconButton, Text, TextInput, Menu } from "react-native-paper";
-
+import ImageViewer from "../expoComponents/imageViewer";
+import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import { View, Platform } from "react-native";
-
+import { db } from "@/database/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 import { useUserContext } from "@/context/UserContext";
 import { updateBusinesInfo } from "@/database/business";
 
@@ -32,7 +34,7 @@ export function EditableBusinessInfo({ businessInfo, onUpdateInfo, setChangesMad
             if (!user) return;
             const isUpdateSuccess = await updateBusinesInfo(user.uid, displayName, email, county, bio, phoneNum, industry, address);
             if (isUpdateSuccess) {
-                // alert("Changes have been saved");
+                alert("Changes have been saved");
                 onUpdateInfo();
                 setChangesMade(false);
             } else {
