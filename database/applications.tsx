@@ -9,6 +9,7 @@ import {
   where,
   updateDoc,
   QuerySnapshot,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
 const ApplicationsCollection = collection(db, "Applications");
@@ -166,6 +167,17 @@ async function updateApplicationAccepted(
   }
 }
 
+async function deleteApplicationsById(uid:string): Promise<boolean> {
+  try {
+      const docRef = doc(ApplicationsCollection, uid);
+      await deleteDoc(docRef);
+      return true;
+  } catch (error) {
+      alert("Error deleting application: " + error);
+      return false;
+  }
+}
+
 export {
   addApplication,
   getApplications,
@@ -174,4 +186,5 @@ export {
   getApplicationsByOppId,
   updateApplicationAccepted,
   getApplicationByStudentId,
+  deleteApplicationsById,
 };
