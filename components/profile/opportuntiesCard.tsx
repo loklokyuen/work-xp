@@ -1,3 +1,4 @@
+import { video } from "@cloudinary/url-gen/qualifiers/source";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
@@ -21,7 +22,7 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
   businessName,
 }) => {
   const screenHeight = Dimensions.get("window").height;
-  const modalHeight = screenHeight * 0.2;
+  const modalHeight = screenHeight * 0.3;
 
   console.log(businessName, "<<<<<");
 
@@ -32,7 +33,7 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
   const containerStyle = {
     backgroundColor: "transparent",
     padding: 0,
-    margin: 20,
+    margin: 15,
     height: modalHeight,
   };
 
@@ -77,8 +78,8 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
                   <Text
                     style={{
                       fontFamily: "SpaceMono",
-                      fontSize: 20,
-                      padding: 20,
+                      fontSize: 18,
+                      padding: 10,
                     }}
                   >
                     {opp.jobRole}
@@ -88,7 +89,7 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
                       fontFamily: "SpaceMono",
                       fontSize: 15,
                       textAlign: "center",
-                      padding: 20,
+                      padding: 10,
                     }}
                   >
                     {opp.description}
@@ -98,9 +99,13 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
                     labelStyle={{
                       fontFamily: "SpaceMono",
                       color: colors.onSecondary,
+                      paddingLeft: 10,
+                      paddingRight: 10,
                     }}
                     style={{
                       backgroundColor: colors.secondary,
+                      marginBottom: 5,
+                      marginTop: 10,
                     }}
                     onPress={() => {
                       router.push({
@@ -117,7 +122,7 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
                   </Button>
                   <Button
                     onPress={hideOppModal}
-                    labelStyle={{ color: colors.quarternary }}
+                    labelStyle={{ color: colors. onTertiaryContainer, paddingTop: 10, paddingBottom:10 }}
                   >
                     Close
                   </Button>
@@ -136,16 +141,17 @@ export default OpportunityCards;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 25,
+    padding: 20,
   },
   card: {
-    marginBottom: 5,
+    marginBottom: 20,
   },
   modalView: {
-    margin: 20,
+    zIndex: 1000, // Make sure it's on top
+    margin: 10,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 25,
+    padding: 5,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -156,45 +162,45 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  oppButtons: {
-    textAlign: "center",
-    backgroundColor: "#795663",
-    borderRadius: 20,
-    padding: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-    elevation: 2,
-  },
-  applyButton: {
-    textAlign: "center",
-    backgroundColor: "#795663",
-    borderRadius: 20,
-    padding: 5,
-    paddingLeft: 20,
-    paddingRight: 20,
-    elevation: 2,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  buttonText: {
-    textAlign: "center",
-    color: "white",
-    fontWeight: "bold",
-  },
-  subtitle: {
-    textAlign: "center",
-    fontWeight: "bold",
-    paddingBottom: 15,
-    fontSize: 18,
-  },
+  // oppButtons: {
+  //   textAlign: "center",
+  //   backgroundColor: "#795663",
+  //   borderRadius: 20,
+  //   padding: 10,
+  //   paddingLeft: 20,
+  //   paddingRight: 20,
+  //   elevation: 2,
+  // },
+  // applyButton: {
+  //   textAlign: "center",
+  //   backgroundColor: "#795663",
+  //   borderRadius: 20,
+  //   padding: 5,
+  //   paddingLeft: 20,
+  //   paddingRight: 20,
+  //   elevation: 2,
+  //   marginTop: 10,
+  //   marginBottom: 10,
+  // },
+  // buttonText: {
+  //   textAlign: "center",
+  //   color: "white",
+  //   fontWeight: "bold",
+  // },
+  // subtitle: {
+  //   textAlign: "center",
+  //   fontWeight: "bold",
+  //   paddingBottom: 15,
+  //   fontSize: 18,
+  // },
   text: {
     textAlign: "center",
-    paddingBottom: 15,
+    paddingBottom: 10,
     fontSize: 15,
   },
-  textOnWhite: {
-    color: "black",
-    textAlign: "center",
-    paddingBottom: 10,
-  },
+  // textOnWhite: {
+  //   color: "black",
+  //   textAlign: "center",
+  //   paddingBottom: 10,
+  // },
 });
