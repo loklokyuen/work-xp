@@ -10,12 +10,17 @@ import { useLocalSearchParams } from "expo-router/build/hooks";
 import { StyleSheet, Image } from "react-native";
 import { View, ScrollView } from "react-native";
 import { Text, Button, useTheme } from "react-native-paper";
+import { Redirect } from "expo-router";
 
 export default function Applications() {
   const [applications, setApplications] = useState<Application1[]>();
-  const { user } = useUserContext();
+  const { user, accountType } = useUserContext();
   const { id } = useLocalSearchParams<Record<string, string>>();
   const { colors, fonts } = useTheme();
+
+  if (accountType === "Student") {
+    return <Redirect href="/+not-found" />;
+  }
 
   useEffect(() => {
     if (id) {
@@ -135,8 +140,8 @@ export default function Applications() {
                 })}
               >
                 Dates applied for:{" "}
-                {Object.keys(application.datesApplied).map((date) => (
-                  <Text key={date}> {date}, </Text>
+                {application.datesApplied.map((date: string) => (
+                  <Text key={date}> {date} </Text>
                 ))}
               </Text>
               <Button
@@ -151,6 +156,7 @@ export default function Applications() {
                 Accept application
               </Button>
               <Button
+
                 labelStyle={{
                   fontFamily: "SpaceMono",
                   color: colors.onPrimary,
