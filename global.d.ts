@@ -83,6 +83,8 @@ declare global {
         subjects: string,
         displayName: string,
         photoUrl: string,
+        isAccepted: boolean,
+        businessName: string
   
     }
 
