@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
-import {
-    createUserWithEmailAndPassword,
-    sendEmailVerification,
-    updateProfile,
-} from "firebase/auth";
-import { auth } from "@/database/firebase";
-import styles from "../../app/styles";
-import { setUserAccountType, useUserContext } from "@/context/UserContext";
-import { addNewUser } from "@/database/user";
+import styles from "../styles";
 
-const CreateAccount: React.FC<accountProps> = ({ setIsNewUser }: accountProps) => {
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
+import { auth } from "@/database/firebase";
+import { addNewUser } from "@/database/user";
+import { setUserAccountType, useUserContext } from "@/context/UserContext";
+
+import { router } from "expo-router";
+
+const CreateAccount = () => {
     const { user, setUser, accountType, setAccountType } = useUserContext();
     const [displayName, setDisplayName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -47,6 +46,7 @@ const CreateAccount: React.FC<accountProps> = ({ setIsNewUser }: accountProps) =
                     //     console.error("Error sending email verification:", error);
                     //   });
                     setError("");
+                    router.replace("/(tabs)");
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -64,38 +64,42 @@ const CreateAccount: React.FC<accountProps> = ({ setIsNewUser }: accountProps) =
         }
     };
 
-
-
     return (
         <View style={styles.container}>
-            
             <Text style={styles.title}>Create {accountType} Account</Text>
             <View style={styles.buttonContainer}>
-            <Button mode="contained-tonal" onPress={() => setAccountType("Student")} >Student</Button>
-            <Text variant="titleMedium" style={{textAlign: "center", alignContent: "center"}}> OR</Text>
-            <Button mode="contained-tonal" onPress={() => setAccountType("Business")} >Business</Button>
+                <Button mode="contained-tonal" onPress={() => setAccountType("Student")}>
+                    Student
+                </Button>
+                <Text variant="titleMedium" style={{ textAlign: "center", alignContent: "center" }}>
+                    {" "}
+                    OR
+                </Text>
+                <Button mode="contained-tonal" onPress={() => setAccountType("Business")}>
+                    Business
+                </Button>
             </View>
             <TextInput style={styles.input} label="Display Name" value={displayName} onChangeText={setDisplayName} autoCapitalize="words" />
-            <TextInput
-                style={styles.input}
-                label="Email"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-            />
+            <TextInput style={styles.input} label="Email" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
             <TextInput style={styles.input} label="Password" value={password} onChangeText={setPassword} secureTextEntry />
             {error ? <Text style={styles.error}>{error}</Text> : null}
             <View style={styles.buttonContainer}>
-                <Button mode="contained-tonal" onPress={handleCreateAccount}>Create Account</Button>
+                <Button mode="contained-tonal" onPress={handleCreateAccount}>
+                    Create Account
+                </Button>
             </View>
-            <Text variant="titleMedium" style={{textAlign: "center", margin: 10}}>Already have an account?</Text>
+            <Text variant="titleMedium" style={{ textAlign: "center", margin: 10 }}>
+                Already have an account?
+            </Text>
             <View style={styles.buttonContainer}>
-            <Button mode="outlined" 
-                onPress={() => {
-                    setIsNewUser(false);
-                }}
-            >Sign in</Button>
+                <Button
+                    mode="outlined"
+                    onPress={() => {
+                        router.replace("/SignIn");
+                    }}
+                >
+                    Sign in
+                </Button>
             </View>
         </View>
     );
