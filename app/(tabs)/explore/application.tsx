@@ -161,22 +161,25 @@ export default function Application() {
                 photoUrl: photoUrl,
                 businessName: businessName,
             };
-
-            await addApplication(
-                data.oppId,
-                data.businessId,
-                data.datesApplied,
-                data.studentId,
-                data.whyApply,
-                data.whySuitable,
-                data.personalStatement,
-                data.experience,
-                data.subjects,
-                data.displayName,
-                data.photoUrl,
-                data.businessName
-            );
-            setIsModalVisible(true);
+            try {
+                await addApplication(
+                    data.oppId,
+                    data.businessId,
+                    data.datesApplied,
+                    data.studentId,
+                    data.whyApply,
+                    data.whySuitable,
+                    data.personalStatement,
+                    data.experience,
+                    data.subjects,
+                    data.displayName,
+                    data.photoUrl,
+                    data.businessName
+                );
+                setIsModalVisible(true);
+            } catch (error) {
+                console.log(error);
+            }
         }
     };
     return (
