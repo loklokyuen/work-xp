@@ -77,7 +77,7 @@ export default function Opportunities() {
                                     labelStyle={{ fontFamily: "SpaceMono" }}
                                     onPress={() => {
                                         router.push({
-                                            pathname: "/(tabs)/opportunity/listing",
+                                            pathname: "/(tabs)/opportunity/(Business)/listing",
                                             params: { listingId: opp.id },
                                         });
                                     }}
@@ -91,7 +91,7 @@ export default function Opportunities() {
                                     labelStyle={{ fontFamily: "SpaceMono" }}
                                     onPress={() => {
                                         router.push({
-                                            pathname: "/(tabs)/opportunity/applications",
+                                            pathname: "/(tabs)/opportunity/(Business)/applications",
                                             params: { id: opp.id },
                                         });
                                     }}
@@ -109,7 +109,7 @@ export default function Opportunities() {
                 style={{ marginHorizontal: 20 }}
                 onPress={() => {
                     router.push({
-                        pathname: "/(tabs)/opportunity/listing",
+                        pathname: "/(tabs)/opportunity/(Business)/listing",
                         params: { listingId: "" },
                     });
                 }}
