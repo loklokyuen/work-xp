@@ -173,7 +173,7 @@ export default function ProfilePage() {
         }
     };
 
-    if (loading) return <ActivityIndicator size="large" style={{ flex: 1, justifyContent: "center", alignItems: "center" }} />;
+    // if (loading) return <ActivityIndicator size="large" style={{ flex: 1, justifyContent: "center", alignItems: "center" }} />;
     return (
         <SafeAreaView style={styles.container}>
             <KeyboardAwareScrollView enableOnAndroid contentContainerStyle={styles.scrollViewContent}>

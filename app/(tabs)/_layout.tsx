@@ -16,6 +16,8 @@ export default function TabLayout() {
     if (!accountType) {
         console.log("accounttype", accountType);
         return <Redirect href="/(auth)/main" />;
+    } else {
+        console.log("accounttype", accountType);
     }
 
     return (
