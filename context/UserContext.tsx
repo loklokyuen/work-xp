@@ -63,11 +63,12 @@ export function UserProvider({ children }: UserProviderProps) {
         const subscriber = auth.onAuthStateChanged(onAuthStateChanged);
         return subscriber;
     }, []);
-    if (initializing) return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <ActivityIndicator size="large" />
-        </View>
-    );
+    if (initializing)
+        return (
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <ActivityIndicator size="large" />
+            </View>
+        );
     return <UserContext.Provider value={{ user, setUser, accountType, setAccountType }}>{children}</UserContext.Provider>;
 }
 
