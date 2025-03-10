@@ -16,6 +16,7 @@ import { getStudentById } from "@/database/student";
 
 import { addApplication } from "@/database/applications";
 import { useLocalSearchParams } from "expo-router";
+import { ConfirmationModal } from "@/modal/ConfirmationModal";
 
 type DayPressEvent = {
   dateString: string;
@@ -48,6 +49,7 @@ export default function Application() {
   const [photoUrl, setPhotoUrl] = useState<string>("");
 
   const [chosen, setChosen] = useState<Record<string, any>>({});
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const BusinessId = businessId;
   const OpportunityId = oppId;
@@ -158,6 +160,10 @@ export default function Application() {
     }
   }
 
+  function closeModal() {
+    setIsModalVisible(false);
+  }
+
   const handleSubmit = async () => {
     if (why && reason && chosen) {
       const data = {
@@ -189,6 +195,7 @@ export default function Application() {
         data.photoUrl,
         data.businessName
       );
+      setIsModalVisible(true);
     }
   };
   return (
@@ -244,6 +251,14 @@ export default function Application() {
       </View>
 
       <Button title="Submit Application" onPress={handleSubmit} />
+
+      <ConfirmationModal
+        open={isModalVisible}
+        onClose={closeModal}
+        title="Application Submitted!"
+        message="Your application has been successfully submitted."
+        confirmText="OK"
+      />
     </ScrollView>
   );
 }
