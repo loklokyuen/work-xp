@@ -30,14 +30,16 @@ const publicComProfile: React.FC = () => {
   const { colors } = useTheme();
 
   useEffect(() => {
-    navigation.setOptions({ headerShown: true, title: "Back to all", 
+    navigation.setOptions({
+      headerShown: true,
+      title: "Back to all",
       headerLeft: () => (
-      <IconButton
+        <IconButton
           icon="arrow-left"
-          onPress={() => router.replace('/explore')}
-      />
-  ) });
-
+          onPress={() => router.replace("/explore")}
+        />
+      ),
+    });
   }, [navigation]);
 
   useEffect(() => {
@@ -115,7 +117,7 @@ const publicComProfile: React.FC = () => {
               color: colors.onPrimary,
               fontFamily: "SpaceMono",
             }}
-            style={{ backgroundColor: colors.primary }}
+            style={{ backgroundColor: colors.quarternary }}
             expanded={expanded}
             onPress={() => setExpanded(!expanded)}
             right={() => (
@@ -143,7 +145,11 @@ const publicComProfile: React.FC = () => {
               >
                 Visit us: {business?.address}, {business?.county}
               </Text>
-             <ChatButton receiverUid={uid} receiverDisplayName={businessName} receiverAccountType="Business"/>
+              <ChatButton
+                receiverUid={uid}
+                receiverDisplayName={businessName}
+                receiverAccountType="Business"
+              />
             </View>
           </List.Accordion>
         </List.Section>
@@ -165,7 +171,7 @@ const publicComProfile: React.FC = () => {
           />
         </View>
 
-        {/* reviews carousel */}
+        {/* reviews */}
         <Text
           style={[
             styles.reviewsHeader,
@@ -174,7 +180,9 @@ const publicComProfile: React.FC = () => {
         >
           Hear from past students
         </Text>
-        <ReviewCard businessId={uid} />
+        <ScrollView style={styles.scrollContainer}>
+          <ReviewCard businessId={uid} />
+        </ScrollView>
         <Text
           style={[
             styles.text,
@@ -219,7 +227,7 @@ const styles = StyleSheet.create({
   reviewsHeader: {
     textAlign: "center",
     paddingTop: 70,
-    paddingBottom: 40,
+    paddingBottom: 20,
     fontSize: 18,
     fontWeight: "bold",
   },
