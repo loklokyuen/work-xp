@@ -16,6 +16,15 @@ const styles = StyleSheet.create({
     margin: 16,
     textAlign: "center",
   },
+  subTitle: {
+    margin: 16,
+    textAlign: "center",
+  },
+  body: {
+    fontSize: 15,
+    margin: 16,
+    textAlign: "center",
+  },
   input: {
     height: 40,
     borderColor: "gray",
