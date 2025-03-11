@@ -12,6 +12,7 @@ import {
   Button,
   IconButton,
   Text,
+  useTheme,
 } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -46,6 +47,8 @@ export default function ProfilePage() {
   const [openChangePassword, setOpenChangePassword] = useState<boolean>(false);
   const { user, setUser, accountType, setAccountType } = useUserContext();
   const placeHolderImage = require("@/assets/images/background-image.png");
+
+  const { colors, fonts } = useTheme();
 
   if (!accountType) {
     return <Redirect href="/(auth)/main" />;
@@ -187,7 +190,7 @@ export default function ProfilePage() {
         enableOnAndroid
         contentContainerStyle={styles.scrollViewContent}
       >
-        <Text variant="titleLarge" style={{ textAlign: "center", margin: 15 }}>
+        <Text variant="titleLarge" style={{ textAlign: "center", margin: 15, paddingTop: 10, }}>
           {guestMode ? "Guest" : "Profile"}
         </Text>
         {guestMode && <GuestModePrompt />}
@@ -203,6 +206,17 @@ export default function ProfilePage() {
           >
             {editMode ? (
               <Button
+                style={{
+                  backgroundColor: colors.quarternary,
+                  borderRadius: 100,
+                  marginBottom: 0,
+                }}
+                labelStyle={{
+                  fontFamily: "SpaceMono",
+                  fontSize: 12,
+                  fontWeight: "normal",
+                  color: colors.surface,
+                }}
                 mode="contained-tonal"
                 onPress={() => {
                   if (changesMade) {
@@ -216,6 +230,17 @@ export default function ProfilePage() {
               </Button>
             ) : (
               <Button
+                style={{
+                  backgroundColor: colors.quarternary,
+                  borderRadius: 100,
+                  marginBottom: 0,
+                }}
+                labelStyle={{
+                  fontFamily: "SpaceMono",
+                  fontSize: 12,
+                  fontWeight: "normal",
+                  color: colors.surface,
+                }}
                 mode="contained-tonal"
                 onPress={() => {
                   setEditMode(!editMode);
@@ -269,8 +294,8 @@ export default function ProfilePage() {
         )}
         {!editMode && !guestMode && (
           <Text
-            variant="titleMedium"
-            style={{ textAlign: "center", margin: 10 }}
+            variant="titleLarge"
+            style={{ textAlign: "center", margin: 10, color: "#3E92CC", paddingTop: 10 }}
           >
             {studentInfo?.displayName || businessInfo?.displayName}
           </Text>
@@ -297,10 +322,22 @@ export default function ProfilePage() {
           studentInfo && <ReadonlyStudentInfo studentInfo={studentInfo} />
         )}
         {!editMode && !guestMode && (
-          <View style={styles.buttonContainer}>
+          <View style={styles.proButtonContainer}>
             <Button
-              style={{ margin: 5, backgroundColor: "#f0f0f0" }}
-              mode="outlined"
+              style={{
+                backgroundColor: colors.primary,
+                borderRadius: 8,
+                paddingLeft: 5,
+                paddingRight: 5,
+                marginBottom: 15,
+              }}
+              labelStyle={{
+                fontFamily: "SpaceMono",
+                fontSize: 16,
+                fontWeight: "normal",
+                color: colors.onPrimary,
+              }}
+              // mode="outlined"
               onPress={() => {
                 setOpenChangePassword(true);
               }}
@@ -313,8 +350,21 @@ export default function ProfilePage() {
               onChangePassword={handleChangePassword}
             ></ChangePasswordModal>
             <Button
-              style={{ margin: 5, backgroundColor: "#f0f0f0" }}
-              mode="outlined"
+              style={{
+                backgroundColor: colors.error,
+                borderRadius: 8,
+                paddingLeft: 5,
+                paddingRight: 5,
+                marginBottom: 15,
+              }}
+              labelStyle={{
+                fontFamily: "SpaceMono",
+                fontSize: 16,
+                fontWeight: "normal",
+                color: colors.onError,
+              }}
+              // mode="outlined"
+
               onPress={() => setOpenLogout(true)}
             >
               Log out
@@ -325,18 +375,6 @@ export default function ProfilePage() {
               title="Confirm logout?"
               onConfirmAction={handleLogout}
             />
-            <Button
-              style={{ margin: 5, backgroundColor: "#f0f0f0" }}
-              mode="outlined"
-              onPress={() => {
-                router.push({
-                  pathname: "./reviews",
-                  params: {},
-                });
-              }}
-            >
-              Reviews
-            </Button>
           </View>
         )}
       </KeyboardAwareScrollView>
