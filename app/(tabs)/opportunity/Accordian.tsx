@@ -20,7 +20,6 @@ interface AccordionProps {
   expanded: boolean;
   onPress: () => void;
 }
-
 const Accordion: React.FC<AccordionProps> = ({
   application,
   opportunity,
@@ -28,6 +27,18 @@ const Accordion: React.FC<AccordionProps> = ({
   onPress,
 }) => {
   const { colors } = useTheme();
+
+  // Determine background color based on isAccepted status
+  let backgroundColor;
+  if (expanded) {
+    backgroundColor = colors.quarternary;
+  } else if (application.isAccepted === true) {
+    backgroundColor = colors.secondary;
+  } else if (application.isAccepted === false) {
+    backgroundColor = colors.error;
+  } else {
+    backgroundColor = "#F5CA6B"; // Orange (Pending)
+  }
 
   return (
     <View style={{ padding: 5, margin: 10 }}>
@@ -41,13 +52,7 @@ const Accordion: React.FC<AccordionProps> = ({
           fontFamily: "SpaceMono",
           color: expanded ? colors.surface : colors.tertiary,
         }}
-        style={{
-          backgroundColor: expanded
-            ? colors.quarternary
-            : application.isAccepted
-            ? colors.secondary
-            : "#F5CA6B",
-        }}
+        style={{ backgroundColor }}
         expanded={expanded}
         onPress={onPress}
       >
@@ -90,12 +95,8 @@ const Accordion: React.FC<AccordionProps> = ({
               </Text>
             </>
           )}
-          {application.isAccepted ? (
-            <Card
-              style={{
-                backgroundColor: colors.secondaryContainer,
-              }}
-            >
+          {application.isAccepted === true ? (
+            <Card style={{ backgroundColor: colors.secondaryContainer }}>
               <Card.Content>
                 <Text
                   style={{
@@ -107,12 +108,12 @@ const Accordion: React.FC<AccordionProps> = ({
                     textAlign: "center",
                   }}
                 >
-                  Congratulations, you have been accepted for this role! Please
-                  chat with the business for further details.
+                  🎉 Congratulations! You have been accepted for this role.
+                  Please chat with the business for further details.
                 </Text>
               </Card.Content>
             </Card>
-          ) : (
+          ) : application.isAccepted === false ? (
             <Card style={{ backgroundColor: colors.errorContainer }}>
               <Card.Content>
                 <Text
@@ -124,9 +125,25 @@ const Accordion: React.FC<AccordionProps> = ({
                     textAlign: "center",
                   }}
                 >
-                  You have not been accepted at this time, or your application
-                  is still under review. Please chat with the business to check
-                  on the status.
+                  ❌ Unfortunately, your application was not successful. Please
+                  explore and apply to other opportunities!
+                </Text>
+              </Card.Content>
+            </Card>
+          ) : (
+            <Card style={{ backgroundColor: colors.surfaceVariant }}>
+              <Card.Content>
+                <Text
+                  style={{
+                    color: colors.tertiary,
+                    padding: 20,
+                    fontFamily: "SpaceMono",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  ⏳ Your application is still under review. Please wait for a
+                  response from the business.
                 </Text>
               </Card.Content>
             </Card>
