@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     marginBottom: 8,
-    fontFamily: "SpaceMono", // Set default font to SpaceMono
+    fontFamily: "SpaceMono",
   },
   bold: {
     fontWeight: "bold",
