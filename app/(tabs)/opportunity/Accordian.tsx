@@ -41,18 +41,7 @@ const Accordion: React.FC<AccordionProps> = ({
   }
 
   return (
-    <View
-      style={{
-        padding: 5,
-        margin: 10,
-        borderRadius: 5,
-        shadowColor: "#000000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 5,
-        elevation: 5,
-      }}
-    >
+    <View style={{ padding: 5, margin: 10, borderRadius: 5, shadowColor: "#000000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 5, elevation: 5 }}>
       <List.Accordion
         key={application.uid}
         title={opportunity?.jobRole}
@@ -60,7 +49,7 @@ const Accordion: React.FC<AccordionProps> = ({
           textAlign: "center",
           fontSize: 18,
           fontWeight: "bold",
-          fontFamily: "Lato",
+          fontFamily: "SpaceMono",
           color: expanded ? colors.surface : colors.tertiary,
         }}
         style={{ backgroundColor }}
@@ -70,7 +59,7 @@ const Accordion: React.FC<AccordionProps> = ({
         <View style={{ alignItems: "center" }}>
           <Text
             style={{
-              fontFamily: "Lato",
+              fontFamily: "SpaceMono",
               color: colors.primary,
               marginTop: 20,
               marginBottom: 20,
@@ -84,7 +73,7 @@ const Accordion: React.FC<AccordionProps> = ({
             <>
               <Text
                 style={{
-                  fontFamily: "Lato",
+                  fontFamily: "SpaceMono",
                   color: colors.tertiary,
                   fontWeight: "bold",
                   fontStyle: "italic",
@@ -95,7 +84,7 @@ const Accordion: React.FC<AccordionProps> = ({
               </Text>
               <Text
                 style={{
-                  fontFamily: "Lato",
+                  fontFamily: "SpaceMono",
                   color: colors.tertiary,
                   padding: 10,
                   marginTop: 10,
@@ -104,11 +93,7 @@ const Accordion: React.FC<AccordionProps> = ({
               >
                 {opportunity.description}
               </Text>
-              <ChatButton
-                receiverUid={application?.businessId || ""}
-                receiverDisplayName={application?.businessName || ""}
-                receiverAccountType="Business"
-              />
+              <ChatButton receiverUid={application?.businessId || ""} receiverDisplayName={application?.businessName || ""} receiverAccountType="Business"/>
             </>
           )}
           {application.isAccepted === true ? (
@@ -118,7 +103,7 @@ const Accordion: React.FC<AccordionProps> = ({
                   style={{
                     color: colors.onSecondary,
                     margin: 10,
-                    fontFamily: "Lato",
+                    fontFamily: "SpaceMono",
                     fontWeight: "bold",
                     textAlign: "center",
                   }}
@@ -135,7 +120,7 @@ const Accordion: React.FC<AccordionProps> = ({
                   style={{
                     color: colors.error,
                     padding: 20,
-                    fontFamily: "Lato",
+                    fontFamily: "SpaceMono",
                     fontWeight: "bold",
                     textAlign: "center",
                   }}
@@ -152,7 +137,7 @@ const Accordion: React.FC<AccordionProps> = ({
                   style={{
                     color: colors.tertiary,
                     padding: 20,
-                    fontFamily: "Lato",
+                    fontFamily: "SpaceMono",
                     fontWeight: "bold",
                     textAlign: "center",
                   }}

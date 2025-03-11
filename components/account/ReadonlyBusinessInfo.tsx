@@ -58,7 +58,9 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
           {businessInfo.address}
         </Text>
         <Text
-          style={(styles.text, { fontFamily: "Lato", textAlign: "center" })}
+          style={
+            (styles.text, { fontFamily: "SpaceMono", textAlign: "center" })
+          }
         >
           DBS Certificate:
         </Text>
@@ -75,7 +77,7 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
               marginBottom: 15,
             }}
             labelStyle={{
-              fontFamily: "Lato",
+              fontFamily: "SpaceMono",
               fontSize: 16,
               fontWeight: "normal",
               color: colors.tertiary,
@@ -98,7 +100,7 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
               marginBottom: 15,
             }}
             labelStyle={{
-              fontFamily: "Lato",
+              fontFamily: "SpaceMono",
               fontSize: 16,
               fontWeight: "normal",
               color: colors.tertiary,
@@ -121,7 +123,7 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
               marginBottom: 15,
             }}
             labelStyle={{
-              fontFamily: "Lato",
+              fontFamily: "SpaceMono",
               fontSize: 16,
               fontWeight: "normal",
               color: colors.tertiary,

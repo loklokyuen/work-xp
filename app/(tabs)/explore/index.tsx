@@ -22,7 +22,7 @@ const HomeScreen = () => {
           <MaterialCommunityIcons name="airplane-takeoff" size={24} />
         )}
       >
-        <Text style={{ fontFamily: "Lato" }}>
+        <Text style={{ fontFamily: "SpaceMono" }}>
           Welcome to Work-XP! Please search for a business to get exploring!
         </Text>
       </Banner>

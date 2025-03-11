@@ -76,7 +76,7 @@ export default function Applications() {
               color: colors.tertiary,
               fontWeight: "bold",
               fontSize: 15,
-              fontFamily: "Lato",
+              fontFamily: "SpaceMono",
               alignContent: "center",
               margin: 10,
             }}

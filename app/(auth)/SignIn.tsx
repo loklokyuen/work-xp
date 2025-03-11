@@ -120,7 +120,7 @@ const SignIn = () => {
             borderRadius: 8, // Optional: For rounded edges
           }}
           labelStyle={{
-            fontFamily: "Lato", // Apply custom font
+            fontFamily: "SpaceMono", // Apply custom font
             fontSize: 16, // Adjust font size as needed
             fontWeight: "normal", // Set font weight
             color: colors.tertiary, // Text color (onPrimary works well for contrast)
@@ -146,7 +146,7 @@ const SignIn = () => {
             style={[
               styles.option,
               {
-                fontFamily: "Lato", // Apply custom font
+                fontFamily: "SpaceMono", // Apply custom font
                 fontSize: 16, // Adjust font size as needed
                 color: colors.primary, // Set text color to primary or other color
                 textAlign: "center", // Centers the text horizontally
@@ -158,16 +158,16 @@ const SignIn = () => {
         </TouchableOpacity>
       </View>
       <Text
-        style={[
-          {
-            textAlign: "center",
-            margin: 20,
-            fontFamily: "Lato", // Apply custom font
-            fontSize: 16, // Adjust font size as needed
-            color: colors.quarternary, // Set text color to primary or other color
-          },
-        ]}
-      >
+     style={[
+        {
+          textAlign: "center",
+          margin: 20,
+          fontFamily: "SpaceMono", // Apply custom font
+          fontSize: 16, // Adjust font size as needed
+          color: colors.quarternary, // Set text color to primary or other color
+        },
+      ]}
+    >
         Don't have an account?
       </Text>
       <View style={styles.buttonContainer}>
@@ -176,7 +176,7 @@ const SignIn = () => {
             router.replace("/CreateAccount");
           }}
           labelStyle={{
-            fontFamily: "Lato", // Apply custom font
+            fontFamily: "SpaceMono", // Apply custom font
             fontSize: 16, // Adjust font size as needed
             fontWeight: "normal", // Font weight (use 'bold' or 'normal' as needed)
             color: colors.tertiary, // Set the text color to primary or other color

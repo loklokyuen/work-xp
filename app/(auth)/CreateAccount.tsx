@@ -101,7 +101,7 @@ const CreateAccount = () => {
             marginBottom: 15,
           }}
           labelStyle={{
-            fontFamily: "Lato",
+            fontFamily: "SpaceMono",
             fontSize: 16,
             fontWeight: "normal",
             color: colors.tertiary,
@@ -123,7 +123,7 @@ const CreateAccount = () => {
             marginBottom: 15,
           }}
           labelStyle={{
-            fontFamily: "Lato",
+            fontFamily: "SpaceMono",
             fontSize: 16,
             fontWeight: "normal",
             color: colors.tertiary,
@@ -164,14 +164,14 @@ const CreateAccount = () => {
         autoCapitalize="none"
       />
       <TextInput
-        style={[
-          styles.input,
-          {
-            backgroundColor: colors.primaryContainer,
-            color: colors.primary,
-            ...fonts.bodyMedium,
-          },
-        ]}
+       style={[
+        styles.input,
+        {
+          backgroundColor: colors.primaryContainer,
+          color: colors.primary,
+          ...fonts.bodyMedium,
+        },
+      ]} 
         label="Password"
         value={password}
         onChangeText={setPassword}
@@ -179,24 +179,23 @@ const CreateAccount = () => {
       />
       {error ? <Text style={styles.error}>{error}</Text> : null}
       <View style={styles.buttonContainer}>
-        <Button
+      <Button 
           style={{
-            backgroundColor: colors.secondary,
-            borderRadius: 8,
+            backgroundColor: colors.secondary, 
+            borderRadius: 8, 
             paddingLeft: 5,
             paddingRight: 5,
             marginBottom: 15,
             marginTop: 10,
           }}
           labelStyle={{
-            fontFamily: "Lato",
-            fontSize: 16,
-            fontWeight: "normal",
-            color: colors.tertiary,
+            fontFamily: "SpaceMono", 
+            fontSize: 16, 
+            fontWeight: "normal", 
+            color: colors.tertiary, 
           }}
-          mode="contained-tonal"
-          onPress={handleCreateAccount}
-        >
+        mode="contained-tonal" 
+        onPress={handleCreateAccount}>
           Create Account
         </Button>
       </View>
@@ -204,21 +203,21 @@ const CreateAccount = () => {
         Already have an account?
       </Text>
       <View style={styles.buttonContainer}>
-        <Button
+      <Button
           style={{
-            backgroundColor: colors.secondary,
-            borderRadius: 8,
+            backgroundColor: colors.secondary, 
+            borderRadius: 8, 
             paddingLeft: 5,
             paddingRight: 5,
             marginBottom: 15,
           }}
           labelStyle={{
-            fontFamily: "Lato",
-            fontSize: 16,
-            fontWeight: "normal",
-            color: colors.tertiary,
+            fontFamily: "SpaceMono", 
+            fontSize: 16, 
+            fontWeight: "normal", 
+            color: colors.tertiary, 
           }}
-          mode="contained-tonal"
+          mode="contained-tonal" 
           onPress={() => {
             router.replace("/SignIn");
           }}

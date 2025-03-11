@@ -31,7 +31,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ businessId }) => {
       <Text
         style={StyleSheet.compose(styles.review, {
           color: colors.primary,
-          fontFamily: "Lato",
+          fontFamily: "SpaceMono",
           fontWeight: "normal",
         })}
       >
@@ -40,7 +40,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ businessId }) => {
       <Text
         style={StyleSheet.compose(styles.name, {
           color: colors.tertiary,
-          fontFamily: "Lato",
+          fontFamily: "SpaceMono",
           fontSize: 15,
           fontWeight: "bold",
         })}

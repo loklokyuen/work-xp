@@ -177,7 +177,8 @@ export function EditableBusinessInfo({
           setChangesMade(true);
         }}
       />
-      <View style={styles.buttonContainer}>
+      <View
+        style={styles.buttonContainer}>
         <Button
           style={{
             backgroundColor: colors.secondary,
@@ -187,7 +188,7 @@ export function EditableBusinessInfo({
             marginBottom: 15,
           }}
           labelStyle={{
-            fontFamily: "Lato",
+            fontFamily: "SpaceMono",
             fontSize: 16,
             fontWeight: "normal",
             color: colors.tertiary,

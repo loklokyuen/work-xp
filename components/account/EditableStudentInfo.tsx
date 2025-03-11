@@ -125,7 +125,7 @@ export function EditableStudentInfo({
       </Text>
 
       <View
-        style={{ flexDirection: "row", flexWrap: "wrap", marginHorizontal: 10 }}
+        style={{ flexDirection: "row", flexWrap: "wrap", marginHorizontal: 10, }}
       >
         {subjects.map((subject) => {
           return (
@@ -165,12 +165,12 @@ export function EditableStudentInfo({
           style={{
             backgroundColor: colors.secondary,
             borderRadius: 8,
-            paddingHorizontal: 10,
-            height: 40,
+            paddingHorizontal: 10, 
+            height: 40, 
             justifyContent: "center",
           }}
           labelStyle={{
-            fontFamily: "Lato",
+            fontFamily: "SpaceMono",
             fontSize: 16,
             fontWeight: "normal",
             color: colors.tertiary,
@@ -197,7 +197,7 @@ export function EditableStudentInfo({
             marginBottom: 15,
           }}
           labelStyle={{
-            fontFamily: "Lato",
+            fontFamily: "SpaceMono",
             fontSize: 16,
             fontWeight: "normal",
             color: colors.tertiary,

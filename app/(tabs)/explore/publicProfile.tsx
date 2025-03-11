@@ -30,16 +30,14 @@ const publicComProfile: React.FC = () => {
   const { colors } = useTheme();
 
   useEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      title: "Back to all",
+    navigation.setOptions({ headerShown: true, title: "Back to all", 
       headerLeft: () => (
-        <IconButton
+      <IconButton
           icon="arrow-left"
-          onPress={() => router.replace("/explore")}
-        />
-      ),
-    });
+          onPress={() => router.replace('/explore')}
+      />
+  ) });
+
   }, [navigation]);
 
   useEffect(() => {
@@ -82,7 +80,7 @@ const publicComProfile: React.FC = () => {
           <Text
             style={[
               styles.title,
-              { color: colors.onSurface, fontFamily: "Lato" },
+              { color: colors.onSurface, fontFamily: "SpaceMono" },
             ]}
           >
             {business?.displayName}{" "}
@@ -90,7 +88,7 @@ const publicComProfile: React.FC = () => {
           <Text
             style={[
               styles.industry,
-              { color: colors.primary, fontFamily: "Lato" },
+              { color: colors.primary, fontFamily: "SpaceMono" },
             ]}
           >
             {" "}
@@ -99,7 +97,7 @@ const publicComProfile: React.FC = () => {
           <Text
             style={[
               styles.desc,
-              { color: colors.onBackground, fontFamily: "Lato" },
+              { color: colors.onBackground, fontFamily: "SpaceMono" },
             ]}
           >
             {" "}
@@ -115,7 +113,7 @@ const publicComProfile: React.FC = () => {
               fontSize: 18,
               fontWeight: "bold",
               color: colors.onPrimary,
-              fontFamily: "Lato",
+              fontFamily: "SpaceMono",
             }}
             style={{ backgroundColor: colors.primary }}
             expanded={expanded}
@@ -132,7 +130,7 @@ const publicComProfile: React.FC = () => {
               <Text
                 style={[
                   styles.text,
-                  { color: colors.onSurface, fontFamily: "Lato" },
+                  { color: colors.onSurface, fontFamily: "SpaceMono" },
                 ]}
               >
                 Email: {business?.email}
@@ -140,16 +138,12 @@ const publicComProfile: React.FC = () => {
               <Text
                 style={[
                   styles.text,
-                  { color: colors.onSurface, fontFamily: "Lato" },
+                  { color: colors.onSurface, fontFamily: "SpaceMono" },
                 ]}
               >
                 Visit us: {business?.address}, {business?.county}
               </Text>
-              <ChatButton
-                receiverUid={uid}
-                receiverDisplayName={businessName}
-                receiverAccountType="Business"
-              />
+             <ChatButton receiverUid={uid} receiverDisplayName={businessName} receiverAccountType="Business"/>
             </View>
           </List.Accordion>
         </List.Section>
@@ -159,7 +153,7 @@ const publicComProfile: React.FC = () => {
           <Text
             style={[
               styles.subtitle,
-              { color: colors.onSurface, fontFamily: "Lato" },
+              { color: colors.onSurface, fontFamily: "SpaceMono" },
             ]}
           >
             Work Experience Available
@@ -175,14 +169,17 @@ const publicComProfile: React.FC = () => {
         <Text
           style={[
             styles.reviewsHeader,
-            { color: colors.tertiary, fontFamily: "Lato", flex: 10 },
+            { color: colors.tertiary, fontFamily: "SpaceMono", flex: 10 },
           ]}
         >
           Hear from past students
         </Text>
         <ReviewCard businessId={uid} />
         <Text
-          style={[styles.text, { color: colors.onSurface, fontFamily: "Lato" }]}
+          style={[
+            styles.text,
+            { color: colors.onSurface, fontFamily: "SpaceMono" },
+          ]}
         >
           🎉
         </Text>

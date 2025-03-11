@@ -22,7 +22,7 @@ const CountyDropdown: React.FC<CountyDropdownProps> = ({
         onDismiss={() => setVisible(false)}
         anchor={
           <Button
-            labelStyle={{ fontFamily: "Lato" }}
+            labelStyle={{ fontFamily: "SpaceMono" }}
             onPress={() => setVisible(true)}
           >
             {selectedCounty
