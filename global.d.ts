@@ -33,12 +33,10 @@ declare global {
         jobRole: string;
     }
     interface Review {
-        id: string;
-        businessId: string;
-        studentId: string;
-        rating: number;
         review: string;
-        displayName: string;
+        stars: number;
+        student: string;
+       
     }
     interface Student {
         uid: string;

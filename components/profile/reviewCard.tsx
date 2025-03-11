@@ -1,14 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Carousel from "react-native-reanimated-carousel";
 import { useTheme } from "react-native-paper";
 import { styleTransfer } from "@cloudinary/url-gen/actions/effect";
 import { bold } from "@cloudinary/url-gen/qualifiers/fontWeight";
+import { getBusinessReviews } from "@/database/business";
 
-export default function ReviewCard() {
+interface ReviewCardProps {
+  businessId: string;
+}
+const ReviewCard: React.FC<ReviewCardProps> = ({ businessId }) => {
+  // export default function ReviewCard: React.FC<ReviewCardProps> = ({ businessId }) {
   const screenWidth = Dimensions.get("window").width;
   const { colors, fonts } = useTheme();
+  const [reviews, setReviews] = useState<Review[] | undefined>();
+
+  useEffect(() => {
+    getBusinessReviews(businessId).then((res) => {
+      setReviews(res);
+    });
+  }, []);
 
   const renderItem = ({ item }) => (
     <View
@@ -67,7 +79,7 @@ export default function ReviewCard() {
       autoPlayInterval={2000}
     />
   );
-}
+};
 
 const styles = StyleSheet.create({
   card: {
@@ -92,3 +104,5 @@ const styles = StyleSheet.create({
     flex: 1, // Allow the carousel to take up available space
   },
 });
+
+export default ReviewCard;
