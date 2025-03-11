@@ -21,6 +21,7 @@ import ImageViewer from "../../components/expoComponents/imageViewer";
 import AvatarPickingModal from "@/modal/AvatarPickingModal";
 import { ChangePasswordModal } from "@/modal/ChangePasswordModal";
 import { ConfirmActionModal } from "@/modal/ConfirmActionModal";
+import { Redirect } from "expo-router";
 
 export default function ProfilePage() {
     const [loading, setLoading] = useState<Boolean>(true);
@@ -36,65 +37,55 @@ export default function ProfilePage() {
     const { user, setUser, accountType, setAccountType } = useUserContext();
     const placeHolderImage = require("@/assets/images/background-image.png");
 
+    console.log(accountType);
+    if (!accountType) {
+        return <Redirect href="/(auth)/main" />;
+    }
+
     useEffect(() => {
         if (!user) return;
         setGuestMode(false);
-        // 'Qf1ha917fUU7oDmACzZ3msxI5Yk2'
-        getBusinessById(user.uid)
-            .then((res) => {
-                if (res) {
-                    setBusinessInfo({
-                        uid: res.uid,
-                        displayName: res.displayName || "",
-                        sector: res.sector || "",
-                        photoUrl: res.photoUrl || "",
-                        email: res.email || "",
-                        address: res.address || "",
-                        county: res.county || "",
-                        description: res.description || "",
-                        phoneNumber: res.phoneNumber || "",
-                        opportunities: [],
-                        reviews: [],
-                        applications: [],
-                    });
-                    setAccountType("Business");
-                    setUserAccountType("Business");
-                    setLoading(false);
-                    setGuestMode(false);
-                    return true;
-                } else return false;
-            })
-            .then((userFound) => {
-                if (!userFound) {
-                    return getStudentById(user.uid).then((res) => {
-                        if (res) {
-                            setAccountType("Student");
-                            setUserAccountType("Student");
-                            setStudentInfo({
-                                uid: res.uid,
-                                displayName: res.displayName || "",
-                                photoUrl: res.photoUrl || "",
-                                email: res.email || "",
-                                county: res.county || "",
-                                personalStatement: res.personalStatement || "",
-                                applications: [],
-                                reviews: [],
-                                subjects: res.subjects || [],
-                                experience: res.experience || "",
-                            });
-                            setLoading(false);
-                            setGuestMode(false);
-                            return true;
-                        } else return false;
-                    });
-                } else return true;
-            })
-            .then((userFound) => {
-                if (!userFound) {
-                    setGuestMode(true);
-                    setLoading(false);
-                }
+
+        if (accountType === "Business") {
+            getBusinessById(user.uid).then((res) => {
+                setBusinessInfo({
+                    uid: res.uid,
+                    displayName: res.displayName || "",
+                    sector: res.sector || "",
+                    photoUrl: res.photoUrl || "",
+                    email: res.email || "",
+                    address: res.address || "",
+                    county: res.county || "",
+                    description: res.description || "",
+                    phoneNumber: res.phoneNumber || "",
+                    opportunities: [],
+                    reviews: [],
+                    applications: [],
+                });
+                setLoading(false);
+                setGuestMode(false);
             });
+        } else if (accountType === "Student") {
+            getStudentById(user.uid).then((res) => {
+                setStudentInfo({
+                    uid: res.uid,
+                    displayName: res.displayName || "",
+                    photoUrl: res.photoUrl || "",
+                    email: res.email || "",
+                    county: res.county || "",
+                    personalStatement: res.personalStatement || "",
+                    applications: [],
+                    reviews: [],
+                    subjects: res.subjects || [],
+                    experience: res.experience || "",
+                });
+                setLoading(false);
+                setGuestMode(false);
+            });
+        } else {
+            setGuestMode(true);
+            setLoading(false);
+        }
     }, [user]);
 
     function handleUpdateInfo() {
@@ -142,6 +133,7 @@ export default function ProfilePage() {
             .then(() => {
                 setUser(null);
                 setAccountType(null);
+                setUserAccountType("");
             })
             .catch(() => {
                 // setError(error.message);
@@ -170,7 +162,7 @@ export default function ProfilePage() {
         }
     };
 
-    // if (loading) return <ActivityIndicator size="large" style={{ flex: 1, justifyContent: "center", alignItems: "center" }} />;
+    if (loading) return <ActivityIndicator size="large" style={{ flex: 1, justifyContent: "center", alignItems: "center" }} />;
     return (
         <SafeAreaView style={styles.container}>
             <KeyboardAwareScrollView enableOnAndroid contentContainerStyle={styles.scrollViewContent}>

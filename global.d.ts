@@ -94,5 +94,20 @@ declare global {
     type BusinessProps = {
         businessInfo: Business;
     }
+
+    interface Chatroom {
+        id: string;
+        participants: string[];
+        lastMessage: string;
+        lastMessageTime: Date;
+        readStatus: Record<string, boolean>;
+        status: string;
+    }
+    interface Message {
+        id: string;
+        sender: string;
+        content: string;
+        timestamp: string;
+    }
 }
 export {};

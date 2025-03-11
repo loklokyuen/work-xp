@@ -15,7 +15,7 @@ export default function Briefcase() {
                     router.push({ pathname: "/(tabs)/opportunity/(Business)/Opportunities" });
                 }}
             >
-                View ads
+                Manage Listings
             </Button>
             <Button
                 mode="contained-tonal"
@@ -23,7 +23,7 @@ export default function Briefcase() {
                     router.push({ pathname: "/(tabs)/opportunity/(Business)/manageBooking" });
                 }}
             >
-                Manage Booking
+                Manage Bookings
             </Button>
         </View>
     );
