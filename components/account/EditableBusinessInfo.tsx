@@ -9,6 +9,7 @@ import { useUserContext } from "@/context/UserContext";
 import { updateBusinesInfo } from "@/database/business";
 
 import { industries, counties } from "@/data/businessData";
+import { DeleteAccountButton } from "../DeleteAccountButton";
 type BusinessInfoProps = {
     businessInfo: Business;
     onUpdateInfo: () => void;
@@ -151,6 +152,7 @@ export function EditableBusinessInfo({ businessInfo, onUpdateInfo, setChangesMad
             <Button style={{ margin: 10 }} mode="contained-tonal" onPress={handleSave}>
                 Save Changes
             </Button>
+            <DeleteAccountButton/>
         </>
     );
 }

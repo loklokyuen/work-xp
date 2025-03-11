@@ -3,14 +3,15 @@ import {
   getApplications,
 } from "@/database/applications";
 import { Button } from "react-native-paper";
-import { useUserContext } from "@/context/UserContext";
+import { setUserAccountType, useUserContext } from "@/context/UserContext";
 import { deleteStudentById } from "@/database/student";
 import { ConfirmActionModal } from "@/modal/ConfirmActionModal";
 import { useState } from "react";
 import { deleteBusinessById } from "@/database/business";
+import { auth } from "@/database/firebase";
 
 export function DeleteAccountButton() {
-  const { user, accountType } = useUserContext();
+  const { user, accountType, setUser, setAccountType } = useUserContext();
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
   const handleDelete = () => {

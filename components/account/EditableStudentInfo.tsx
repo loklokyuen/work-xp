@@ -4,6 +4,7 @@ import { StyleSheet, Platform, View } from "react-native";
 import { useUserContext } from "@/context/UserContext";
 import { updateStudentInfo } from "@/database/student";
 import styles from "@/app/styles";
+import { DeleteAccountButton } from "../DeleteAccountButton";
 
 type StudentInfoProps = {
   studentInfo: Student;
@@ -109,6 +110,7 @@ export function EditableStudentInfo({studentInfo, onUpdateInfo, setChangesMade}:
         >
           Save Changes
         </Button>
+        <DeleteAccountButton/>
       </>
     );
   }
