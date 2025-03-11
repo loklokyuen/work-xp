@@ -35,7 +35,6 @@ const SignIn = () => {
                 photoUrl: user.photoURL || "",
             });
             setError("");
-            router.replace("/(tabs)");
             // if (!user.emailVerified) {
             //     sendEmailVerification(user)
             //     alert('Please verify your email before signing in.');
@@ -45,7 +44,8 @@ const SignIn = () => {
             const document = await getDoc(doc(db, "Users", user.uid));
             const data = document.data();
             setAccountType(data?.accountType);
-            setUserAccountType(data?.accountType);
+            await setUserAccountType(data?.accountType);
+            router.replace("/(tabs)");
         } catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;

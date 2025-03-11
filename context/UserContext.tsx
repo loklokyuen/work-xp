@@ -20,9 +20,7 @@ async function getUserAccountType() {
 
 export async function setUserAccountType(value: string) {
     try {
-        if (value) {
-            await AsyncStorage.setItem("accountType", value);
-        }
+        await AsyncStorage.setItem("accountType", value);
     } catch (e) {
         console.log(e);
     }
