@@ -3,15 +3,18 @@ import {
   getApplications,
 } from "@/database/applications";
 import { Button } from "react-native-paper";
-import { setUserAccountType, useUserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
 import { deleteStudentById } from "@/database/student";
 import { ConfirmActionModal } from "@/modal/ConfirmActionModal";
 import { useState } from "react";
 import { deleteBusinessById } from "@/database/business";
 import { auth } from "@/database/firebase";
+import { getAuth, deleteUser } from "firebase/auth";
 
 export function DeleteAccountButton() {
   const { user, accountType, setUser, setAccountType } = useUserContext();
+  const auth = getAuth();
+  const userCurr = auth.currentUser;
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
   const handleLogout = () => {
@@ -19,7 +22,6 @@ export function DeleteAccountButton() {
         .then(() => {
             setUser(null);
             setAccountType(null);
-            setUserAccountType("");
         })
         .catch(() => {
             // setError(error.message);
@@ -37,8 +39,9 @@ export function DeleteAccountButton() {
           });
         })
         .then(() => {
-          deleteStudentById(user.uid);
-        //   handleLogout()
+            deleteUser(userCurr)
+        }).then(() => {
+            deleteStudentById(user.uid);
         })
         .catch((err) => {
           console.log(err);
@@ -53,8 +56,9 @@ export function DeleteAccountButton() {
           });
         })
         .then(() => {
-          deleteBusinessById(user.uid);
-        //   handleLogout()
+            deleteUser(userCurr)
+        }).then(() => {
+            deleteBusinessById(user.uid);
         })
         .catch((err) => {
           console.log(err);
