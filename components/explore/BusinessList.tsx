@@ -87,9 +87,7 @@ const BusinessList: React.FC = () => {
   }, [selectedSector, selectedCounty]);
 
   const filteredBusinesses = businesses
-    .filter(
-      (biz) => biz.displayName && biz.photoUrl // Ensure displayName and photoUrl exist
-    )
+    .filter((biz) => biz.displayName && biz.photoUrl)
     .filter((biz) =>
       biz.displayName.toLowerCase().includes(searchQuery.toLowerCase())
     );
