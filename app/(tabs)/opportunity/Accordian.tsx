@@ -1,4 +1,5 @@
-import { View, StyleSheet, Text } from "react-native";
+import ChatButton from "@/components/chat/ChatButton";
+import { View, Text } from "react-native";
 import { List, useTheme, Card } from "react-native-paper";
 
 interface Application {
@@ -40,7 +41,7 @@ const Accordion: React.FC<AccordionProps> = ({
   }
 
   return (
-    <View style={{ padding: 5, margin: 10 }}>
+    <View style={{ padding: 5, margin: 10, borderRadius: 5, shadowColor: "#000000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 5, elevation: 5 }}>
       <List.Accordion
         key={application.uid}
         title={opportunity?.jobRole}
@@ -92,6 +93,7 @@ const Accordion: React.FC<AccordionProps> = ({
               >
                 {opportunity.description}
               </Text>
+              <ChatButton receiverUid={application?.businessId || ""} receiverDisplayName={application?.businessName || ""} receiverAccountType="Business"/>
             </>
           )}
           {application.isAccepted === true ? (
@@ -100,7 +102,6 @@ const Accordion: React.FC<AccordionProps> = ({
                 <Text
                   style={{
                     color: colors.onSecondary,
-                    padding: 5,
                     margin: 10,
                     fontFamily: "SpaceMono",
                     fontWeight: "bold",

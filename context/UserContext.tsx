@@ -25,10 +25,12 @@ export function UserProvider({ children }: UserProviderProps) {
         const auth = getAuth();
         async function onAuthStateChanged(user: any) {
             try {
-                setUser(user);
-                const document = await getDoc(doc(db, "Users", user.uid));
-                const data = document.data();
-                setAccountType(data?.accountType);
+                if (user) {
+                    setUser(user);
+                    const document = await getDoc(doc(db, "Users", user.uid));
+                    const data = document.data();
+                    setAccountType(data?.accountType);
+                }
             } catch (error) {
                 console.error("Error during auth initialization:", error);
             } finally {
