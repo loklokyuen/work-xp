@@ -1,57 +1,130 @@
-import { useLocalSearchParams, useRouter, useNavigation } from "expo-router";
-import React, { useState, useLayoutEffect, useEffect, Fragment, useRef } from "react";
-import { View, StyleSheet, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, SafeAreaView, Keyboard, Image } from "react-native";
-import { Text, TextInput, IconButton, useTheme } from "react-native-paper";
-import { auth, db } from "@/database/firebase";
-import { collection, addDoc, query, orderBy, onSnapshot, Timestamp, doc, getDoc } from "firebase/firestore";
-import { useUserContext } from "@/context/UserContext";
-import { getChatStatus, sendMessage, updateReadStatus } from "@/database/chat";
-import MessageBubble from "@/components/chat/MessageBubble";
-import ChatHeader from "@/components/chat/ChatHeader";
-import { getUserById } from "@/database/user";
+import { useLocalSearchParams, useRouter, useNavigation } from 'expo-router';
+import React, { useState, useEffect, Fragment, useRef } from 'react';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, SafeAreaView, Keyboard, Image } from 'react-native';
+import { Text, TextInput, IconButton, useTheme } from 'react-native-paper';
+import { db } from '@/database/firebase';
+import { collection, addDoc, query, orderBy, onSnapshot, Timestamp, doc, getDoc } from 'firebase/firestore';
+import { useUserContext } from '@/context/UserContext';
+import { getChatStatus, sendMessage, updateReadStatus } from '@/database/chat';
+import MessageBubble from '@/components/chat/MessageBubble';
+import ChatHeader from '@/components/chat/ChatHeader';
+import { getUserById } from '@/database/user';
+import { useFocusEffect } from '@react-navigation/native';
 
 const ChatRoom = () => {
     const { user } = useUserContext();
-    const { chatRoomId, receiverAccountType } = useLocalSearchParams<{
+    const { chatRoomId, receiverUid, receiverAccountType } = useLocalSearchParams<{
         chatRoomId: string;
+        receiverUid: string;
         receiverAccountType: string;
     }>();
-    const { colors, fonts } = useTheme();
+    const { colors } = useTheme();
     const navigation = useNavigation();
-
+    const router = useRouter();
+    
     const [messages, setMessages] = useState<Message[]>([]);
-    const [inputMessage, setInputMessage] = useState("");
+    const [inputMessage, setInputMessage] = useState('');
     const [status, setStatus] = useState<string | null>(null);
+    const [receiverData, setReceiverData] = useState<{
+        displayName: string;
+        photoUrl: string;
+        uid: string;
+    } | null>(null);
     const scrollViewRef = useRef<ScrollView>(null);
 
-    const currentUserUid = user?.uid;
-    const receiverUid = chatRoomId?.split("+").filter((uid) => uid !== currentUserUid)[0];
-
     useEffect(() => {
-        getUserById(receiverUid, receiverAccountType).then((user) => {
-            navigation.setOptions({
-                headerBackTitle: "",
+        const fetchReceiverData = async () => {
+            if (!receiverUid || !receiverAccountType || !user) return;
+            
+            try {
+                const userData = await getUserById(receiverUid, receiverAccountType);
+                if (userData) {
+                    setReceiverData({
+                        displayName: userData.displayName || "User",
+                        photoUrl: userData.photoUrl || "",
+                        uid: receiverUid 
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching receiver data:", error);
+            }
+        };
+        
+        fetchReceiverData();
+    }, [chatRoomId, receiverAccountType, receiverUid]);
+    
+    useEffect(() => {
+        if (!receiverData) {
+            navigation.setOptions({ 
+                headerBackTitle: '',
                 headerTitle: () => (
-                    <ChatHeader
-                        displayName={user.displayName}
-                        photoUrl={user.photoUrl}
-                        receiverAccountType={receiverAccountType}
-                        receiverUid={receiverUid}
+                    <ChatHeader 
+                        displayName={"User"} 
+                        photoUrl={""} 
+                        receiverAccountType={""}
+                        receiverUid={""}
                     />
                 ),
+                headerLeft: () => (
+                    <IconButton
+                        icon="arrow-left"
+                        onPress={() => router.replace('/chat')}
+                    />
+                )
             });
-        });
-    }, [receiverUid, navigation]);
+        } else {
+            navigation.setOptions({ 
+                headerBackTitle: '',
+                headerTitle: () => (
+                    <ChatHeader 
+                        displayName={receiverData.displayName} 
+                        photoUrl={receiverData.photoUrl} 
+                        receiverAccountType={receiverAccountType || ""}
+                        receiverUid={receiverData.uid}
+                    />
+                ),
+                headerLeft: () => (
+                    <IconButton
+                        icon="arrow-left"
+                        onPress={() => router.replace('/chat')}
+                    />
+                )
+            });
+        }
+    }, [receiverData, navigation, receiverAccountType]);
+    
+    useFocusEffect(
+        React.useCallback(() => {
+            const fetchReceiverData = async () => {
+                if (!receiverUid || !receiverAccountType || !user) return;
+                
+                try {
+                    const userData = await getUserById(receiverUid, receiverAccountType);
+                    if (userData) {
+                        setReceiverData({
+                            displayName: userData.displayName || "User",
+                            photoUrl: userData.photoUrl || "",
+                            uid: receiverUid
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error fetching receiver data:", error);
+                }
+            };
+            
+            fetchReceiverData();
+        }, [receiverUid, receiverAccountType])
+    );
 
     useEffect(() => {
         let unsub = null;
-
+        
         if (chatRoomId) {
             unsub = getAllMessages();
         }
-
+        
         return () => {
-            if (typeof unsub === "function") {
+            if (typeof unsub === 'function') {
                 unsub();
             }
         };
@@ -65,85 +138,90 @@ const ChatRoom = () => {
     }, [messages]);
 
     useEffect(() => {
+        if (!chatRoomId) return;
         getChatStatus(chatRoomId).then((status) => {
             setStatus(status);
-        });
-    }, [status]);
+        })
+    }, [chatRoomId]);
 
     const getAllMessages = () => {
         if (!chatRoomId) return null;
 
-        const q = query(collection(db, "Chat", chatRoomId, "Message"), orderBy("timestamp", "asc"));
-
-        return onSnapshot(
-            q,
-            (snapshot) => {
-                const fetchedMessages = snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    sender: doc.data().sender,
-                    content: doc.data().content,
-                    timestamp: doc.data().timestamp,
-                }));
-                setMessages(fetchedMessages);
-            },
-            (error) => {
-                console.error("Error fetching messages:", error);
-            }
+        const q = query(
+            collection(db, 'Chat', chatRoomId, 'Message'), 
+            orderBy('timestamp', 'asc')
         );
+        
+        return onSnapshot(q, (snapshot) => {
+            const fetchedMessages = snapshot.docs.map(doc => ({
+                id: doc.id,
+                sender: doc.data().sender,
+                content: doc.data().content,
+                timestamp: doc.data().timestamp
+            }));
+            setMessages(fetchedMessages);
+        }, (error) => {
+            console.error("Error fetching messages:", error);
+        });
     };
 
     const handleSend = () => {
-        if (inputMessage.trim() === "") return;
+        if (inputMessage.trim() === '') return;
         onSendMsg(inputMessage);
-        setInputMessage("");
+        setInputMessage('');
     };
 
     const onSendMsg = async (msg: string) => {
         if (!user) return;
         sendMessage(user.uid, receiverUid, msg);
     };
-
+      
     return (
-        <View style={styles.container}>
-            <KeyboardAvoidingView
+        <SafeAreaView style={styles.container}>
+            <KeyboardAvoidingView 
                 style={{ flex: 1 }}
-                behavior={Platform.OS === "ios" ? "padding" : undefined}
-                keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
             >
                 <ScrollView
                     ref={scrollViewRef}
                     contentContainerStyle={styles.messagesContainer}
+                    keyboardShouldPersistTaps="handled"
                     onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: false })}
                 >
-                    {messages.map((message) => (
-                        <MessageBubble key={message.id} message={message} />
-                    ))}
-                    {messages.length === 0 && <Text>No messages yet. Start the conversation!</Text>}
+                    {messages.map((message) => <MessageBubble key={message.id} message={message} />)}
+                    {messages.length === 0 && (
+                        <Text>No messages yet. Start the conversation!</Text>
+                    )}
                 </ScrollView>
-
-                {status === "active" && (
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            style={styles.input}
-                            value={inputMessage}
-                            onChangeText={setInputMessage}
-                            placeholder="Type a message..."
-                            mode="outlined"
-                            multiline={Platform.OS === "ios"}
-                            right={<TextInput.Icon icon="send" onPress={handleSend} color={inputMessage.trim() ? colors.primary : "#A0A0A0"} />}
-                            onSubmitEditing={handleSend}
-                        />
-                    </View>
-                )}
+                
+                {status === "active" && <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        value={inputMessage}
+                        onChangeText={setInputMessage}
+                        placeholder="Type a message..."
+                        mode="outlined"
+                        multiline={Platform.OS === 'ios'}
+                        right={
+                            <TextInput.Icon
+                                icon="send"
+                                onPress={handleSend}
+                                color={inputMessage.trim() ? colors.primary : '#A0A0A0'}
+                            />
+                        }
+                        onSubmitEditing={handleSend}
+                    />
+                </View>}
             </KeyboardAvoidingView>
-        </View>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#ffffff",
+        backgroundColor: '#ffffff',
     },
     messagesContainer: {
         flexGrow: 1,
@@ -153,17 +231,21 @@ const styles = StyleSheet.create({
     inputContainer: {
         padding: 10,
         borderTopWidth: 1,
-        borderTopColor: "#E5E5EA",
-        width: "100%",
+        borderTopColor: '#E5E5EA',
+        width: '100%',
     },
     input: {
-        backgroundColor: "white",
+        backgroundColor: 'white',
         maxHeight: 100,
     },
     emptyState: {
-        textAlign: "center",
+        textAlign: 'center',
         marginTop: 40,
-    },
+    }
 });
 
 export default ChatRoom;
+
+
+
+

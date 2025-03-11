@@ -66,7 +66,9 @@ export default function ViewAcceptedApplications() {
   return (
     <ScrollView>
       <List.Section>
-        {" "}
+        {applications.length === 0 && (
+          <Text style={styles.text}>No applications found</Text>
+        )}
         {applications.map((application, index) => {
           const opportunity = opportunities[index];
           return (

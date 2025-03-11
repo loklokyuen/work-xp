@@ -1,16 +1,15 @@
+import ChatButton from "@/components/chat/ChatButton";
 import OpportunityCards from "@/components/profile/opportuntiesCard";
 import ReviewCard from "@/components/profile/reviewCard";
 import { useUserContext } from "@/context/UserContext";
 import { getBusinessById, getBusinessOpportunities } from "@/database/business";
-import { isFirstMessage, sendFirstMessage, sendMessage } from "@/database/chat";
-import { ChatFirstMessageModal } from "@/modal/ChatFirstMessageModal";
 import { color } from "@cloudinary/url-gen/qualifiers/background";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
-import { Button, List, useTheme } from "react-native-paper";
+import { Button, IconButton, List, useTheme } from "react-native-paper";
 
 const publicComProfile: React.FC = () => {
   const router = useRouter();
@@ -31,8 +30,14 @@ const publicComProfile: React.FC = () => {
   const { colors } = useTheme();
 
   useEffect(() => {
-    console.log(uid);
-    navigation.setOptions({ headerShown: true, title: "Back to all" });
+    navigation.setOptions({ headerShown: true, title: "Back to all", 
+      headerLeft: () => (
+      <IconButton
+          icon="arrow-left"
+          onPress={() => router.replace('/explore')}
+      />
+  ) });
+
   }, [navigation]);
 
   useEffect(() => {
@@ -138,60 +143,7 @@ const publicComProfile: React.FC = () => {
               >
                 Visit us: {business?.address}, {business?.county}
               </Text>
-              <Button
-                mode="contained"
-                labelStyle={{
-                  fontFamily: "SpaceMono",
-                  color: colors.onSecondary,
-                }}
-                style={{
-                  backgroundColor: colors.secondary,
-                }}
-                onPress={async () => {
-                  if (!user || !business) {
-                    return;
-                  }
-                  const chatId =
-                    user.uid > business.uid
-                      ? user.uid + "+" + business.uid
-                      : business.uid + "+" + user.uid;
-                  if (await isFirstMessage(chatId)) {
-                    setChatModalOpen(true);
-                  } else {
-                    router.push({
-                      pathname: "/(tabs)/chat/chatroom",
-                      params: {
-                        chatRoomId: chatId,
-                        receiverAccountType: "Business",
-                      },
-                    });
-                  }
-                }}
-              >
-                Chat
-              </Button>
-              <ChatFirstMessageModal
-                open={chatModalOpen}
-                reciever={business ? business.displayName : "the business"}
-                onClose={() => {
-                  setChatModalOpen(false);
-                }}
-                onConfirmAction={async (content: string) => {
-                  if (!user || !business) {
-                    return;
-                  }
-                  const isMessageSent = await sendFirstMessage(
-                    user.uid,
-                    business.uid,
-                    content
-                  );
-                  if (isMessageSent) {
-                    // alert("Message sent!");
-                  } else {
-                    alert("Error sending message");
-                  }
-                }}
-              />
+             <ChatButton receiverUid={uid} receiverDisplayName={businessName} receiverAccountType="Business"/>
             </View>
           </List.Accordion>
         </List.Section>
