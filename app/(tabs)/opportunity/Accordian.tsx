@@ -28,7 +28,6 @@ const Accordion: React.FC<AccordionProps> = ({
 }) => {
   const { colors } = useTheme();
 
-  // Determine background color based on isAccepted status
   let backgroundColor;
   if (expanded) {
     backgroundColor = colors.quarternary;
