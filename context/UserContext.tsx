@@ -1,29 +1,11 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { db } from "@/database/firebase";
 import { getAuth } from "firebase/auth";
+import { getDoc, doc } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 
 interface UserProviderProps {
     children: React.ReactNode;
-}
-
-async function getUserAccountType() {
-    try {
-        const value = await AsyncStorage.getItem("accountType");
-        if (value) {
-            return value;
-        }
-    } catch (e) {
-        console.log(e);
-    }
-}
-
-export async function setUserAccountType(value: string) {
-    try {
-        await AsyncStorage.setItem("accountType", value);
-    } catch (e) {
-        console.log(e);
-    }
 }
 
 interface UserContext {
@@ -44,20 +26,15 @@ export function UserProvider({ children }: UserProviderProps) {
         async function onAuthStateChanged(user: any) {
             try {
                 setUser(user);
-                const storedAccountType = await getUserAccountType();
-                setAccountType(storedAccountType as AccountType | null);
+                const document = await getDoc(doc(db, "Users", user.uid));
+                const data = document.data();
+                setAccountType(data?.accountType);
             } catch (error) {
                 console.error("Error during auth initialization:", error);
             } finally {
                 setInitializing(false);
             }
         }
-        getUserAccountType().then((value) => {
-            if (value) {
-                setAccountType(value as AccountType);
-            }
-            setInitializing(false);
-        });
         const subscriber = auth.onAuthStateChanged(onAuthStateChanged);
         return subscriber;
     }, []);

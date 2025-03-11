@@ -14,7 +14,7 @@ import { getStudentById } from "@/database/student";
 import { auth } from "@/database/firebase";
 import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from "firebase/auth";
 
-import { setUserAccountType, useUserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
 import styles from "@/app/styles";
 import ImageViewer from "../../components/expoComponents/imageViewer";
 
@@ -37,7 +37,6 @@ export default function ProfilePage() {
     const { user, setUser, accountType, setAccountType } = useUserContext();
     const placeHolderImage = require("@/assets/images/background-image.png");
 
-    console.log(accountType);
     if (!accountType) {
         return <Redirect href="/(auth)/main" />;
     }
@@ -133,7 +132,6 @@ export default function ProfilePage() {
             .then(() => {
                 setUser(null);
                 setAccountType(null);
-                setUserAccountType("");
             })
             .catch(() => {
                 // setError(error.message);
