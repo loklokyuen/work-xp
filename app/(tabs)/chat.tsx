@@ -1,7 +1,7 @@
 import Chat from "@/components/chat/chatComponent";
 import { useUserContext } from "@/context/UserContext";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Text, Button, Card, ActivityIndicator } from "react-native-paper";
+import { Text, Button, Card, ActivityIndicator, Icon, IconButton } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { onSnapshot, collection, query, where, getDocs, doc } from "firebase/firestore";
 import { db } from "@/database/firebase";
@@ -48,13 +48,20 @@ export default function ChatScreen() {
     if (loading) return <ActivityIndicator size="large" style={{ flex: 1, justifyContent: "center", alignItems: "center" }} />;
     return (
         <ScrollView>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
             <Text variant="titleMedium" style={{ paddingVertical: 10, paddingHorizontal: 20}}>Chat</Text>
-            {chatRooms.map((chatroom, index) => {
+            <IconButton icon="pen" style={{marginRight: 10}} size={20}
+            onPress={() => {
+                router.push({pathname: "/(chat)/newChat"});
+            }}></IconButton>
+            </View>
+            {chatRooms.map((chatroom) => {
                 return <ChatPreview key={chatroom.id} chatRoom={chatroom} onChatRoomPressed={navigateToChat}></ChatPreview>;
             })}
             <View style={[styles.buttonContainer, {padding: 10}]}>
-            <Button mode="contained" onPress={() => console.log("pressed")}>Start a New Chat</Button>
-            <Button mode="outlined" onPress={() => console.log("pressed")}>Refresh</Button>
+            <Button mode="contained" onPress={() => {
+                router.push({pathname: "/(chat)/newChat"});
+            }}>Start a New Chat</Button>
             </View>
         </ScrollView>
     );

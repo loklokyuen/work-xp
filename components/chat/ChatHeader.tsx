@@ -5,7 +5,7 @@ import { ReportModal } from "@/modal/ReportModal";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { Button, IconButton, Menu, Text } from "react-native-paper";
+import { IconButton, Menu, Text } from "react-native-paper";
 
 const ChatHeader = ({ displayName, photoUrl, receiverAccountType, receiverUid }: { displayName: string, photoUrl: string, receiverAccountType: string, receiverUid: string }) => {
     const router = useRouter();
