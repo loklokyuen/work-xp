@@ -3,7 +3,6 @@ import { ReadonlyStudentInfo } from "../../components/account/ReadonlyStudentInf
 import { EditableBusinessInfo } from "../../components/account/EditableBusinessInfo";
 import { EditableStudentInfo } from "../../components/account/EditableStudentInfo";
 import GuestModePrompt from "../../components/account/GuestModePrompt";
-import { router } from "expo-router";
 
 import { useEffect, useState } from "react";
 import { Modal, Platform, SafeAreaView, StyleSheet, View } from "react-native";
@@ -266,10 +265,20 @@ export default function ProfilePage() {
                 )}
                 {editMode ? (
                     businessInfo ? (
-                        <EditableBusinessInfo businessInfo={businessInfo} onUpdateInfo={handleUpdateInfo} setChangesMade={setChangesMade} />
+                        <EditableBusinessInfo
+                            businessInfo={businessInfo}
+                            onUpdateInfo={handleUpdateInfo}
+                            setChangesMade={setChangesMade}
+                            setEditMode={setEditMode}
+                        />
                     ) : (
                         studentInfo && (
-                            <EditableStudentInfo studentInfo={studentInfo} onUpdateInfo={handleUpdateInfo} setChangesMade={setChangesMade} />
+                            <EditableStudentInfo
+                                studentInfo={studentInfo}
+                                onUpdateInfo={handleUpdateInfo}
+                                setChangesMade={setChangesMade}
+                                setEditMode={setEditMode}
+                            />
                         )
                     )
                 ) : businessInfo ? (
