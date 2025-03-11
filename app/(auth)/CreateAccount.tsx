@@ -6,7 +6,7 @@ import styles from "../styles";
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { auth, db } from "@/database/firebase";
 import { addNewUser } from "@/database/user";
-import { setUserAccountType, useUserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
 import { setDoc, doc } from "firebase/firestore";
 
 import { router } from "expo-router";
@@ -36,9 +36,14 @@ const CreateAccount = () => {
                 await updateProfile(user, {
                     displayName: displayName,
                 });
-                setUser(userData);
-                setUserAccountType(accountType);
                 await addNewUser(user.uid, accountType, displayName || "", user.photoURL || "", email || "");
+                await setDoc(doc(db, "Users", user.uid), {
+                    accountType: accountType,
+                });
+                setUser(userData);
+                setAccountType(accountType);
+                setError("");
+                router.replace("/(tabs)");
                 // sendEmailVerification(user)
                 //   .then(() => {
                 //     alert("Email verification sent.");
@@ -46,12 +51,6 @@ const CreateAccount = () => {
                 //   .catch((error) => {
                 //     console.error("Error sending email verification:", error);
                 //   });
-                setError("");
-                await setDoc(doc(db, "Users", user.uid), {
-                    accountType: accountType,
-                });
-
-                router.replace("/(tabs)");
             } catch (error) {
                 const errorCode = error.code;
                 const errorMessage = error.message;

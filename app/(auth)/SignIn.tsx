@@ -9,7 +9,6 @@ import e from "express";
 import { router } from "expo-router";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "@/database/firebase";
-import { setUserAccountType } from "@/context/UserContext";
 
 const SignIn = () => {
     const { setUser, setAccountType } = useUserContext();
@@ -34,18 +33,17 @@ const SignIn = () => {
                 email: user.email || "",
                 photoUrl: user.photoURL || "",
             });
+            const document = await getDoc(doc(db, "Users", user.uid));
+            const data = document.data();
+            setAccountType(data?.accountType);
             setError("");
+            router.replace("/(tabs)");
             // if (!user.emailVerified) {
             //     sendEmailVerification(user)
             //     alert('Please verify your email before signing in.');
             // } else {
             //     alert('Signed in successfully!');
             // }
-            const document = await getDoc(doc(db, "Users", user.uid));
-            const data = document.data();
-            setAccountType(data?.accountType);
-            await setUserAccountType(data?.accountType);
-            router.replace("/(tabs)");
         } catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -101,7 +99,7 @@ const SignIn = () => {
                 onChangeText={setPassword}
                 secureTextEntry
             />
-            {error ? <Text style={styles.error}>{error}</Text> : null}
+            {error && <Text style={styles.error}>{error}</Text>}
             <View style={styles.buttonContainer}>
                 <Button
                     mode="contained-tonal"
