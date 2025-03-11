@@ -136,7 +136,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   headerContainer: {
-    maxHeight: 80,
+    height: 50,
+    maxHeight: 50,
     justifyContent: "center",
     textAlign: "center",
     padding: 0,

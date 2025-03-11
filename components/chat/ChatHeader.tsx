@@ -17,7 +17,10 @@ const ChatHeader = ({ displayName, photoUrl, receiverAccountType, receiverUid }:
     return (
         <View style={styles.container}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Image source={{ uri: photoUrl }} style={styles.image} />
+                 {photoUrl !== ""? <Image source={{ uri: photoUrl }} style={styles.image} />:
+                    <View style={[styles.image, { backgroundColor: '#EADDFF', justifyContent: 'center', alignItems: 'center' }]}>
+                    <IconButton icon="account" size={30} />
+                    </View>}
                 <Text variant="titleMedium" style={styles.title}>{displayName}</Text>
             </View>
         <Menu

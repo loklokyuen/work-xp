@@ -1,48 +1,120 @@
 import { useLocalSearchParams, useRouter, useNavigation } from 'expo-router';
-import React, { useState, useLayoutEffect, useEffect, Fragment, useRef } from 'react';
-import { View, StyleSheet, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, SafeAreaView, Keyboard, Image } from 'react-native';
+import React, { useState, useEffect, Fragment, useRef } from 'react';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, SafeAreaView, Keyboard, Image } from 'react-native';
 import { Text, TextInput, IconButton, useTheme } from 'react-native-paper';
-import { auth, db } from '@/database/firebase';
+import { db } from '@/database/firebase';
 import { collection, addDoc, query, orderBy, onSnapshot, Timestamp, doc, getDoc } from 'firebase/firestore';
 import { useUserContext } from '@/context/UserContext';
 import { getChatStatus, sendMessage, updateReadStatus } from '@/database/chat';
 import MessageBubble from '@/components/chat/MessageBubble';
 import ChatHeader from '@/components/chat/ChatHeader';
 import { getUserById } from '@/database/user';
+import { useFocusEffect } from '@react-navigation/native';
 
 const ChatRoom = () => {
     const { user } = useUserContext();
-    const { chatRoomId, receiverAccountType } = useLocalSearchParams<{
+    const { chatRoomId, receiverUid, receiverAccountType } = useLocalSearchParams<{
         chatRoomId: string;
+        receiverUid: string;
         receiverAccountType: string;
     }>();
-    const { colors, fonts } = useTheme();
+    const { colors } = useTheme();
     const navigation = useNavigation();
+    const router = useRouter();
     
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputMessage, setInputMessage] = useState('');
     const [status, setStatus] = useState<string | null>(null);
+    const [receiverData, setReceiverData] = useState<{
+        displayName: string;
+        photoUrl: string;
+        uid: string;
+    } | null>(null);
     const scrollViewRef = useRef<ScrollView>(null);
-    
-    const currentUserUid = user?.uid;
-    const receiverUid = chatRoomId?.split("+").filter((uid) => uid !== currentUserUid)[0];
 
     useEffect(() => {
-        getUserById(receiverUid, receiverAccountType).then((user) => {
+        const fetchReceiverData = async () => {
+            if (!receiverUid || !receiverAccountType || !user) return;
+            
+            try {
+                const userData = await getUserById(receiverUid, receiverAccountType);
+                if (userData) {
+                    setReceiverData({
+                        displayName: userData.displayName || "User",
+                        photoUrl: userData.photoUrl || "",
+                        uid: receiverUid 
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching receiver data:", error);
+            }
+        };
+        
+        fetchReceiverData();
+    }, [chatRoomId, receiverAccountType, receiverUid]);
+    
+    useEffect(() => {
+        if (!receiverData) {
             navigation.setOptions({ 
                 headerBackTitle: '',
                 headerTitle: () => (
                     <ChatHeader 
-                    displayName={user.displayName} 
-                    photoUrl={user.photoUrl} 
-                    receiverAccountType={receiverAccountType}
-                    receiverUid={receiverUid}
+                        displayName={"User"} 
+                        photoUrl={""} 
+                        receiverAccountType={""}
+                        receiverUid={""}
+                    />
+                ),
+                headerLeft: () => (
+                    <IconButton
+                        icon="arrow-left"
+                        onPress={() => router.replace('/chat')}
                     />
                 )
             });
-        });
+        } else {
+            navigation.setOptions({ 
+                headerBackTitle: '',
+                headerTitle: () => (
+                    <ChatHeader 
+                        displayName={receiverData.displayName} 
+                        photoUrl={receiverData.photoUrl} 
+                        receiverAccountType={receiverAccountType || ""}
+                        receiverUid={receiverData.uid}
+                    />
+                ),
+                headerLeft: () => (
+                    <IconButton
+                        icon="arrow-left"
+                        onPress={() => router.replace('/chat')}
+                    />
+                )
+            });
+        }
+    }, [receiverData, navigation, receiverAccountType]);
     
-    }, [receiverUid, navigation]);
+    useFocusEffect(
+        React.useCallback(() => {
+            const fetchReceiverData = async () => {
+                if (!receiverUid || !receiverAccountType || !user) return;
+                
+                try {
+                    const userData = await getUserById(receiverUid, receiverAccountType);
+                    if (userData) {
+                        setReceiverData({
+                            displayName: userData.displayName || "User",
+                            photoUrl: userData.photoUrl || "",
+                            uid: receiverUid
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error fetching receiver data:", error);
+                }
+            };
+            
+            fetchReceiverData();
+        }, [receiverUid, receiverAccountType])
+    );
 
     useEffect(() => {
         let unsub = null;
@@ -66,10 +138,11 @@ const ChatRoom = () => {
     }, [messages]);
 
     useEffect(() => {
+        if (!chatRoomId) return;
         getChatStatus(chatRoomId).then((status) => {
             setStatus(status);
         })
-    }, [status]);
+    }, [chatRoomId]);
 
     const getAllMessages = () => {
         if (!chatRoomId) return null;
@@ -104,15 +177,16 @@ const ChatRoom = () => {
     };
       
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <KeyboardAvoidingView 
                 style={{ flex: 1 }}
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
             >
                 <ScrollView
                     ref={scrollViewRef}
                     contentContainerStyle={styles.messagesContainer}
+                    keyboardShouldPersistTaps="handled"
                     onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: false })}
                 >
                     {messages.map((message) => <MessageBubble key={message.id} message={message} />)}
@@ -140,7 +214,7 @@ const ChatRoom = () => {
                     />
                 </View>}
             </KeyboardAvoidingView>
-        </View>
+        </SafeAreaView>
     );
 };
 

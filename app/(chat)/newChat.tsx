@@ -11,7 +11,8 @@ const NewChat: React.FC = () => {
     const navigation = useNavigation();
     const router = useRouter();
     const { user, accountType} = useUserContext();
-    const [existingChatUsers, setExistingChatUsers] = useState<string[]>([]);
+    const [allBusinessUsers, setAllBusinessUsers] = useState<User[]>([]);
+    const [allStudentUsers, setAllStudentUsers] = useState<User[]>([]);
     const [businessUsers, setBusinessUsers] = useState<User[]>([]);
     const [studentUsers, setStudentUsers] = useState<User[]>([]);
     const [value, setValue] = useState<string>('Business');
@@ -23,18 +24,22 @@ const NewChat: React.FC = () => {
     const refreshUsersList = async () => {
         if (!user) return;
         const chatRooms = await getChatRooms(user.uid);
-        const existingUsers = chatRooms.map((chatRoom) => {
-            return chatRoom.participants.filter((participant) => participant !== user.uid)[0];
-        });
-        setExistingChatUsers(existingUsers);
-    
+        const existingUsers = chatRooms
+            .filter(chatRoom => chatRoom.participants.includes(user.uid))
+            .map(chatRoom => {
+                return chatRoom.participants.find(participant => participant !== user.uid);
+            })
+            .filter(Boolean) as string[];
+            
         const businesses = await getAllBusinessUsers();
-        const filteredBusinesses = businesses.filter((business) => !existingChatUsers.includes(business.uid));
+        const filteredBusinesses = businesses.filter((business) => !existingUsers.includes(business.uid));
+        setAllBusinessUsers(filteredBusinesses);
         setBusinessUsers(filteredBusinesses);
-    
+        
         if (accountType === "Student") {
             const students = await getAllStudentUsers();
-            const filteredStudents = students.filter((student) => !existingChatUsers.includes(student.uid));
+            const filteredStudents = students.filter((student) => !existingUsers.includes(student.uid));
+            setAllStudentUsers(filteredStudents); 
             setStudentUsers(filteredStudents);
         }
         setLoading(false);
@@ -49,16 +54,17 @@ const NewChat: React.FC = () => {
     }, []);
 
     const handleSearch = (query: string) => {
-        setSearchQuery(query)
-        if (query === "") {
-            refreshUsersList();
-        } else {
-            const filteredBusinesses = businessUsers.filter((business) => business.displayName.toLowerCase().includes(query.toLowerCase()));
+        setSearchQuery(query);
+        if (value === "Business") {
+            const filteredBusinesses = allBusinessUsers.filter((business) => 
+                business.displayName.toLowerCase().includes(query.toLowerCase())
+            );
             setBusinessUsers(filteredBusinesses);
-            if (accountType === "Student") {
-                const filteredStudents = studentUsers.filter((student) => student.displayName.toLowerCase().includes(query.toLowerCase()));
-                setStudentUsers(filteredStudents);
-            }
+        } else {
+            const filteredStudents = allStudentUsers.filter((student) => 
+                student.displayName.toLowerCase().includes(query.toLowerCase())
+            );
+            setStudentUsers(filteredStudents);
         }
     };
 
@@ -120,7 +126,8 @@ const NewChat: React.FC = () => {
                 if (!user || !receiver) {return;}
                 const isMessageSent = await sendFirstMessage(user.uid, receiver.uid, content);
                 if (isMessageSent) {
-                    alert("Message sent!");
+                    const chatId = generateChatId(user.uid, receiver.uid);
+                    router.navigate({ pathname: "/(chat)/chatroom", params: { chatRoomId: chatId, receiverAccountType: value, receiverUid: receiver.uid } });
                     refreshUsersList();
                 } else {
                     alert("Error sending message");

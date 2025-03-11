@@ -22,11 +22,13 @@ export const ChatFirstMessageModal = ({
         return;
     }
     onConfirmAction(firstMessage);
+    setFirstMessage("");
     onClose();
   };
 
   return (
     <Modal
+      style={{ maxWidth: "90%"}}
       animationType="slide"
       transparent={true}
       visible={open}
@@ -34,7 +36,7 @@ export const ChatFirstMessageModal = ({
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text variant="titleMedium" style={{ margin: 10, padding: 2 }}>
+          <Text variant="titleMedium" style={{ margin: 10, padding: 2, flexWrap: "wrap", maxWidth: "80%" }}>
             Send your first message to {reciever}
           </Text>
           <TextInput style={{ margin: 10, width: "90%" }}
