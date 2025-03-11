@@ -2,10 +2,10 @@ import { StyleSheet, Text, View } from "react-native";
 import { useEffect, useState } from "react";
 import { Button, TextInput } from "react-native";
 import { getDocs, orderBy, Timestamp } from "firebase/firestore";
-import { db } from "../database/firebase";
+import { db } from "../../database/firebase";
 import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
-import { useUserContext } from "../context/UserContext";
-import styles from "../app/styles";
+import { useUserContext } from "../../context/UserContext";
+import styles from "../../app/styles";
 
 type chatProps = {
     receiver: string;
@@ -22,13 +22,29 @@ export default function Chat({ receiver }: chatProps) {
     const [content, setContent] = useState<string>("");
 
     useEffect(() => {
-        setChatId(user.uid > receiver ? user.uid + receiver : receiver + user.uid);
+        if (!user) return;
+        // const chatId = user.uid + "+" + receiver.uid 
+
+        // setChatId(user.uid > receiver ? user.uid + receiver : receiver + user.uid);
     }, [receiver]);
+
+    // async function sendMessage() {
+    //     if (content) {
+    //         try {
+    //             const messageCollection = collection(db, "chats", chatId, "messages");
+    //             const message = await addDoc(messageCollection, { sender: user.displayName, content: content, timestamp: Date.now() });
+    //             console.log("Message sent with id", message.id);
+    //         } catch (error) {
+    //             console.error("Error sending message:", error);
+    //         }
+    //         setContent("");
+    //     }
+    // }
 
     async function sendMessage() {
         if (content) {
             try {
-                const messageCollection = collection(db, "chats", chatId, "messages");
+                const messageCollection = collection(db, "Chat", chatId, "messages");
                 const message = await addDoc(messageCollection, { sender: user.displayName, content: content, timestamp: Date.now() });
                 console.log("Message sent with id", message.id);
             } catch (error) {
@@ -40,7 +56,7 @@ export default function Chat({ receiver }: chatProps) {
 
     useEffect(() => {
         if (chatId) {
-            onSnapshot(query(collection(db, "chats", chatId, "messages"), orderBy("timestamp")), (snapshot) => {
+            onSnapshot(query(collection(db, "Chat", chatId, "messages"), orderBy("timestamp")), (snapshot) => {
                 const query = snapshot.docs.map((doc) => {
                     const data = doc.data();
                     return { sender: data.sender, content: data.content };

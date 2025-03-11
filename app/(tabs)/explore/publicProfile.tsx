@@ -1,19 +1,26 @@
 import OpportunityCards from "@/components/profile/opportuntiesCard";
 import ReviewCard from "@/components/profile/reviewCard";
+import { useUserContext } from "@/context/UserContext";
 import { getBusinessById, getBusinessOpportunities } from "@/database/business";
+import { isFirstMessage, sendFirstMessage, sendMessage } from "@/database/chat";
+import { ChatFirstMessageModal } from "@/modal/ChatFirstMessageModal";
 import { color } from "@cloudinary/url-gen/qualifiers/background";
+
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 import { Button, List, useTheme } from "react-native-paper";
 
 const publicComProfile: React.FC = () => {
+  const router = useRouter();
   const navigation = useNavigation();
   const { uid } = useLocalSearchParams<{ uid: string }>();
+  const { user } = useUserContext();
   const [business, setBusiness] = useState<Business | null>(null);
   const [businessName, setBusinessName] = useState<string>("");
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+  const [chatModalOpen, setChatModalOpen] = useState<boolean>(false);
 
   // Accordion state
   const [expanded, setExpanded] = React.useState(false);
@@ -139,12 +146,28 @@ const publicComProfile: React.FC = () => {
                 style={{
                   backgroundColor: colors.secondary,
                 }}
-                onPress={() => {
-                  // Navigate to chat page
+                onPress={async() => {
+                  if (!user || !business) {return;}
+                  const chatId = user.uid > business.uid? user.uid + "+" + business.uid : business.uid + "+" + user.uid;
+                  if (await isFirstMessage(chatId)) {
+                    setChatModalOpen(true);
+                  } else {
+                    router.navigate({pathname: "/(chat)/chatroom", params: {chatRoomId: chatId}});
+                  }
                 }}
               >
                 Chat
               </Button>
+              <ChatFirstMessageModal open={chatModalOpen} reciever={business? business.displayName : "the business"} onClose={()=>{setChatModalOpen(false)}} 
+              onConfirmAction={async (content: string)=>{
+                if (!user || !business) {return;}
+                const isMessageSent = await sendFirstMessage(user.uid, business.uid, content);
+                if (isMessageSent) {
+                  alert("Message sent!");
+                } else {
+                  alert("Error sending message");
+                }
+              }} />
             </View>
           </List.Accordion>
         </List.Section>
