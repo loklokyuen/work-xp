@@ -82,7 +82,7 @@ const publicComProfile: React.FC = () => {
           <Text
             style={[
               styles.title,
-              { color: colors.onSurface, fontFamily: "SpaceMono" },
+              { color: colors.onSurface, fontFamily: "Lato" },
             ]}
           >
             {business?.displayName}{" "}
@@ -90,7 +90,7 @@ const publicComProfile: React.FC = () => {
           <Text
             style={[
               styles.industry,
-              { color: colors.primary, fontFamily: "SpaceMono" },
+              { color: colors.primary, fontFamily: "Lato" },
             ]}
           >
             {" "}
@@ -99,7 +99,7 @@ const publicComProfile: React.FC = () => {
           <Text
             style={[
               styles.desc,
-              { color: colors.onBackground, fontFamily: "SpaceMono" },
+              { color: colors.onBackground, fontFamily: "Lato" },
             ]}
           >
             {" "}
@@ -115,7 +115,7 @@ const publicComProfile: React.FC = () => {
               fontSize: 18,
               fontWeight: "bold",
               color: colors.onPrimary,
-              fontFamily: "SpaceMono",
+              fontFamily: "Lato",
             }}
             style={{ backgroundColor: colors.quarternary }}
             expanded={expanded}
@@ -132,7 +132,7 @@ const publicComProfile: React.FC = () => {
               <Text
                 style={[
                   styles.text,
-                  { color: colors.onSurface, fontFamily: "SpaceMono" },
+                  { color: colors.onSurface, fontFamily: "Lato" },
                 ]}
               >
                 Email: {business?.email}
@@ -140,7 +140,7 @@ const publicComProfile: React.FC = () => {
               <Text
                 style={[
                   styles.text,
-                  { color: colors.onSurface, fontFamily: "SpaceMono" },
+                  { color: colors.onSurface, fontFamily: "Lato" },
                 ]}
               >
                 Visit us: {business?.address}, {business?.county}
@@ -159,7 +159,7 @@ const publicComProfile: React.FC = () => {
           <Text
             style={[
               styles.subtitle,
-              { color: colors.onSurface, fontFamily: "SpaceMono" },
+              { color: colors.onSurface, fontFamily: "Lato" },
             ]}
           >
             Work Experience Available
@@ -175,7 +175,7 @@ const publicComProfile: React.FC = () => {
         <Text
           style={[
             styles.reviewsHeader,
-            { color: colors.tertiary, fontFamily: "SpaceMono", flex: 10 },
+            { color: colors.tertiary, fontFamily: "Lato", flex: 10 },
           ]}
         >
           Hear from past students
@@ -184,10 +184,7 @@ const publicComProfile: React.FC = () => {
           <ReviewCard businessId={uid} />
         </ScrollView>
         <Text
-          style={[
-            styles.text,
-            { color: colors.onSurface, fontFamily: "SpaceMono" },
-          ]}
+          style={[styles.text, { color: colors.onSurface, fontFamily: "Lato" }]}
         >
           🎉
         </Text>

@@ -22,7 +22,7 @@ const SectorDropdown: React.FC<SectorDropdownProps> = ({
         onDismiss={() => setVisible(false)}
         anchor={
           <Button
-            labelStyle={{ fontFamily: "SpaceMono" }}
+            labelStyle={{ fontFamily: "Lato" }}
             onPress={() => setVisible(true)}
           >
             {selectedSector

@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  Dimensions,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, Text, Dimensions, StyleSheet, ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
 import { getBusinessReviews } from "@/database/business";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -36,7 +30,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ businessId }) => {
   if (reviews.length === 0) {
     return (
       <Text style={styles.body}>
-        We're waiting for our first review! Could it be you? 
+        We're waiting for our first review! Could it be you?
       </Text>
     );
   }
@@ -51,7 +45,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ businessId }) => {
   //     <Text
   //       style={StyleSheet.compose(styles.review, {
   //         color: colors.primary,
-  //         fontFamily: "SpaceMono",
+  //         fontFamily: "Lato",
   //         fontWeight: "normal",
   //       })}
   //     >
@@ -60,7 +54,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ businessId }) => {
   //     <Text
   //       style={StyleSheet.compose(styles.name, {
   //         color: colors.tertiary,
-  //         fontFamily: "SpaceMono",
+  //         fontFamily: "Lato",
   //         fontSize: 15,
   //         fontWeight: "bold",
   //       })}
@@ -140,7 +134,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "white",
   },
-    body: {
+  body: {
     fontSize: 15,
     margin: 16,
     textAlign: "center",
