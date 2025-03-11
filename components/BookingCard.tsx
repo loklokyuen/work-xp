@@ -84,7 +84,7 @@ export default function BookingCard({
             color: colors.onSecondary,
             padding: 5,
             margin: 10,
-            fontFamily: "SpaceMono",
+            fontFamily: "Lato",
             fontWeight: "bold",
             textAlign: "center",
           }}
@@ -96,7 +96,7 @@ export default function BookingCard({
             color: colors.onSecondary,
             padding: 5,
             margin: 10,
-            fontFamily: "SpaceMono",
+            fontFamily: "Lato",
             fontWeight: "bold",
             textAlign: "center",
           }}
@@ -108,7 +108,7 @@ export default function BookingCard({
             color: colors.onSecondary,
             padding: 5,
             margin: 10,
-            fontFamily: "SpaceMono",
+            fontFamily: "Lato",
             fontWeight: "bold",
             textAlign: "center",
           }}
@@ -128,9 +128,9 @@ export default function BookingCard({
               todayTextColor: colors.quarternary,
               dayTextColor: colors.tertiary,
               textDisabledColor: "#dd99ee",
-              textDayFontFamily: "SpaceMono",
-              textMonthFontFamily: "SpaceMono",
-              textDayHeaderFontFamily: "SpaceMono",
+              textDayFontFamily: "Lato",
+              textMonthFontFamily: "Lato",
+              textDayHeaderFontFamily: "Lato",
               monthTextColor: colors.primary,
             }}
             markingType={"period"}
@@ -146,7 +146,7 @@ export default function BookingCard({
         <Button
           mode="contained-tonal"
           style={{ margin: 10 }}
-          labelStyle={{ fontFamily: "SpaceMono" }}
+          labelStyle={{ fontFamily: "Lato" }}
           onPress={() => {
             setOpenCancel(true);
           }}

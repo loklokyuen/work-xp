@@ -11,21 +11,21 @@ const tintColorDark = "#fff";
 
 const fontConfig: Record<string, TextStyle> = {
   bodyMedium: {
-    fontFamily: "SpaceMono",
+    fontFamily: "Lato",
     fontWeight: "normal",
     letterSpacing: 0.5,
     lineHeight: 20,
     fontSize: 14,
   },
   titleLarge: {
-    fontFamily: "SpaceMono",
+    fontFamily: "Lato",
     fontWeight: "normal",
     letterSpacing: 0.5,
     lineHeight: 20,
     fontSize: 24,
   },
   titleMedium: {
-    fontFamily: "SpaceMono",
+    fontFamily: "Lato",
     fontWeight: "normal",
     letterSpacing: 0.5,
     lineHeight: 20,
