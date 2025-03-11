@@ -37,9 +37,9 @@ export default function ProfilePage() {
     const { user, setUser, accountType, setAccountType } = useUserContext();
     const placeHolderImage = require("@/assets/images/background-image.png");
 
-    if (!accountType) {
-        return <Redirect href="/(auth)/main" />;
-    }
+    // if (!accountType) {
+    //     return <Redirect href="/(auth)/main" />;
+    // }
 
     useEffect(() => {
         if (!user) return;
@@ -127,15 +127,14 @@ export default function ProfilePage() {
         }
     }
 
-    const handleLogout = () => {
-        auth.signOut()
-            .then(() => {
-                setUser(null);
-                setAccountType(null);
-            })
-            .catch(() => {
-                // setError(error.message);
-            });
+    const handleLogout = async () => {
+        try {
+            auth.signOut();
+            setUser(null);
+            setAccountType(null);
+        } catch (error) {
+            // setError(error.message);
+        }
     };
     const handleChangePassword = async (oldPassword: string, newPassword: string) => {
         const user = auth.currentUser;

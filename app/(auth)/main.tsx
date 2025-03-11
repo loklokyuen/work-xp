@@ -1,4 +1,4 @@
-import { setUserAccountType, useUserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
 
 import { View } from "react-native";
 import { Button, Text } from "react-native-paper";
@@ -9,10 +9,11 @@ import { signInAnonymously } from "firebase/auth";
 import { router } from "expo-router";
 
 export default function AccountScreen() {
-    const { user, setUser, setAccountType } = useUserContext();
+    const { user, setUser, accountType, setAccountType } = useUserContext();
     const [error, setError] = useState<string>("");
 
     const handleGuestSignIn = () => {
+        console.log(accountType);
         signInAnonymously(auth)
             .then((userCredential) => {
                 const user = userCredential.user;
@@ -22,7 +23,6 @@ export default function AccountScreen() {
                     email: "",
                     photoUrl: "",
                 });
-                setUserAccountType("Guest");
                 setAccountType("Guest");
                 setError("");
                 router.replace("/(tabs)");

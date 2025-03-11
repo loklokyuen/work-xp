@@ -41,7 +41,6 @@ const CreateAccount = () => {
                     accountType: accountType,
                 });
                 setUser(userData);
-                setAccountType(accountType);
                 setError("");
                 router.replace("/(tabs)");
                 // sendEmailVerification(user)
