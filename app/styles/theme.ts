@@ -6,6 +6,9 @@ import {
 } from "react-native-paper";
 import { TextStyle } from "react-native";
 
+const tintColorLight = "#0a7ea4";
+const tintColorDark = "#fff";
+
 const fontConfig: Record<string, TextStyle> = {
   bodyMedium: {
     fontFamily: "SpaceMono",
@@ -51,6 +54,11 @@ export const lightTheme = {
     onError: "#FFFFFF",
     errorContainer: "#F9DEDC",
     onErrorContainer: "#410E0B",
+    text: "#11181C",
+    tint: tintColorLight,
+    icon: "#687076",
+    tabIconDefault: "#07070A",
+    tabIconSelected: tintColorLight,
   },
   roundness: 8,
   fonts: configureFonts({ config: fontConfig }),

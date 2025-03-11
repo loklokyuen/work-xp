@@ -7,47 +7,53 @@ import styles from "../styles";
 import { useUserContext } from "@/context/UserContext";
 import e from "express";
 import { router } from "expo-router";
+import { getDoc, doc } from "firebase/firestore";
+import { db } from "@/database/firebase";
+import { setUserAccountType } from "@/context/UserContext";
 
 const SignIn = () => {
-    const { setUser } = useUserContext();
+    const { setUser, setAccountType } = useUserContext();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isHovered, setIsHovered] = useState(false);
     const { colors, fonts } = useTheme();
 
-    const handleSignIn = () => {
+    const handleSignIn = async () => {
         if (!email || !password) {
             setError("Please fill out all fields.");
             return;
         }
 
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                setUser({
-                    uid: user.uid,
-                    displayName: user.displayName || "",
-                    email: user.email || "",
-                    photoUrl: user.photoURL || "",
-                });
-                setError("");
-                router.replace("/(tabs)");
-                // if (!user.emailVerified) {
-                //     sendEmailVerification(user)
-                //     alert('Please verify your email before signing in.');
-                // } else {
-                //     alert('Signed in successfully!');
-                // }
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                setError(errorMessage);
-                if (errorCode === "auth/invalid-credential") {
-                    setError("Incorrect password. Please check.");
-                }
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            setUser({
+                uid: user.uid,
+                displayName: user.displayName || "",
+                email: user.email || "",
+                photoUrl: user.photoURL || "",
             });
+            setError("");
+            router.replace("/(tabs)");
+            // if (!user.emailVerified) {
+            //     sendEmailVerification(user)
+            //     alert('Please verify your email before signing in.');
+            // } else {
+            //     alert('Signed in successfully!');
+            // }
+            const document = await getDoc(doc(db, "Users", user.uid));
+            const data = document.data();
+            setAccountType(data?.accountType);
+            setUserAccountType(data?.accountType);
+        } catch (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            setError(errorMessage);
+            if (errorCode === "auth/invalid-credential") {
+                setError("Incorrect password. Please check.");
+            }
+        }
     };
 
     const handleForgetPassword = () => {
