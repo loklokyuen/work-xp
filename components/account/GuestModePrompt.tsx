@@ -4,9 +4,9 @@ import styles from "@/app/styles";
 import { router } from "expo-router";
 
 export default function GuestModePrompt() {
-    const { colors, fonts } = useTheme();
-    return (
-        <View>
+  const { colors, fonts } = useTheme();
+  return (
+    <View>
       <Text
         style={[styles.title, { color: colors.primary, ...fonts.titleLarge }]}
       >
@@ -28,7 +28,7 @@ export default function GuestModePrompt() {
             marginBottom: 15,
           }}
           labelStyle={{
-            fontFamily: "SpaceMono", // Apply custom font
+            fontFamily: "Lato", // Apply custom font
             fontSize: 16, // Adjust font size as needed
             fontWeight: "normal", // Set font weight
             color: colors.tertiary, // Text color (onPrimary works well for contrast)
@@ -49,7 +49,7 @@ export default function GuestModePrompt() {
             marginBottom: 15,
           }}
           labelStyle={{
-            fontFamily: "SpaceMono", // Apply custom font
+            fontFamily: "Lato", // Apply custom font
             fontSize: 16, // Adjust font size as needed
             fontWeight: "normal", // Set font weight
             color: colors.tertiary, // Text color (onPrimary works well for contrast)
@@ -63,5 +63,5 @@ export default function GuestModePrompt() {
         </Button>
       </View>
     </View>
-    );
+  );
 }
