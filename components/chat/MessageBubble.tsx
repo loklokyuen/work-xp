@@ -21,8 +21,8 @@ interface MessageBubbleProps {
             <Text style={isSentByCurrentUser ? styles.sentMessageText : styles.receivedMessageText}>
                 {message.content}
             </Text>
-            <Text style={styles.timestamp}>
-                {message.timestamp? new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            <Text style={isSentByCurrentUser ? styles.sentMessageTimestamp : styles.receivedMessageTimestamp}>
+                {message.timestamp? new Date(message.timestamp).toLocaleTimeString([], { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' })
                     : ''}
             </Text>
         </View>
@@ -54,10 +54,16 @@ const styles = StyleSheet.create({
     receivedMessageText: {
         color: 'black',
     },
-    timestamp: {
+    sentMessageTimestamp: {
         fontSize: 10,
-        color: '#888',
+        color: '#d1d5db',
         marginTop: 5,
-        alignSelf: 'flex-end',
+        alignSelf: 'flex-end'
+    },
+    receivedMessageTimestamp: {
+        fontSize: 10,
+        color: '#6b7280',
+        marginTop: 5,
+        alignSelf: 'flex-end'
     }
 });
