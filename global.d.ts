@@ -84,7 +84,8 @@ declare global {
         displayName: string,
         photoUrl: string,
         isAccepted: boolean,
-        businessName: string
+        businessName: string,
+        reviewPosted:boolean
   
     }
 

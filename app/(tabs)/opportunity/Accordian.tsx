@@ -20,7 +20,6 @@ interface AccordionProps {
   expanded: boolean;
   onPress: () => void;
 }
-
 const Accordion: React.FC<AccordionProps> = ({
   application,
   opportunity,
@@ -28,6 +27,17 @@ const Accordion: React.FC<AccordionProps> = ({
   onPress,
 }) => {
   const { colors } = useTheme();
+
+  let backgroundColor;
+  if (expanded) {
+    backgroundColor = colors.quarternary;
+  } else if (application.isAccepted === true) {
+    backgroundColor = colors.secondary;
+  } else if (application.isAccepted === false) {
+    backgroundColor = colors.error;
+  } else {
+    backgroundColor = "#F5CA6B"; // Orange (Pending)
+  }
 
   return (
     <View style={{ padding: 5, margin: 10 }}>
@@ -39,12 +49,9 @@ const Accordion: React.FC<AccordionProps> = ({
           fontSize: 18,
           fontWeight: "bold",
           fontFamily: "SpaceMono",
+          color: expanded ? colors.surface : colors.tertiary,
         }}
-        style={
-          application.isAccepted
-            ? { backgroundColor: colors.secondary }
-            : { backgroundColor: "#F5CA6B" }
-        }
+        style={{ backgroundColor }}
         expanded={expanded}
         onPress={onPress}
       >
@@ -53,8 +60,10 @@ const Accordion: React.FC<AccordionProps> = ({
             style={{
               fontFamily: "SpaceMono",
               color: colors.primary,
-              padding: 20,
+              marginTop: 20,
+              marginBottom: 20,
               fontWeight: "bold",
+              fontSize: 15,
             }}
           >
             {application?.businessName}, {opportunity?.jobRole}
@@ -66,6 +75,8 @@ const Accordion: React.FC<AccordionProps> = ({
                   fontFamily: "SpaceMono",
                   color: colors.tertiary,
                   fontWeight: "bold",
+                  fontStyle: "italic",
+                  fontSize: 15,
                 }}
               >
                 Job Description:
@@ -75,30 +86,34 @@ const Accordion: React.FC<AccordionProps> = ({
                   fontFamily: "SpaceMono",
                   color: colors.tertiary,
                   padding: 10,
+                  marginTop: 10,
+                  marginBottom: 10,
                 }}
               >
                 {opportunity.description}
               </Text>
             </>
           )}
-          {application.isAccepted ? (
+          {application.isAccepted === true ? (
             <Card style={{ backgroundColor: colors.secondaryContainer }}>
               <Card.Content>
                 <Text
                   style={{
                     color: colors.onSecondary,
-                    padding: 20,
+                    padding: 5,
+                    margin: 10,
                     fontFamily: "SpaceMono",
                     fontWeight: "bold",
                     textAlign: "center",
                   }}
                 >
-                  Congratulations, you have been accepted for this role!
+                  🎉 Congratulations! You have been accepted for this role.
+                  Please chat with the business for further details.
                 </Text>
               </Card.Content>
             </Card>
-          ) : (
-            <Card style={{ backgroundColor: colors.tertiaryContainer }}>
+          ) : application.isAccepted === false ? (
+            <Card style={{ backgroundColor: colors.errorContainer }}>
               <Card.Content>
                 <Text
                   style={{
@@ -109,9 +124,25 @@ const Accordion: React.FC<AccordionProps> = ({
                     textAlign: "center",
                   }}
                 >
-                  You have not been accepted at this time, or your application
-                  is still under review. Please chat with the business to check
-                  on the status.
+                  ❌ Unfortunately, your application was not successful. Please
+                  explore and apply to other opportunities!
+                </Text>
+              </Card.Content>
+            </Card>
+          ) : (
+            <Card style={{ backgroundColor: colors.surfaceVariant }}>
+              <Card.Content>
+                <Text
+                  style={{
+                    color: colors.tertiary,
+                    padding: 20,
+                    fontFamily: "SpaceMono",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  ⏳ Your application is still under review. Please wait for a
+                  response from the business.
                 </Text>
               </Card.Content>
             </Card>

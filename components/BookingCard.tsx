@@ -8,7 +8,7 @@ import { ConfirmActionModal } from "@/modal/ConfirmActionModal";
 import { center } from "@cloudinary/url-gen/qualifiers/textAlignment";
 import { useEffect, useState } from "react";
 import { View, Image } from "react-native";
-import { Button, Card, Text } from "react-native-paper";
+import { Button, Card, Text, useTheme } from "react-native-paper";
 import { Calendar } from "react-native-calendars";
 
 interface BookingCardProps {
@@ -31,6 +31,7 @@ export default function BookingCard({
   // const [startDate, setStartDate] = useState<string>();
   // const [endDate, setEndDate] = useState<string>();
   const [confirmedDates, setConfirmedDates] = useState<Record<string, any>>({});
+  const { colors, fonts } = useTheme();
 
   const markDates = (date: string, color: string) => {
     let markedDates: Record<string, any> = {};
@@ -42,8 +43,8 @@ export default function BookingCard({
       let dateAsString = current.toISOString().split("T")[0];
       if (dates[dateAsString]) return;
       markedDates[dateAsString] = {
-        color: color,
-        textColor: "white",
+        color: colors.secondary,
+        textColor: colors.tertiary,
         startingDay: dateAsString === start,
         endingDay: dateAsString === end,
       };
@@ -62,54 +63,90 @@ export default function BookingCard({
     dates.forEach((datePair: string) => {
       markDates(datePair, "green");
     });
-  }, [studentId, businessId, oppId, dates]);
+  }, []);
 
   function handleCancel() {}
   return (
-    <Card style={styles.card}>
+    <Card
+      style={{
+        backgroundColor: colors.secondaryContainer,
+        marginTop: 10,
+        marginBottom: 10,
+      }}
+    >
       <Card.Content>
         <Image
           source={{ uri: photoUrl }}
           style={{ width: 200, height: 200 }}
         ></Image>
-        <Text variant="titleMedium" style={styles.modalText}>
+        <Text
+          style={{
+            color: colors.onSecondary,
+            padding: 5,
+            margin: 10,
+            fontFamily: "SpaceMono",
+            fontWeight: "bold",
+            textAlign: "center",
+          }}
+        >
           Booking Details
         </Text>
-        <Text variant="bodyMedium" style={{ margin: 10 }}>
+        <Text
+          style={{
+            color: colors.onSecondary,
+            padding: 5,
+            margin: 10,
+            fontFamily: "SpaceMono",
+            fontWeight: "bold",
+            textAlign: "center",
+          }}
+        >
           Student: {student?.displayName}
         </Text>
-        <Text variant="bodyMedium" style={{ margin: 10 }}>
+        <Text
+          style={{
+            color: colors.onSecondary,
+            padding: 5,
+            margin: 10,
+            fontFamily: "SpaceMono",
+            fontWeight: "bold",
+            textAlign: "center",
+          }}
+        >
           Opportunity: {opportunity?.jobRole}
         </Text>
-
-        <Calendar
-          style={{
-            borderWidth: 1,
-            borderColor: "gray",
-            height: 400,
-          }}
-          theme={{
-            backgroundColor: "#ffffff",
-            calendarBackground: "#ffffff",
-            textSectionTitleColor: "#b6c1cd",
-            selectedDayBackgroundColor: "#00adf5",
-            selectedDayTextColor: "#ffffff",
-            todayTextColor: "#00adf5",
-            dayTextColor: "#2d4150",
-            textDisabledColor: "#dd99ee",
-          }}
-          markingType={"period"}
-          markedDates={confirmedDates}
-          setJobRole
-          // onDayPress={(day: DayPressEvent) => {
-          //     handleDay(day.dateString);
-          // }}
-        />
+        <View>
+          <Calendar
+            style={{
+              borderWidth: 0,
+              height: 400,
+              backgroundColor: colors.tertiaryContainer,
+            }}
+            theme={{
+              calendarBackground: colors.tertiaryContainer,
+              textSectionTitleColor: colors.primary, // mon tues weds thurs
+              todayTextColor: colors.quarternary,
+              dayTextColor: colors.tertiary,
+              textDisabledColor: "#dd99ee",
+              textDayFontFamily: "SpaceMono",
+              textMonthFontFamily: "SpaceMono",
+              textDayHeaderFontFamily: "SpaceMono",
+              monthTextColor: colors.primary,
+            }}
+            markingType={"period"}
+            markedDates={confirmedDates}
+            setJobRole
+            // onDayPress={(day: DayPressEvent) => {
+            //     handleDay(day.dateString);
+            // }}
+          />
+        </View>
 
         {/* <Text variant="bodyMedium" style={{ margin: 10 }}>Date: {startDate} - {endDate}</Text> */}
         <Button
           mode="contained-tonal"
           style={{ margin: 10 }}
+          labelStyle={{ fontFamily: "SpaceMono" }}
           onPress={() => {
             setOpenCancel(true);
           }}
@@ -121,7 +158,7 @@ export default function BookingCard({
           onClose={() => {
             setOpenCancel(false);
           }}
-          title="Confirm cancel booking?"
+          title="Cancel booking?"
           onConfirmAction={handleCancel}
         />
       </Card.Content>

@@ -8,6 +8,26 @@ async function getUserById(uid: string, accountType: string): Promise<User> {
     return user as User;
 }
 
+async function getAllStudentUsers(): Promise<User[]> {
+    const q = collection(db, "Student");
+    const querySnapshot = await getDocs(q);
+    const studentList = querySnapshot.docs.map((doc) => {
+        return { uid: doc.id, ...doc.data() } as User;
+    }
+    );
+    return studentList;
+}
+
+async function getAllBusinessUsers(): Promise<User[]> {
+    const q = collection(db, "Business");
+    const querySnapshot = await getDocs(q);
+    const businessList = querySnapshot.docs.map((doc) => {
+        return { uid: doc.id, ...doc.data() } as User;
+    }
+    );
+    return businessList;
+}
+
 async function getUserAccountType(uid: string): Promise<string> {
     const docRef = doc(db, "Student", uid);
     const docSnap = await getDoc(docRef);
@@ -44,4 +64,4 @@ async function updateUserProfileImage(uid: string, accountType: string, photoUrl
     }
 }
 
-export { getUserById, getUserAccountType, updateUserProfileImage, addNewUser };
+export { getUserById, getAllStudentUsers, getAllBusinessUsers, getUserAccountType, updateUserProfileImage, addNewUser };

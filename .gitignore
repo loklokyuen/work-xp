@@ -39,4 +39,6 @@ yarn-error.*
 app-example
 ios/*
 ios/
+android/*
+android/
 *.local
