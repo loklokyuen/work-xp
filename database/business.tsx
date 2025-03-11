@@ -14,6 +14,8 @@ import {
 
 import { db } from "./firebase";
 const BusinessUsersCollection = collection(db, "Business");
+const UsersCollection = collection(db, 'Users')
+const ChatCollection = collection(db, 'chats')
 
 async function getBusinessById(uid: string): Promise<Business> {
   const docRef = doc(BusinessUsersCollection, uid);
@@ -115,6 +117,10 @@ async function deleteBusinessById(uid:string): Promise<boolean> {
   try {
       const docRef = doc(BusinessUsersCollection, uid);
       await deleteDoc(docRef);
+      const userDocRef = doc(UsersCollection, uid)
+      await deleteDoc(userDocRef)
+      const chatDocRef = doc(ChatCollection, uid)
+      await deleteDoc(chatDocRef)
       return true;
   } catch (error) {
       alert("Error deleting business: " + error);

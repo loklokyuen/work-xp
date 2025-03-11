@@ -8,61 +8,41 @@ import { deleteStudentById } from "@/database/student";
 import { ConfirmActionModal } from "@/modal/ConfirmActionModal";
 import { useState } from "react";
 import { deleteBusinessById } from "@/database/business";
-import { auth } from "@/database/firebase";
 import { getAuth, deleteUser } from "firebase/auth";
 
 export function DeleteAccountButton() {
-  const { user, accountType, setUser, setAccountType } = useUserContext();
+  const { user, accountType } = useUserContext();
   const auth = getAuth();
   const userCurr = auth.currentUser;
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
-  const handleLogout = () => {
-    auth.signOut()
-        .then(() => {
-            setUser(null);
-            setAccountType(null);
-        })
-        .catch(() => {
-            // setError(error.message);
-        });
-};
-
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (accountType === "Student") {
-      getApplications()
-        .then((res) => {
-          res.map((application) => {
-            if (application.studentId === user?.uid) {
-              deleteApplicationsById(application.uid);
-            }
-          });
-        })
-        .then(() => {
-            deleteUser(userCurr)
-        }).then(() => {
-            deleteStudentById(user.uid);
-        })
-        .catch((err) => {
-          console.log(err);
+      try {
+        const res = await getApplications();
+        res.map(async (application) => {
+          if (application.studentId === user?.uid) {
+            await deleteApplicationsById(application.uid);
+          }
         });
+        await deleteUser(userCurr);
+        await deleteStudentById(user.uid);
+      } catch (err) {
+        console.log(err);
+      }
     } else if (accountType === "Business") {
-      getApplications()
-        .then((res) => {
-          res.map((application) => {
-            if (application.businessId === user?.uid) {
-              deleteApplicationsById(application.uid);
-            }
-          });
-        })
-        .then(() => {
-            deleteUser(userCurr)
-        }).then(() => {
-            deleteBusinessById(user.uid);
-        })
-        .catch((err) => {
-          console.log(err);
+      try {
+        const res = await getApplications();
+        res.map(async (application) => {
+          if (application.businessId === user?.uid) {
+            await deleteApplicationsById(application.uid);
+          }
         });
+        await deleteUser(userCurr);
+        await deleteBusinessById(user.uid);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
