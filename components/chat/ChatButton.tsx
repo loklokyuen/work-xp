@@ -30,7 +30,7 @@ export default function ChatButton({receiverUid, receiverDisplayName, receiverAc
                 if (await isFirstMessage(chatId)) {
                     setChatModalOpen(true);
                 } else {
-                    router.navigate({pathname: "/(chat)/chatroom", params: {chatRoomId: chatId, receiverUid: receiverUid, receiverAccountType: receiverAccountType}});
+                    router.navigate({pathname: "/chat/chatroom", params: {chatRoomId: chatId, receiverUid: receiverUid, receiverAccountType: receiverAccountType}});
                 }
             }}
             >
@@ -42,7 +42,7 @@ export default function ChatButton({receiverUid, receiverDisplayName, receiverAc
                 const isMessageSent = await sendFirstMessage(user.uid, receiverUid, content);
                 if (isMessageSent) {
                     const chatId = generateChatId(user.uid, receiverUid);
-                    router.navigate({pathname: "/(chat)/chatroom", params: {chatRoomId: chatId, receiverUid: receiverUid, receiverAccountType: receiverAccountType}});
+                    router.navigate({pathname: "/chat/chatroom", params: {chatRoomId: chatId, receiverUid: receiverUid, receiverAccountType: receiverAccountType}});
                 } else {
                     alert("Error sending message");
                 }

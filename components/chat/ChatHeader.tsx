@@ -21,7 +21,7 @@ const ChatHeader = ({ displayName, photoUrl, receiverAccountType, receiverUid }:
                     <View style={[styles.image, { backgroundColor: '#EADDFF', justifyContent: 'center', alignItems: 'center' }]}>
                     <IconButton icon="account" size={30} />
                     </View>}
-                <Text variant="titleMedium" style={styles.title}>{displayName}</Text>
+                <Text style={styles.title}>{displayName}</Text>
             </View>
         <Menu
             visible={menuOpen}
