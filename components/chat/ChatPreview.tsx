@@ -48,8 +48,8 @@ const ChatPreview: React.FC<ChatPreviewProps> = ({ chatRoom, onChatRoomPressed }
                 return getUserById(receiver, accountType)
             })
             .then((user) => {
-                setDisplayName(user.displayName);
-                setPhotoUrl(user.photoUrl);
+                setDisplayName(user?.displayName || "User");
+                setPhotoUrl(user?.photoUrl || "");
             });
     }, [chatRoom, user, receiver]);
 

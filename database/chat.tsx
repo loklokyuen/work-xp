@@ -122,4 +122,4 @@ async function reportUser(reportingUid: string, reportedUid: string, reason: str
         return false;
     }
 }
-export { getChatRooms, getChatMessages, isFirstMessage, sendFirstMessage, sendMessage, updateReadStatus, getChatStatus, updateChatStatus, reportUser };
+export { getChatRooms, getChatMessages, isFirstMessage, sendFirstMessage, sendMessage, updateReadStatus, getChatStatus, updateChatStatus, reportUser, generateChatId };
