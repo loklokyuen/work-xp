@@ -8,6 +8,15 @@ async function getUserById(uid: string, accountType: string): Promise<User> {
     return user as User;
 }
 
+async function getUserAccountType(uid: string): Promise<string> {
+    const docRef = doc(db, "Student", uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        return "Student";
+    }
+    return "Business";
+}
+
 async function addNewUser(uid: string, accountType: string, displayName: string, photoUrl: string, email: string): Promise<boolean> {
     try {
         await setDoc(doc(db, accountType, uid), {
@@ -35,4 +44,4 @@ async function updateUserProfileImage(uid: string, accountType: string, photoUrl
     }
 }
 
-export { getUserById, updateUserProfileImage, addNewUser };
+export { getUserById, getUserAccountType, updateUserProfileImage, addNewUser };
