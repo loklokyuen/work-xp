@@ -11,11 +11,12 @@ import { router } from "expo-router";
 import styles from "../styles";
 
 export default function AccountScreen() {
-    const { user, setUser, setAccountType } = useUserContext();
+    const { user, setUser, accountType, setAccountType } = useUserContext();
     const [error, setError] = useState<string>("");
     const { colors, fonts } = useTheme();
 
     const handleGuestSignIn = () => {
+        console.log(accountType);
         signInAnonymously(auth)
             .then((userCredential) => {
                 const user = userCredential.user;

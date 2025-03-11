@@ -3,6 +3,7 @@ import { getAuth } from "firebase/auth";
 import { getDoc, doc } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
+import { router } from "expo-router";
 
 interface UserProviderProps {
     children: React.ReactNode;
@@ -23,13 +24,23 @@ export function UserProvider({ children }: UserProviderProps) {
     const [accountType, setAccountType] = useState<AccountType | null>(null);
     useEffect(() => {
         const auth = getAuth();
-        async function onAuthStateChanged(user: any) {
+        async function onAuthStateChanged(res: any) {
             try {
-                if (user) {
-                    setUser(user);
-                    const document = await getDoc(doc(db, "Users", user.uid));
+                if (res) {
+                    setUser({
+                        uid: res.uid,
+                        displayName: res.displayName || "",
+                        email: res.email || "",
+                        photoUrl: res.photoURL || "",
+                    });
+                    const document = await getDoc(doc(db, "Users", res.uid));
                     const data = document.data();
-                    setAccountType(data?.accountType);
+                    if (data?.accountType) {
+                        setAccountType(data?.accountType);
+                    }
+                    if (res.isAnonymous) {
+                        setAccountType("Guest");
+                    }
                 }
             } catch (error) {
                 console.error("Error during auth initialization:", error);
