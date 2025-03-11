@@ -62,7 +62,7 @@ export default function BookingCard({
     dates.forEach((datePair: string) => {
       markDates(datePair, "green");
     });
-  }, [studentId, businessId, oppId, dates]);
+  }, []);
 
   function handleCancel() {}
   return (
