@@ -10,7 +10,7 @@ const HomeScreen = () => {
     const [visible, setVisible] = useState(true);
     const { colors, fonts } = useTheme();
     const { accountType } = useUserContext();
-    const [searchType, setSearchType] = useState("Opportunity");
+    const [searchType, setSearchType] = useState("business");
 
     return (
         <>
@@ -45,7 +45,7 @@ const HomeScreen = () => {
                     setSearchType("Business");
                 }}
             >
-                Business
+                Search by business
             </Button>
             <Button
                 style={{
@@ -66,7 +66,7 @@ const HomeScreen = () => {
                     setSearchType("Opportunity");
                 }}
             >
-                Opportunities
+                Search by opportunity
             </Button>
             {searchType === "Business" ? <BusinessList /> : <OpportunityList />}
         </>
