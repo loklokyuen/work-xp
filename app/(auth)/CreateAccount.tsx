@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { Button, Text, TextInput } from "react-native-paper";
+import { Button, Text, TextInput, useTheme } from "react-native-paper";
 import styles from "../styles";
 
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
@@ -17,6 +17,7 @@ const CreateAccount = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
+    const { colors, fonts } = useTheme();
 
     const handleCreateAccount = async () => {
         if (!email || !password || !displayName) {
@@ -68,34 +69,135 @@ const CreateAccount = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Create {accountType} Account</Text>
+            <Text style={[styles.title, { color: colors.primary, ...fonts.titleLarge }]}>Create {accountType} Account</Text>
             <View style={styles.buttonContainer}>
-                <Button mode="contained-tonal" onPress={() => setAccountType("Student")}>
-                    Student
+                <Button
+                    style={{
+                        backgroundColor: colors.secondary,
+                        borderRadius: 8,
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                        marginBottom: 15,
+                    }}
+                    labelStyle={{
+                        fontFamily: "SpaceMono",
+                        fontSize: 16,
+                        fontWeight: "normal",
+                        color: colors.tertiary,
+                    }}
+                    //   mode="contained-tonal"
+                    onPress={() => setAccountType("Student")}
+                >
+                    Student 🎒
                 </Button>
-                <Text variant="titleMedium" style={{ textAlign: "center", alignContent: "center" }}>
-                    {" "}
-                    OR
+                <Text variant="titleMedium" style={{ margin: 10, color: "#3E92CC" }}>
+                    or
                 </Text>
-                <Button mode="contained-tonal" onPress={() => setAccountType("Business")}>
-                    Business
+                <Button
+                    style={{
+                        backgroundColor: colors.secondary,
+                        borderRadius: 8,
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                        marginBottom: 15,
+                    }}
+                    labelStyle={{
+                        fontFamily: "SpaceMono",
+                        fontSize: 16,
+                        fontWeight: "normal",
+                        color: colors.tertiary,
+                    }}
+                    //   mode="contained-tonal"
+                    onPress={() => setAccountType("Business")}
+                >
+                    Business 🏢
                 </Button>
             </View>
-            <TextInput style={styles.input} label="Display Name" value={displayName} onChangeText={setDisplayName} autoCapitalize="words" />
-            <TextInput style={styles.input} label="Email" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
-            <TextInput style={styles.input} label="Password" value={password} onChangeText={setPassword} secureTextEntry />
+            <TextInput
+                style={[
+                    styles.input,
+                    {
+                        backgroundColor: colors.primaryContainer,
+                        color: colors.primary,
+                        ...fonts.bodyMedium,
+                    },
+                ]}
+                label="Display Name"
+                value={displayName}
+                onChangeText={setDisplayName}
+                autoCapitalize="words"
+            />
+            <TextInput
+                style={[
+                    styles.input,
+                    {
+                        backgroundColor: colors.primaryContainer,
+                        color: colors.primary,
+                        ...fonts.bodyMedium,
+                    },
+                ]}
+                label="Email"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+            />
+            <TextInput
+                style={[
+                    styles.input,
+                    {
+                        backgroundColor: colors.primaryContainer,
+                        color: colors.primary,
+                        ...fonts.bodyMedium,
+                    },
+                ]}
+                label="Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+            />
             {error ? <Text style={styles.error}>{error}</Text> : null}
             <View style={styles.buttonContainer}>
-                <Button mode="contained-tonal" onPress={handleCreateAccount}>
+                <Button
+                    style={{
+                        backgroundColor: colors.secondary,
+                        borderRadius: 8,
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                        marginBottom: 15,
+                        marginTop: 10,
+                    }}
+                    labelStyle={{
+                        fontFamily: "SpaceMono",
+                        fontSize: 16,
+                        fontWeight: "normal",
+                        color: colors.tertiary,
+                    }}
+                    mode="contained-tonal"
+                    onPress={handleCreateAccount}
+                >
                     Create Account
                 </Button>
             </View>
-            <Text variant="titleMedium" style={{ textAlign: "center", margin: 10 }}>
+            <Text variant="titleMedium" style={{ margin: 20, color: "#3E92CC" }}>
                 Already have an account?
             </Text>
             <View style={styles.buttonContainer}>
                 <Button
-                    mode="outlined"
+                    style={{
+                        backgroundColor: colors.secondary,
+                        borderRadius: 8,
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                        marginBottom: 15,
+                    }}
+                    labelStyle={{
+                        fontFamily: "SpaceMono",
+                        fontSize: 16,
+                        fontWeight: "normal",
+                        color: colors.tertiary,
+                    }}
+                    mode="contained-tonal"
                     onPress={() => {
                         router.replace("/SignIn");
                     }}

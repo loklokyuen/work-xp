@@ -5,7 +5,7 @@ import { ReportModal } from "@/modal/ReportModal";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { Button, IconButton, Menu, Text } from "react-native-paper";
+import { IconButton, Menu, Text } from "react-native-paper";
 
 const ChatHeader = ({ displayName, photoUrl, receiverAccountType, receiverUid }: { displayName: string, photoUrl: string, receiverAccountType: string, receiverUid: string }) => {
     const router = useRouter();
@@ -17,8 +17,11 @@ const ChatHeader = ({ displayName, photoUrl, receiverAccountType, receiverUid }:
     return (
         <View style={styles.container}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Image source={{ uri: photoUrl }} style={styles.image} />
-                <Text variant="titleMedium" style={styles.title}>{displayName}</Text>
+                 {photoUrl !== ""? <Image source={{ uri: photoUrl }} style={styles.image} />:
+                    <View style={[styles.image, { backgroundColor: '#EADDFF', justifyContent: 'center', alignItems: 'center' }]}>
+                    <IconButton icon="account" size={30} />
+                    </View>}
+                <Text style={styles.title}>{displayName}</Text>
             </View>
         <Menu
             visible={menuOpen}

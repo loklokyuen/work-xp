@@ -1,7 +1,4 @@
 import { StyleSheet } from "react-native";
-import CardActions from "react-native-paper/lib/typescript/components/Card/CardActions";
-import CardContent from "react-native-paper/lib/typescript/components/Card/CardContent";
-import CardTitle from "react-native-paper/lib/typescript/components/Card/CardTitle";
 
 const styles = StyleSheet.create({
   container: {
@@ -13,6 +10,15 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
+    margin: 16,
+    textAlign: "center",
+  },
+  subTitle: {
+    margin: 16,
+    textAlign: "center",
+  },
+  body: {
+    fontSize: 15,
     margin: 16,
     textAlign: "center",
   },
@@ -129,14 +135,23 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     gap: 5,
   },
+  proButtonContainer: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    gap: 10,
+  },
   data: {
     minHeight: 40,
-    margin: 12,
+    margin: 10,
     borderWidth: 1,
     padding: 10,
   },
   headerContainer: {
-    maxHeight: 80,
+    height: 50,
+    maxHeight: 50,
     justifyContent: "center",
     textAlign: "center",
     padding: 0,

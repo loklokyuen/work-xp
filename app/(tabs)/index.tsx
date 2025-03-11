@@ -3,10 +3,11 @@ import { ReadonlyStudentInfo } from "../../components/account/ReadonlyStudentInf
 import { EditableBusinessInfo } from "../../components/account/EditableBusinessInfo";
 import { EditableStudentInfo } from "../../components/account/EditableStudentInfo";
 import GuestModePrompt from "../../components/account/GuestModePrompt";
+import { router } from "expo-router";
 
 import { useEffect, useState } from "react";
 import { Modal, Platform, SafeAreaView, StyleSheet, View } from "react-native";
-import { ActivityIndicator, Button, IconButton, Text } from "react-native-paper";
+import { ActivityIndicator, Button, IconButton, Text, useTheme } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { getBusinessById } from "@/database/business";
@@ -37,9 +38,11 @@ export default function ProfilePage() {
     const { user, setUser, accountType, setAccountType } = useUserContext();
     const placeHolderImage = require("@/assets/images/background-image.png");
 
-    // if (!accountType) {
-    //     return <Redirect href="/(auth)/main" />;
-    // }
+    const { colors, fonts } = useTheme();
+
+    if (!accountType) {
+        return <Redirect href="/(auth)/main" />;
+    }
 
     useEffect(() => {
         if (!user) return;
@@ -163,14 +166,33 @@ export default function ProfilePage() {
     return (
         <SafeAreaView style={styles.container}>
             <KeyboardAwareScrollView enableOnAndroid contentContainerStyle={styles.scrollViewContent}>
-                <Text variant="titleLarge" style={{ textAlign: "center", margin: 15 }}>
+                <Text variant="titleLarge" style={{ textAlign: "center", margin: 15, paddingTop: 10 }}>
                     {guestMode ? "Guest" : "Profile"}
                 </Text>
                 {guestMode && <GuestModePrompt />}
                 {!guestMode && (
-                    <View style={{ alignItems: "flex-end", marginRight: 20, position: "absolute", right: 2, top: 10 }}>
+                    <View
+                        style={{
+                            alignItems: "flex-end",
+                            marginRight: 20,
+                            position: "absolute",
+                            right: 2,
+                            top: 10,
+                        }}
+                    >
                         {editMode ? (
                             <Button
+                                style={{
+                                    backgroundColor: colors.quarternary,
+                                    borderRadius: 100,
+                                    marginBottom: 0,
+                                }}
+                                labelStyle={{
+                                    fontFamily: "SpaceMono",
+                                    fontSize: 12,
+                                    fontWeight: "normal",
+                                    color: colors.surface,
+                                }}
                                 mode="contained-tonal"
                                 onPress={() => {
                                     if (changesMade) {
@@ -184,6 +206,17 @@ export default function ProfilePage() {
                             </Button>
                         ) : (
                             <Button
+                                style={{
+                                    backgroundColor: colors.quarternary,
+                                    borderRadius: 100,
+                                    marginBottom: 0,
+                                }}
+                                labelStyle={{
+                                    fontFamily: "SpaceMono",
+                                    fontSize: 12,
+                                    fontWeight: "normal",
+                                    color: colors.surface,
+                                }}
                                 mode="contained-tonal"
                                 onPress={() => {
                                     setEditMode(!editMode);
@@ -227,7 +260,7 @@ export default function ProfilePage() {
                     </View>
                 )}
                 {!editMode && !guestMode && (
-                    <Text variant="titleMedium" style={{ textAlign: "center", margin: 10 }}>
+                    <Text variant="titleLarge" style={{ textAlign: "center", margin: 10, color: "#3E92CC", paddingTop: 10 }}>
                         {studentInfo?.displayName || businessInfo?.displayName}
                     </Text>
                 )}
@@ -245,10 +278,22 @@ export default function ProfilePage() {
                     studentInfo && <ReadonlyStudentInfo studentInfo={studentInfo} />
                 )}
                 {!editMode && !guestMode && (
-                    <View style={styles.buttonContainer}>
+                    <View style={styles.proButtonContainer}>
                         <Button
-                            style={{ margin: 5, backgroundColor: "#f0f0f0" }}
-                            mode="outlined"
+                            style={{
+                                backgroundColor: colors.primary,
+                                borderRadius: 8,
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                                marginBottom: 15,
+                            }}
+                            labelStyle={{
+                                fontFamily: "SpaceMono",
+                                fontSize: 16,
+                                fontWeight: "normal",
+                                color: colors.onPrimary,
+                            }}
+                            // mode="outlined"
                             onPress={() => {
                                 setOpenChangePassword(true);
                             }}
@@ -260,7 +305,24 @@ export default function ProfilePage() {
                             onClose={() => setOpenChangePassword(false)}
                             onChangePassword={handleChangePassword}
                         ></ChangePasswordModal>
-                        <Button style={{ margin: 5, backgroundColor: "#f0f0f0" }} mode="outlined" onPress={() => setOpenLogout(true)}>
+                        <Button
+                            style={{
+                                backgroundColor: colors.error,
+                                borderRadius: 8,
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                                marginBottom: 15,
+                            }}
+                            labelStyle={{
+                                fontFamily: "SpaceMono",
+                                fontSize: 16,
+                                fontWeight: "normal",
+                                color: colors.onError,
+                            }}
+                            // mode="outlined"
+
+                            onPress={() => setOpenLogout(true)}
+                        >
                             Log out
                         </Button>
                         <ConfirmActionModal

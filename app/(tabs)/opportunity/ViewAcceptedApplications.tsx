@@ -5,7 +5,7 @@ import { unsubscribe } from "diagnostics_channel";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import React, { Button, List, useTheme } from "react-native-paper";
-import { Redirect } from "expo-router";
+import { Redirect, router } from "expo-router";
 import Accordion from "./Accordian";
 
 export default function ViewAcceptedApplications() {
@@ -66,7 +66,9 @@ export default function ViewAcceptedApplications() {
   return (
     <ScrollView>
       <List.Section>
-        {" "}
+        {applications.length === 0 && (
+          <Text style={styles.text}>No applications found</Text>
+        )}
         {applications.map((application, index) => {
           const opportunity = opportunities[index];
           return (
@@ -80,6 +82,18 @@ export default function ViewAcceptedApplications() {
           );
         })}
       </List.Section>
+      <Button
+        style={{ margin: 5, backgroundColor: "#f0f0f0" }}
+        mode="outlined"
+        onPress={() => {
+          router.push({
+            pathname: "./reviews",
+            params: {},
+          });
+        }}
+      >
+        Don't forget to leave a review here!
+      </Button>
     </ScrollView>
   );
 }

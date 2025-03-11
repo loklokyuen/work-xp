@@ -24,6 +24,15 @@ const fontConfig: Record<string, TextStyle> = {
     lineHeight: 20,
     fontSize: 24,
   },
+  titleMedium: {
+    fontFamily: "SpaceMono",
+    fontWeight: "normal",
+    letterSpacing: 0.5,
+    lineHeight: 20,
+    fontSize: 16,
+    marginBottom: 10,
+    textAlign: "center",
+  },
 };
 
 export const lightTheme = {
