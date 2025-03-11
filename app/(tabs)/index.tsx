@@ -167,7 +167,7 @@ export default function ProfilePage() {
         <SafeAreaView style={styles.container}>
             <KeyboardAwareScrollView enableOnAndroid contentContainerStyle={styles.scrollViewContent}>
                 <Text variant="titleLarge" style={{ textAlign: "center", margin: 15, paddingTop: 10 }}>
-                    {guestMode ? "Guest" : "Profile"}
+                    {!guestMode && "Profile"}
                 </Text>
                 {guestMode && <GuestModePrompt />}
                 {!guestMode && (
