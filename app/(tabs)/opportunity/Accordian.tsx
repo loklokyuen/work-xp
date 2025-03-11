@@ -39,12 +39,15 @@ const Accordion: React.FC<AccordionProps> = ({
           fontSize: 18,
           fontWeight: "bold",
           fontFamily: "SpaceMono",
+          color: expanded ? colors.surface : colors.tertiary,
         }}
-        style={
-          application.isAccepted
-            ? { backgroundColor: colors.secondary }
-            : { backgroundColor: "#F5CA6B" }
-        }
+        style={{
+          backgroundColor: expanded
+            ? colors.quarternary
+            : application.isAccepted
+            ? colors.secondary
+            : "#F5CA6B",
+        }}
         expanded={expanded}
         onPress={onPress}
       >
@@ -53,8 +56,10 @@ const Accordion: React.FC<AccordionProps> = ({
             style={{
               fontFamily: "SpaceMono",
               color: colors.primary,
-              padding: 20,
+              marginTop: 20,
+              marginBottom: 20,
               fontWeight: "bold",
+              fontSize: 15,
             }}
           >
             {application?.businessName}, {opportunity?.jobRole}
@@ -66,6 +71,8 @@ const Accordion: React.FC<AccordionProps> = ({
                   fontFamily: "SpaceMono",
                   color: colors.tertiary,
                   fontWeight: "bold",
+                  fontStyle: "italic",
+                  fontSize: 15,
                 }}
               >
                 Job Description:
@@ -75,6 +82,8 @@ const Accordion: React.FC<AccordionProps> = ({
                   fontFamily: "SpaceMono",
                   color: colors.tertiary,
                   padding: 10,
+                  marginTop: 10,
+                  marginBottom: 10,
                 }}
               >
                 {opportunity.description}
@@ -82,23 +91,29 @@ const Accordion: React.FC<AccordionProps> = ({
             </>
           )}
           {application.isAccepted ? (
-            <Card style={{ backgroundColor: colors.secondaryContainer }}>
+            <Card
+              style={{
+                backgroundColor: colors.secondaryContainer,
+              }}
+            >
               <Card.Content>
                 <Text
                   style={{
                     color: colors.onSecondary,
-                    padding: 20,
+                    padding: 5,
+                    margin: 10,
                     fontFamily: "SpaceMono",
                     fontWeight: "bold",
                     textAlign: "center",
                   }}
                 >
-                  Congratulations, you have been accepted for this role!
+                  Congratulations, you have been accepted for this role! Please
+                  chat with the business for further details.
                 </Text>
               </Card.Content>
             </Card>
           ) : (
-            <Card style={{ backgroundColor: colors.tertiaryContainer }}>
+            <Card style={{ backgroundColor: colors.errorContainer }}>
               <Card.Content>
                 <Text
                   style={{
