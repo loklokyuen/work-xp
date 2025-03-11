@@ -14,6 +14,18 @@ export function DeleteAccountButton() {
   const { user, accountType, setUser, setAccountType } = useUserContext();
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
+  const handleLogout = () => {
+    auth.signOut()
+        .then(() => {
+            setUser(null);
+            setAccountType(null);
+            setUserAccountType("");
+        })
+        .catch(() => {
+            // setError(error.message);
+        });
+};
+
   const handleDelete = () => {
     if (accountType === "Student") {
       getApplications()
@@ -26,6 +38,7 @@ export function DeleteAccountButton() {
         })
         .then(() => {
           deleteStudentById(user.uid);
+        //   handleLogout()
         })
         .catch((err) => {
           console.log(err);
@@ -41,6 +54,7 @@ export function DeleteAccountButton() {
         })
         .then(() => {
           deleteBusinessById(user.uid);
+        //   handleLogout()
         })
         .catch((err) => {
           console.log(err);
