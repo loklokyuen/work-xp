@@ -325,18 +325,6 @@ export default function ProfilePage() {
               title="Confirm logout?"
               onConfirmAction={handleLogout}
             />
-            <Button
-              style={{ margin: 5, backgroundColor: "#f0f0f0" }}
-              mode="outlined"
-              onPress={() => {
-                router.push({
-                  pathname: "./reviews",
-                  params: {},
-                });
-              }}
-            >
-              Reviews
-            </Button>
           </View>
         )}
       </KeyboardAwareScrollView>

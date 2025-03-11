@@ -5,7 +5,7 @@ import { unsubscribe } from "diagnostics_channel";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import React, { Button, List, useTheme } from "react-native-paper";
-import { Redirect } from "expo-router";
+import { Redirect, router } from "expo-router";
 import Accordion from "./Accordian";
 
 export default function ViewAcceptedApplications() {
@@ -82,6 +82,18 @@ export default function ViewAcceptedApplications() {
           );
         })}
       </List.Section>
+      <Button
+        style={{ margin: 5, backgroundColor: "#f0f0f0" }}
+        mode="outlined"
+        onPress={() => {
+          router.push({
+            pathname: "./reviews",
+            params: {},
+          });
+        }}
+      >
+        Don't forget to leave a review here!
+      </Button>
     </ScrollView>
   );
 }
