@@ -52,6 +52,8 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
+            paddingBottom: 6,
+            paddingTop: 6,
           }}
         >
           Why they applied:
@@ -65,6 +67,8 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
+            paddingBottom: 6,
+            paddingTop: 6,
           }}
         >
           Why they're suitable:
@@ -78,6 +82,8 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
+            paddingBottom: 6,
+            paddingTop: 6,
           }}
         >
           Chosen subjects:
@@ -91,6 +97,8 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
+            paddingBottom: 6,
+            paddingTop: 6,
           }}
         >
           Previous experience:
@@ -104,6 +112,8 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
+            paddingBottom: 6,
+            paddingTop: 6,
           }}
         >
           Dates applied for:
@@ -161,13 +171,16 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   cardCover: {
-    width: "100%",
+    width: 200,
     height: 200,
+    borderRadius: 12,
+    overflow: "hidden",
   },
   text: {
     fontSize: 18,
     marginBottom: 8,
     fontFamily: "Lato",
+    paddingBottom: 12,
   },
   bold: {
     fontWeight: "bold",
