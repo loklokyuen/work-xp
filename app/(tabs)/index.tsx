@@ -31,9 +31,10 @@ import ImageViewer from "../../components/expoComponents/imageViewer";
 import AvatarPickingModal from "@/modal/AvatarPickingModal";
 import { ChangePasswordModal } from "@/modal/ChangePasswordModal";
 import { ConfirmActionModal } from "@/modal/ConfirmActionModal";
-import { Redirect } from "expo-router";
+import { Redirect, useNavigation } from "expo-router";
 
 export default function ProfilePage() {
+  const navigation = useNavigation();
   const [loading, setLoading] = useState<Boolean>(true);
   const [editMode, setEditMode] = useState<Boolean>(false);
   const [guestMode, setGuestMode] = useState<Boolean>(false);
@@ -52,6 +53,12 @@ export default function ProfilePage() {
   if (!accountType) {
     return <Redirect href="/(auth)/main" />;
   }
+  useEffect(() => {
+    navigation.setOptions({
+        headerShown: true,
+        headerTitle: "Profile",
+    });
+  }, [navigation]);
 
   useEffect(() => {
     if (!user) return;
@@ -187,12 +194,12 @@ export default function ProfilePage() {
         enableOnAndroid
         contentContainerStyle={styles.scrollViewContent}
       >
-        <Text
+        {/* <Text
           variant="titleLarge"
           style={{ textAlign: "center", margin: 15, paddingTop: 10 }}
         >
           {!guestMode && "Profile"}
-        </Text>
+        </Text> */}
         {guestMode && <GuestModePrompt />}
         {!guestMode && (
           <View
@@ -264,7 +271,7 @@ export default function ProfilePage() {
         />
         {!editMode && !guestMode && (
           <View style={styles.centeredView}>
-            <View style={{ alignItems: "center", position: "relative" }}>
+            <View style={{ alignItems: "center", position: "relative", marginTop: 20 }}>
               <ImageViewer
                 imgSource={
                   studentInfo?.photoUrl ||

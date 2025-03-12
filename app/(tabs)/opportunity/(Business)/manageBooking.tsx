@@ -4,19 +4,27 @@ import styles from "@/app/styles";
 import BookingCard from "@/components/BookingCard";
 import { useEffect, useState } from "react";
 import { getAcceptedApplicationsByBusinessId } from "@/database/applications";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useUserContext } from "@/context/UserContext";
 
 export default function ManageBooking() {
+  const navigation = useNavigation();
   const { user } = useUserContext();
 
   const [bookings, setBookings] = useState<Application1[]>([]);
   useEffect(() => {
-    getAcceptedApplicationsByBusinessId(user?.uid).then((res) => {
+    if (!user) return;
+    getAcceptedApplicationsByBusinessId(user.uid).then((res) => {
       setBookings(res);
     });
   }, []);
-
+  useEffect(() => {
+    navigation.setOptions({
+        headerShown: true,
+        headerTitle: "Bookings",
+    });
+  }, [navigation]);
+  
   return (
     <ScrollView>
       <View style={styles.container}>

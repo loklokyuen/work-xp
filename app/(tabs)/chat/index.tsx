@@ -6,15 +6,23 @@ import { onSnapshot, collection, query, where } from "firebase/firestore";
 import { db } from "@/database/firebase";
 import ChatPreview from "@/components/chat/ChatPreview";
 import styles from "@/app/styles";
-import { useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 
 export default function ChatScreen() {
+    const navigation = useNavigation();
     const router = useRouter();
     const { user, accountType } = useUserContext();
     const [chatRooms, setChatRooms] = useState<Chatroom[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const { colors, fonts } = useTheme();
-    
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerShown: true,
+            headerTitle: "Chat",
+        });
+    }, [navigation]);
+
     useEffect(() => {
         if (!user) return;
         const collectionRef = collection(db, "Chat");
@@ -54,7 +62,7 @@ export default function ChatScreen() {
     return (
         <ScrollView>
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-            <Text variant="titleMedium" style={{ paddingVertical: 10, paddingHorizontal: 20}}>Chat</Text>
+            <Text variant="titleMedium" style={{ paddingVertical: 10, paddingHorizontal: 20}}>Chatrooms</Text>
             <IconButton icon="pen" style={{marginRight: 10}} size={20}
             onPress={() => {
                 router.push({pathname: "/chat/newChat"});
