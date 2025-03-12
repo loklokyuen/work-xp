@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ScrollView, View, Text } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import BusinessList from "./BusinessList";
+import styles from "@/app/styles";
 import {
   getBusinesses,
   getBusinessBySector,
@@ -118,43 +119,44 @@ const ExploreMain = () => {
 
   return (
     <ScrollView>
-      <Button
-        style={{
-          backgroundColor: colors.primary,
-          borderRadius: 8,
-          paddingLeft: 5,
-          paddingRight: 5,
-          marginBottom: 15,
-        }}
-        labelStyle={{
-          fontFamily: "Lato",
-          fontSize: 16,
-          fontWeight: "normal",
-          color: colors.onPrimary,
-        }}
-        onPress={() => setSearchType("Business")}
-      >
-        Search by Business
-      </Button>
-      <Button
-        style={{
-          backgroundColor: colors.primary,
-          borderRadius: 8,
-          paddingLeft: 5,
-          paddingRight: 5,
-          marginBottom: 15,
-        }}
-        labelStyle={{
-          fontFamily: "Lato",
-          fontSize: 16,
-          fontWeight: "normal",
-          color: colors.onPrimary,
-        }}
-        onPress={() => setSearchType("Opportunity")}
-      >
-        Search by Opportunity
-      </Button>
-
+      <View style={styles.searchButtonContainer}>
+        <Button
+          style={{
+            backgroundColor: colors.primary,
+            borderRadius: 8,
+            paddingLeft: 5,
+            paddingRight: 5,
+            marginBottom: 15,
+          }}
+          labelStyle={{
+            fontFamily: "Lato",
+            fontSize: 16,
+            fontWeight: "normal",
+            color: colors.onPrimary,
+          }}
+          onPress={() => setSearchType("Business")}
+        >
+          Search by Business
+        </Button>
+        <Button
+          style={{
+            backgroundColor: colors.primary,
+            borderRadius: 8,
+            paddingLeft: 5,
+            paddingRight: 5,
+            marginBottom: 15,
+          }}
+          labelStyle={{
+            fontFamily: "Lato",
+            fontSize: 16,
+            fontWeight: "normal",
+            color: colors.onPrimary,
+          }}
+          onPress={() => setSearchType("Opportunity")}
+        >
+          Search by Opportunity
+        </Button>
+      </View>
       {searchType === "Business" ? (
         <BusinessList
           businesses={filteredBusinesses}

@@ -70,6 +70,9 @@ export default function ViewAcceptedApplications() {
     setExpandedAccordion((prev) => (prev === uid ? null : uid));
   };
 
+  console.log(applications, "here");
+  console.log(opportunities, "heeey");
+
   return (
     <ScrollView>
       <List.Section>
@@ -78,6 +81,12 @@ export default function ViewAcceptedApplications() {
         )}
         {applications.map((application, index) => {
           const opportunity = opportunities[index];
+
+          // Only render the accordion if both application and opportunity are defined
+          if (!application || !opportunity) {
+            return null; // Don't render anything if either is undefined
+          }
+
           return (
             <Accordion
               key={application.uid}
