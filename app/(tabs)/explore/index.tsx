@@ -10,7 +10,7 @@ const HomeScreen = () => {
     const [visible, setVisible] = useState(true);
     const { colors, fonts } = useTheme();
     const { accountType } = useUserContext();
-    const [searchType, setSearchType] = useState("business");
+    const [searchType, setSearchType] = useState("Business");
 
     return (
         <>
@@ -35,7 +35,7 @@ const HomeScreen = () => {
                     marginBottom: 15,
                 }}
                 labelStyle={{
-                    fontFamily: "SpaceMono",
+                    fontFamily: "Lato",
                     fontSize: 16,
                     fontWeight: "normal",
                     color: colors.onPrimary,
@@ -56,7 +56,7 @@ const HomeScreen = () => {
                     marginBottom: 15,
                 }}
                 labelStyle={{
-                    fontFamily: "SpaceMono",
+                    fontFamily: "Lato",
                     fontSize: 16,
                     fontWeight: "normal",
                     color: colors.onPrimary,

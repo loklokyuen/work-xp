@@ -31,7 +31,7 @@ const OpportunityList: React.FC = () => {
         sim: number;
     }
 
-    const { user } = useUserContext();
+    const { user, accountType } = useUserContext();
     const [businesses, setBusinesses] = useState<IndividualBusiness[]>([]);
     const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>("");
@@ -55,13 +55,20 @@ const OpportunityList: React.FC = () => {
                 const fetchedOpportunities = await getDocs(collection(db, "Opportunities"));
                 const opps: Opportunity[] = [];
                 const student = await getStudentById(user?.uid);
+
                 for (let opp of fetchedOpportunities.docs) {
                     const data = opp.data();
-                    const sim = similarity(student.subjects, data.subjects);
-                    opps.push({ ...opp.data(), sim } as Opportunity);
+                    if (accountType === "Student") {
+                        const sim = similarity(student.subjects, data.subjects);
+                        opps.push({ ...opp.data(), sim } as Opportunity);
+                    } else {
+                        opps.push({ ...opp.data() } as Opportunity);
+                    }
                 }
                 setOpportunities(opps);
-                setOpportunities(opps.sort((a, b) => b.sim - a.sim));
+                if (accountType === "Student") {
+                    setOpportunities(opps.sort((a, b) => b.sim - a.sim));
+                }
                 // setOpportunities(fetchedOpportunities);
                 // const fetchedBusinesses = await getBusinesses();
                 // setBusinesses(fetchedBusinesses);
