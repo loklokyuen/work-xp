@@ -1,12 +1,13 @@
 import { useUserContext } from "@/context/UserContext";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { Text, TextInput, Button } from "react-native-paper";
+import { Text, TextInput, Button, Chip } from "react-native-paper";
 import { addDoc, collection, getDoc, doc, updateDoc, deleteDoc, getDocs } from "firebase/firestore";
 import { db } from "../../../../database/firebase";
 import { useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
 import { router, Redirect } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
+import { useTheme } from "react-native-paper";
 
 type DayPressEvent = {
     dateString: string;
@@ -29,6 +30,11 @@ export default function Listing() {
     const [periods, setPeriods] = useState<Record<string, any>>({});
     const [remove, setRemove] = useState<string[]>([]);
 
+    const [subjects, setSubjects] = useState<string[]>([]);
+    const [newSubject, setNewSubject] = useState<string>("");
+
+    const { colors, fonts } = useTheme();
+
     if (accountType === "Student") {
         return <Redirect href="/+not-found" />;
     }
@@ -41,6 +47,7 @@ export default function Listing() {
                     if (data) {
                         setJobRole(data.jobRole);
                         setDescription(data.description);
+                        setSubjects(data.subjects || []);
                     }
                 });
                 getDocs(collection(db, "Business", user.uid, "Opportunities", listingId, "Availabilities")).then((result) => {
@@ -58,6 +65,11 @@ export default function Listing() {
             }
         }
     }, [user?.uid, listingId]);
+
+    const handleDeleteSubject = (subject: string) => {
+        const newSubjects = subjects.filter((s) => s !== subject);
+        setSubjects(newSubjects);
+    };
 
     const markDates = (period: string, id: string, color: string) => {
         let markedDates: Record<string, any> = {};
@@ -129,8 +141,10 @@ export default function Listing() {
                 const document = {
                     jobRole: jobRole,
                     description: description,
+                    subjects: subjects,
                 };
                 if (listingId) {
+                    await updateDoc(doc(db, "Opportunities", listingId), document);
                     await updateDoc(doc(db, "Business", user.uid, "Opportunities", listingId), document);
                     for (let id of remove) {
                         await deleteDoc(doc(db, "Business", user.uid, "Opportunities", listingId, "Availabilities", id));
@@ -143,6 +157,7 @@ export default function Listing() {
                         }
                     }
                 } else {
+                    addDoc(collection(db, "Opportunities"), document);
                     const opp = await addDoc(collection(db, "Business", user.uid, "Opportunities"), document);
                     for (let period in periods) {
                         await addDoc(collection(db, "Business", user.uid, "Opportunities", opp.id, "Availabilities"), {
@@ -150,7 +165,6 @@ export default function Listing() {
                         });
                     }
                 }
-                console.log(Object.keys(periods).length, remove.length);
                 router.back();
                 // setDates({});
                 // setPeriods([]);
@@ -181,7 +195,69 @@ export default function Listing() {
                     placeholder="The opportunity involves.."
                 />
             </View>
+            <Text variant="titleSmall" style={{ marginHorizontal: 20 }}>
+                Subjects:
+            </Text>
 
+            <View style={{ flexDirection: "row", flexWrap: "wrap", marginHorizontal: 10 }}>
+                {subjects.map((subject) => {
+                    return (
+                        <Chip
+                            key={subject}
+                            style={{ margin: 3 }}
+                            closeIcon="close"
+                            onClose={() => {
+                                handleDeleteSubject(subject);
+                            }}
+                        >
+                            {subject}
+                        </Chip>
+                    );
+                })}
+            </View>
+            <View
+                style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    // flexWrap: "wrap",
+                    marginHorizontal: 10,
+                    justifyContent: "center",
+                }}
+            >
+                <TextInput
+                    style={{ margin: 5, width: "70%", height: 40 }}
+                    dense
+                    label="Add a subject"
+                    mode="outlined"
+                    value={newSubject}
+                    onChangeText={(text) => {
+                        setNewSubject(text);
+                    }}
+                />
+                <Button
+                    style={{
+                        backgroundColor: colors.secondary,
+                        borderRadius: 8,
+                        paddingHorizontal: 10,
+                        height: 40,
+                        justifyContent: "center",
+                    }}
+                    labelStyle={{
+                        fontFamily: "SpaceMono",
+                        fontSize: 16,
+                        fontWeight: "normal",
+                        color: colors.tertiary,
+                    }}
+                    mode="contained-tonal"
+                    // mode="outlined"
+                    onPress={() => {
+                        setSubjects([...subjects, newSubject]);
+                        setNewSubject("");
+                    }}
+                >
+                    Add
+                </Button>
+            </View>
             <View style={styles.inputContainer}>
                 {listingId ? (
                     <Text style={styles.label}>What are the new dates for this opportunity</Text>
