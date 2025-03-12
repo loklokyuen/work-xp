@@ -33,12 +33,6 @@ const publicComProfile: React.FC = () => {
     navigation.setOptions({
       headerShown: true,
       title: "Back to all",
-      headerLeft: () => (
-        <IconButton
-          icon="arrow-left"
-          onPress={() => router.replace("/explore")}
-        />
-      ),
     });
   }, [navigation]);
 
