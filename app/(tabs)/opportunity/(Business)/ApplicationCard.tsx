@@ -1,5 +1,5 @@
 import { Text, StyleSheet } from "react-native";
-import { useTheme, Button, Card } from "react-native-paper";
+import { useTheme, Button, Card, Chip } from "react-native-paper";
 
 interface ApplicationCardProps {
   application: Application1;
@@ -52,6 +52,8 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
+            paddingBottom: 6,
+            paddingTop: 6,
           }}
         >
           Why they applied:
@@ -65,6 +67,8 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
+            paddingBottom: 6,
+            paddingTop: 6,
           }}
         >
           Why they're suitable:
@@ -78,11 +82,20 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
+            paddingBottom: 6,
+            paddingTop: 6,
           }}
         >
           Chosen subjects:
         </Text>
-        <Text style={{ fontFamily: "Lato" }}>{application.subjects}</Text>
+        {application.subjects.map((subject) => {
+          return (
+            <Chip key={subject} style={{ margin: 3 }}>
+              {subject}
+            </Chip>
+          );
+        })}
+        {/* <Text style={{ fontFamily: "Lato" }}>{application.subjects}</Text> */}
 
         {/* Previous experience */}
         <Text
@@ -91,6 +104,8 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
+            paddingBottom: 6,
+            paddingTop: 6,
           }}
         >
           Previous experience:
@@ -104,6 +119,8 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
+            paddingBottom: 6,
+            paddingTop: 6,
           }}
         >
           Dates applied for:
@@ -161,13 +178,16 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   cardCover: {
-    width: "100%",
+    width: 200,
     height: 200,
+    borderRadius: 12,
+    overflow: "hidden",
   },
   text: {
     fontSize: 18,
     marginBottom: 8,
     fontFamily: "Lato",
+    paddingBottom: 12,
   },
   bold: {
     fontWeight: "bold",

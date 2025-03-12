@@ -63,7 +63,7 @@ async function getBusinessOpportunityById(
   return opportunity as Opportunity;
 }
 
-async function getAvailabilitiesByOpportunity(
+async function getAvailabilitiesByBusinessIdOpportunityId(
   uid: string,
   opportunityId: string
 ): Promise<any[]> {
@@ -197,7 +197,7 @@ export {
   getBusinessOpportunityById,
   getBusinessByCounty,
   updateBusinesInfo,
-  getAvailabilitiesByOpportunity,
+  getAvailabilitiesByBusinessIdOpportunityId,
   deleteBusinessById,
   postReview,
   getBusinessReviews,

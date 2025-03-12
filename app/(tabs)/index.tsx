@@ -32,6 +32,7 @@ import AvatarPickingModal from "@/modal/AvatarPickingModal";
 import { ChangePasswordModal } from "@/modal/ChangePasswordModal";
 import { ConfirmActionModal } from "@/modal/ConfirmActionModal";
 import { Redirect, useNavigation } from "expo-router";
+import { getUserAccountType } from "@/database/user";
 
 export default function ProfilePage() {
   const navigation = useNavigation();
@@ -63,47 +64,49 @@ export default function ProfilePage() {
   useEffect(() => {
     if (!user) return;
     setGuestMode(false);
-
-    if (accountType === "Business") {
-      getBusinessById(user.uid).then((res) => {
-        setBusinessInfo({
-          uid: res.uid,
-          displayName: res.displayName || "",
-          sector: res.sector || "",
-          photoUrl: res.photoUrl || "",
-          email: res.email || "",
-          address: res.address || "",
-          county: res.county || "",
-          description: res.description || "",
-          phoneNumber: res.phoneNumber || "",
-          opportunities: [],
-          reviews: [],
-          applications: [],
+    getUserAccountType(user.uid).then((userAccountType) => {
+      setAccountType(userAccountType)
+      if (userAccountType === "Business") {
+        getBusinessById(user.uid).then((res) => {
+          setBusinessInfo({
+            uid: res.uid,
+            displayName: res.displayName || "",
+            sector: res.sector || "",
+            photoUrl: res.photoUrl || "",
+            email: res.email || "",
+            address: res.address || "",
+            county: res.county || "",
+            description: res.description || "",
+            phoneNumber: res.phoneNumber || "",
+            opportunities: [],
+            reviews: [],
+            applications: [],
+          });
+          setLoading(false);
+          setGuestMode(false);
         });
-        setLoading(false);
-        setGuestMode(false);
-      });
-    } else if (accountType === "Student") {
-      getStudentById(user.uid).then((res) => {
-        setStudentInfo({
-          uid: res.uid,
-          displayName: res.displayName || "",
-          photoUrl: res.photoUrl || "",
-          email: res.email || "",
-          county: res.county || "",
-          personalStatement: res.personalStatement || "",
-          applications: [],
-          reviews: [],
-          subjects: res.subjects || [],
-          experience: res.experience || "",
+      } else if (userAccountType === "Student") {
+        getStudentById(user.uid).then((res) => {
+          setStudentInfo({
+            uid: res.uid,
+            displayName: res.displayName || "",
+            photoUrl: res.photoUrl || "",
+            email: res.email || "",
+            county: res.county || "",
+            personalStatement: res.personalStatement || "",
+            applications: [],
+            reviews: [],
+            subjects: res.subjects || [],
+            experience: res.experience || "",
+          });
+          setLoading(false);
+          setGuestMode(false);
         });
+      } else {
+        setGuestMode(true);
         setLoading(false);
-        setGuestMode(false);
-      });
-    } else {
-      setGuestMode(true);
-      setLoading(false);
-    }
+      }
+    })
   }, [user]);
 
   function handleUpdateInfo() {
@@ -194,12 +197,9 @@ export default function ProfilePage() {
         enableOnAndroid
         contentContainerStyle={styles.scrollViewContent}
       >
-        {/* <Text
-          variant="titleLarge"
-          style={{ textAlign: "center", margin: 15, paddingTop: 10 }}
-        >
-          {!guestMode && "Profile"}
-        </Text> */}
+        <Text variant="titleMedium" style={{ textAlign: "left", margin: 15, paddingTop: 10, fontSize: 16 }}>
+          {!guestMode && accountType + " User Profile"}
+        </Text>
         {guestMode && <GuestModePrompt />}
         {!guestMode && (
           <View
@@ -241,6 +241,7 @@ export default function ProfilePage() {
                   backgroundColor: colors.quarternary,
                   borderRadius: 100,
                   marginBottom: 0,
+                  top: 10
                 }}
                 labelStyle={{
                   fontFamily: "Lato",
@@ -271,7 +272,7 @@ export default function ProfilePage() {
         />
         {!editMode && !guestMode && (
           <View style={styles.centeredView}>
-            <View style={{ alignItems: "center", position: "relative", marginTop: 20 }}>
+            <View style={{ alignItems: "center", position: "relative" }}>
               <ImageViewer
                 imgSource={
                   studentInfo?.photoUrl ||

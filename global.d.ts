@@ -58,14 +58,14 @@ declare global {
         endDate: string;
         description: string;
     }
-    interface Application {
-        id: string;
-        opportunityId: string;
-        businessId: string;
-        studentId: string;
-        status: string;
-        applicationMessage: string;
-    }
+    // interface Application {
+    //     id: string;
+    //     opportunityId: string;
+    //     businessId: string;
+    //     studentId: string;
+    //     status: string;
+    //     applicationMessage: string;
+    // }
 
     interface Application1 {
 
@@ -78,7 +78,7 @@ declare global {
         whySuitable: string,
         personalStatement: string,
         experience: string,
-        subjects: string,
+        subjects: string[],
         displayName: string,
         photoUrl: string,
         isAccepted: boolean,

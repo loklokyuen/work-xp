@@ -2,23 +2,20 @@ import { useUserContext } from "@/context/UserContext";
 
 import {
   View,
-  Text,
-  TextInput,
-  Button,
   StyleSheet,
   ScrollView,
 } from "react-native";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { db } from "../../../database/firebase";
 import { useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
 import { getStudentById } from "@/database/student";
 
-import { addApplication } from "@/database/applications";
-import { useLocalSearchParams } from "expo-router";
+import { addApplication, checkApplicationExists } from "@/database/applications";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import { ConfirmationModal } from "@/modal/ConfirmationModal";
 import { useRouter } from "expo-router";
-import { useTheme } from "react-native-paper";
+import { Button, Text, TextInput, useTheme } from "react-native-paper";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { getAvailabilitiesByBusinessIdOpportunityId, getBusinessById, getBusinessOpportunityById } from "@/database/business";
 
 type DayPressEvent = {
   dateString: string;
@@ -29,6 +26,7 @@ type DayPressEvent = {
 };
 
 export default function Application() {
+  const navigation = useNavigation();
   const { user } = useUserContext();
   const { businessId, oppId, businessName } = useLocalSearchParams<{
     businessId: string;
@@ -43,17 +41,19 @@ export default function Application() {
   const [why, setWhy] = useState<string>("");
   const [reason, setReason] = useState<string>("");
 
-  const [subjects, setSubjects] = useState<string[] | undefined>([]);
+  const [subjects, setSubjects] = useState<string[]>([]);
   const [personalStatement, setPersonalStatement] = useState<string>("");
-  const [experience, setExperience] = useState<string | undefined>("");
+  const [experience, setExperience] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
   const [photoUrl, setPhotoUrl] = useState<string>("");
 
   const [chosen, setChosen] = useState<Record<string, any>>({});
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isErrorModalVisible, setIsErrorModalVisible] = useState<boolean>(false);
 
   const [hasApplied, setHasApplied] = useState<boolean>(false);
   const [missingFields, setMissingFields] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const router = useRouter();
   const { colors, fonts } = useTheme();
 
@@ -61,43 +61,35 @@ export default function Application() {
   const OpportunityId = oppId;
 
   useEffect(() => {
+    navigation.setOptions({
+        headerShown: true,
+        headerTitle: "Application",
+    });
+  }, [navigation]);
+  useEffect(() => {
     if (user?.uid) {
-      getDoc(
-        doc(db, "Business", BusinessId, "Opportunities", OpportunityId)
-      ).then((result) => {
-        const data = result.data();
-        if (data) {
-          setJobRole(data.jobRole);
+      getBusinessOpportunityById(BusinessId, OpportunityId).then((opp) => {
+        if (opp) {
+          setJobRole(opp.jobRole);
         }
       });
-      getDocs(
-        collection(
-          db,
-          "Business",
-          BusinessId,
-          "Opportunities",
-          OpportunityId,
-          "Availabilities"
-        )
-      ).then((result) => {
-        result.docs.forEach((doc) => {
-          const period = doc.data().period;
+      getAvailabilitiesByBusinessIdOpportunityId(BusinessId, OpportunityId).then((availabilities) => {
+        availabilities.forEach((availability) => {
+          const period = availability.period;
           markDates(period, "blue");
         });
       });
-      getDoc(doc(db, "Business", BusinessId)).then((result) => {
-        const data = result.data();
-        if (data) {
-          setCompanyName(data.displayName);
+      getBusinessById(BusinessId).then((business) => {
+        if (business) {
+          setCompanyName(business.displayName);
         }
       });
       getStudentById(user.uid).then((res) => {
-        console.log(res);
-        setDisplayName(res?.displayName);
-        setSubjects(res?.subjects);
-        setExperience(res?.experience);
-        setPersonalStatement(res?.personalStatement);
-        setPhotoUrl(res?.photoUrl);
+        setDisplayName(res.displayName);
+        setSubjects(res.subjects);
+        setExperience(res.experience);
+        setPersonalStatement(res.personalStatement);
+        setPhotoUrl(res.photoUrl);
       });
 
       return () => {
@@ -174,24 +166,20 @@ export default function Application() {
     if (!why || !reason || Object.keys(chosen).length === 0) {
       setMissingFields(true);
       setTimeout(() => setMissingFields(false), 5000);
+      setErrorMessage("Please fill in all fields and select from available dates to proceed.");
+      setIsErrorModalVisible(true);
       return;
     }
-
+    if (!user) return;
     try {
-      const applicationsRef = collection(db, "Applications");
-      const querySnapshot = await getDocs(applicationsRef);
-      const hasAppliedAlready = querySnapshot.docs.some(
-        (doc) =>
-          doc.data().studentId === user.uid &&
-          doc.data().oppId === OpportunityId
-      );
-
+      const hasAppliedAlready = await checkApplicationExists(user.uid, OpportunityId);
       if (hasAppliedAlready) {
         setHasApplied(true);
         setTimeout(() => setHasApplied(false), 5000);
+        setErrorMessage("You have already applied for this opportunity! Please check on the status of your application or apply for another.");
+        setIsErrorModalVisible(true);
         return;
       }
-
       const data = {
         oppId: OpportunityId,
         businessId: BusinessId,
@@ -234,8 +222,10 @@ export default function Application() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {hasApplied && (
+    <KeyboardAwareScrollView enableOnAndroid contentContainerStyle={styles.container}>
+      <ConfirmationModal open={isErrorModalVisible} onClose={() => setIsErrorModalVisible(false)} title="Error" message={errorMessage} />
+
+      {/* {hasApplied && (
         <Text
           style={{
             color: colors.error,
@@ -262,9 +252,9 @@ export default function Application() {
         >
           Please fill in all fields and select from available dates to proceed.
         </Text>
-      )}
+      )} */}
       <Text style={styles.title1}>
-        {jobRole} at {companyName}{" "}
+        {jobRole} at {companyName}
       </Text>
       <Text style={styles.title}>Select the dates you'd like to apply for</Text>
       <Calendar
@@ -293,10 +283,11 @@ export default function Application() {
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>
-          Why do you want to do work experience with us?
+          Why do you want to apply for this role?
         </Text>
         <TextInput
-          style={styles.input}
+          multiline
+          style={[styles.input, { flexGrow: 1}]}
           value={why}
           onChangeText={setWhy}
           placeholder="I would like to apply for this role because..."
@@ -306,23 +297,23 @@ export default function Application() {
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Why should we pick you?</Text>
         <TextInput
+          multiline
           style={styles.input}
           value={reason}
           onChangeText={setReason}
           placeholder="I would make a strong candidate because..."
         />
       </View>
-
-      <Button title="Submit Application" onPress={handleSubmit} />
+      <Text style={{ padding: 10, textAlign: "center", color: "grey"}}>Your profile will be sent to the business once you've submitted your application.</Text>
+      <Button onPress={handleSubmit} mode="contained" style={[styles.button]} labelStyle={styles.buttonLabel}>Submit Application</Button>
 
       <ConfirmationModal
         open={isModalVisible}
         onClose={closeModal}
         title="Application Submitted!"
         message="Your application has been successfully submitted."
-        confirmText="OK"
       />
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -331,34 +322,46 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     padding: 20,
+    paddingBottom: 85,
   },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     // fontWeight: "bold",
     textAlign: "center",
     marginBottom: 20,
   },
   title1: {
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 20,
   },
   inputContainer: {
     marginTop: 10,
-    marginBottom: 15,
+    marginBottom: 10,
   },
   label: {
     fontSize: 16,
     fontWeight: "600",
-    marginBottom: 5,
+    padding: 5,
   },
   input: {
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 5,
-    padding: 10,
+    margin: 5,
     fontSize: 16,
-    height: 40,
+    minHeight: 40,
+  },
+  button: {
+    marginTop: 12,
+    borderRadius: 8, 
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  buttonLabel: {
+    fontFamily: "Lato",
+    fontSize: 16,
+    fontWeight: "normal",
   },
 });

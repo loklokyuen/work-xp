@@ -36,6 +36,14 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 12,
+    borderRadius: 8, // Optional: For rounded edges
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  buttonLabel: {
+    fontFamily: "Lato",
+    fontSize: 16,
+    fontWeight: "normal",
   },
   error: {
     color: "red",
@@ -137,6 +145,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     gap: 5,
+  },
+  searchButtonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    gap: 5,
+    width: "100%",
+    paddingTop: 25,
+    paddingBottom: 0,
+  },
+  delButtonContainer: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 10,
   },
   proButtonContainer: {
     flex: 1,

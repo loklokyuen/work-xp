@@ -186,7 +186,7 @@ export function EditableStudentInfo({ studentInfo, onUpdateInfo, setChangesMade,
                     Save Changes
                 </Button>
             </View>
-          <DeleteAccountButton/>
+            <DeleteAccountButton/>
       </>
     );
 }

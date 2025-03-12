@@ -173,7 +173,9 @@ export function EditableBusinessInfo({ businessInfo, onUpdateInfo, setChangesMad
                 >
                     Save Changes
                 </Button>
+             
             </View>
+            <DeleteAccountButton/>
         </>
     );
 }

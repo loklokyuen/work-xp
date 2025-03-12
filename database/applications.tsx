@@ -53,7 +53,7 @@ async function addApplication(
   whySuitable: string,
   personalStatement: string,
   experience: string,
-  subjects: string,
+  subjects: string[],
   displayName: string,
   photoUrl: string,
   businessName: string
@@ -142,6 +142,15 @@ async function getApplicationByStudentId(
   return applicationsList;
 }
 
+async function checkApplicationExists(studentId:string, oppId: string): Promise<boolean> {
+  const q = query(ApplicationsCollection, where("studentId", "==", studentId), where("oppId", "==", oppId));
+  const querySnapshot = await getDocs(q);
+  if (querySnapshot.docs.length === 0) {
+    return false;
+  }
+  return true;
+}
+
 async function updateApplicationAccepted(
   appId: string,
   boolean: boolean
@@ -207,6 +216,7 @@ export {
   getAcceptedApplicationsByBusinessId,
   getApplicationsByBusinessId,
   getApplicationsByOppId,
+  checkApplicationExists,
   updateApplicationAccepted,
   getApplicationByStudentId,
   deleteApplicationsById,

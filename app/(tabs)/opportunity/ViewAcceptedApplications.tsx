@@ -16,11 +16,11 @@ export default function ViewAcceptedApplications() {
   const [expandedAccordion, setExpandedAccordion] = useState<string | null>(
     null
   );
-  const { colors } = useTheme();
+  const { colors, fonts } = useTheme();
   useEffect(() => {
     navigation.setOptions({
-        headerShown: true,
-        headerTitle: "Applications",
+      headerShown: true,
+      headerTitle: "Applications",
     });
   }, [navigation]);
 
@@ -70,6 +70,9 @@ export default function ViewAcceptedApplications() {
     setExpandedAccordion((prev) => (prev === uid ? null : uid));
   };
 
+  console.log(applications, "here");
+  console.log(opportunities, "heeey");
+
   return (
     <ScrollView>
       <List.Section>
@@ -78,6 +81,9 @@ export default function ViewAcceptedApplications() {
         )}
         {applications.map((application, index) => {
           const opportunity = opportunities[index];
+          if (!application || !opportunity) {
+            return null;
+          }
           return (
             <Accordion
               key={application.uid}
@@ -89,18 +95,41 @@ export default function ViewAcceptedApplications() {
           );
         })}
       </List.Section>
-      <Button
-        style={{ margin: 5, backgroundColor: "#f0f0f0" }}
-        mode="outlined"
-        onPress={() => {
-          router.push({
-            pathname: "./reviews",
-            params: {},
-          });
-        }}
+      <Text
+        style={[
+          styles.title,
+          { color: colors.onSecondary, ...fonts.bodyLarge },
+        ]}
       >
-        Don't forget to leave a review here!
-      </Button>
+        If you have finished your experience, please leave a review for other
+        students to see how you got on!
+      </Text>
+      <View style={styles.buttonContainer}>
+        <Button
+          style={{
+            backgroundColor: colors.primary,
+            borderRadius: 8,
+            paddingLeft: 5,
+            paddingRight: 5,
+            marginBottom: 15,
+          }}
+          labelStyle={{
+            fontFamily: "Lato",
+            fontSize: 16,
+            fontWeight: "normal",
+            color: colors.onPrimary,
+          }}
+          onPress={() => {
+            router.push({
+              pathname: "./reviews",
+              params: {},
+            });
+          }}
+          mode="contained-tonal"
+        >
+          Leave a review here!
+        </Button>
+      </View>
     </ScrollView>
   );
 }
@@ -184,5 +213,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    gap: 5,
   },
 });
