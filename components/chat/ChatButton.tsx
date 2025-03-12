@@ -26,15 +26,19 @@ export default function ChatButton({
   return (
     <View>
       <Button
-        mode="contained"
-        labelStyle={{
-          fontFamily: "Lato",
-          color: colors.onSecondary,
-        }}
-        style={{
-          backgroundColor: colors.secondary,
-          margin: 5,
-        }}
+          style={{
+            margin: 10,
+            backgroundColor: colors.secondary,
+            borderRadius: 8,
+            paddingLeft: 8,
+            paddingRight: 8,
+          }}
+          labelStyle={{
+            fontFamily: "Lato",
+            fontSize: 16,
+            fontWeight: "normal",
+            color: colors.onSecondary,
+          }}
         onPress={async () => {
           if (!user) {
             return;
@@ -54,7 +58,7 @@ export default function ChatButton({
           }
         }}
       >
-        Chat
+        Chat  💬
       </Button>
       <ChatFirstMessageModal
         open={chatModalOpen}

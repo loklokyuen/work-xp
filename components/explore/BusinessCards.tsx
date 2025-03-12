@@ -55,13 +55,20 @@ const BusinessCards = ({
         />
         <Card.Actions style={styles.cardActions}>
           <Button
-            labelStyle={{
-              fontFamily: "Lato",
-              color: colors.onPrimary,
-            }}
-            style={{
-              backgroundColor: colors.primary,
-            }}
+           style={{
+            backgroundColor: colors.primary,
+            borderRadius: 8,
+            paddingLeft: 5,
+            paddingRight: 5,
+            marginBottom: 15,
+          }}
+          labelStyle={{
+            fontFamily: "Lato",
+            fontSize: 16,
+            fontWeight: "normal",
+            color: colors.onPrimary,
+          }}
+          mode="contained-tonal"
             onPress={handlePress}
           >
             View Business

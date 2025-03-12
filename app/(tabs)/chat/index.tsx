@@ -1,6 +1,6 @@
 import { useUserContext } from "@/context/UserContext";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Text, Button, Card, ActivityIndicator, Icon, IconButton } from "react-native-paper";
+import { Text, Button, Card, ActivityIndicator, Icon, IconButton, useTheme } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { onSnapshot, collection, query, where } from "firebase/firestore";
 import { db } from "@/database/firebase";
@@ -13,7 +13,8 @@ export default function ChatScreen() {
     const { user, accountType } = useUserContext();
     const [chatRooms, setChatRooms] = useState<Chatroom[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-
+    const { colors, fonts } = useTheme();
+    
     useEffect(() => {
         if (!user) return;
         const collectionRef = collection(db, "Chat");
@@ -64,7 +65,21 @@ export default function ChatScreen() {
                 return <ChatPreview key={chatroom.id} chatRoom={chatroom} onChatRoomPressed={navigateToChat}></ChatPreview>;
             })}
             <View style={[styles.buttonContainer, {padding: 10}]}>
-            <Button mode="contained" onPress={() => {
+            <Button mode="contained" 
+              style={{
+                backgroundColor: colors.secondary,
+                borderRadius: 8,
+                paddingLeft: 5,
+                paddingRight: 5,
+                marginBottom: 15,
+              }}
+              labelStyle={{
+                fontFamily: "Lato",
+                fontSize: 16,
+                fontWeight: "normal",
+                color: colors.onSecondary,
+              }}
+              onPress={() => {
                 router.push({pathname:  "/chat/newChat"});
             }}>Start a New Chat</Button>
             </View>

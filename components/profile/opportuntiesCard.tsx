@@ -78,6 +78,7 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
                 <View style={styles.modalView}>
                   <Text
                     style={{
+                      color: colors.primary,
                       fontFamily: "Lato",
                       fontSize: 18,
                       padding: 10,
@@ -90,7 +91,7 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
                       fontFamily: "Lato",
                       fontSize: 15,
                       textAlign: "center",
-                      padding: 10,
+                      padding: 15,
                     }}
                   >
                     {opp.description}
@@ -98,17 +99,20 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
                   {/* <Text style={styles.text}>Availability: {opp.availability}</Text> */}
                   {accountType === "Student" && (
                     <Button
-                      labelStyle={{
-                        fontFamily: "Lato",
-                        color: colors.onSecondary,
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                      }}
-                      style={{
-                        backgroundColor: colors.secondary,
-                        marginBottom: 5,
-                        marginTop: 10,
-                      }}
+                    style={{
+                      backgroundColor: colors.secondary,
+                      borderRadius: 8,
+                      paddingLeft: 5,
+                      paddingRight: 5,
+                      marginBottom: 15,
+                    }}
+                    labelStyle={{
+                      fontFamily: "Lato",
+                      fontSize: 16,
+                      fontWeight: "normal",
+                      color: colors.onSecondary,
+                    }}
+                    mode="contained-tonal"
                       onPress={() => {
                         router.push({
                           pathname: "./application",
@@ -126,7 +130,7 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
                   <Button
                     onPress={hideOppModal}
                     labelStyle={{
-                      color: colors.onTertiaryContainer,
+                      color: colors.error,
                       paddingTop: 10,
                       paddingBottom: 10,
                     }}
