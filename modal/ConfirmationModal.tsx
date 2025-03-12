@@ -1,25 +1,21 @@
 import React, { useState } from "react";
 import { Modal, View } from "react-native";
-import { Button, IconButton, Text, TextInput } from "react-native-paper";
+import { Button, IconButton, Text, TextInput, useTheme } from "react-native-paper";
 import styles from "@/app/styles";
 interface ConfirmActionModalProps {
   open: boolean;
   onClose: () => void;
   title: string;
-  onConfirmAction: () => void;
+  message: string;
 }
 
 export const ConfirmationModal = ({
   open,
   onClose,
   title,
-  onConfirmAction,
+  message,
 }: ConfirmActionModalProps) => {
-  const handleConfirm = () => {
-    onConfirmAction();
-    onClose();
-  };
-
+  const { colors } = useTheme();
   return (
     <Modal
       animationType="slide"
@@ -32,8 +28,14 @@ export const ConfirmationModal = ({
           <Text variant="titleMedium" style={{ margin: 10, padding: 2 }}>
             {title}
           </Text>
+          {message && (
+            <Text variant="bodyMedium" style={{ margin: 10, padding: 2, flexWrap: "wrap", width: "90%", maxWidth: 280 }}>
+              {message}
+            </Text>
+          )}
           <View style={styles.buttonContainer}>
-            <Button mode="outlined" onPress={onClose} style={{ margin: 10 }}>
+            <Button mode="outlined" onPress={onClose} labelStyle={{ color: colors.onPrimary }}
+              style={[styles.button, { backgroundColor: colors.primary }]}>
               OK
             </Button>
           </View>

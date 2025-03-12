@@ -36,6 +36,14 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 12,
+    borderRadius: 8, // Optional: For rounded edges
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  buttonLabel: {
+    fontFamily: "Lato",
+    fontSize: 16,
+    fontWeight: "normal",
   },
   error: {
     color: "red",

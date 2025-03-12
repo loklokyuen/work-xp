@@ -37,7 +37,7 @@ export default function ManageBooking() {
               key={booking.uid}
               studentId={booking.studentId}
               oppId={booking.oppId}
-              businessId={user?.uid}
+              businessId={user?.uid || ''}
               dates={booking.datesApplied}
               photoUrl={booking.photoUrl}
             />
