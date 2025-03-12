@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, getFirestore, doc, getDoc, setDoc, query, where, updateDoc, QuerySnapshot } from "firebase/firestore";
+import { collection, addDoc, getDocs, getFirestore, doc, getDoc, setDoc, query, where, updateDoc, QuerySnapshot, deleteDoc } from "firebase/firestore";
 import { db } from "./firebase";
 const ChatsCollection = collection(db, "Chat");
 
@@ -122,4 +122,19 @@ async function reportUser(reportingUid: string, reportedUid: string, reason: str
         return false;
     }
 }
-export { getChatRooms, getChatMessages, isFirstMessage, sendFirstMessage, sendMessage, updateReadStatus, getChatStatus, updateChatStatus, reportUser, generateChatId };
+
+async function deleteChatroomsByUserId(uid: string): Promise<boolean> {
+    try {
+        const chatRooms = await getChatRooms(uid);
+        chatRooms.forEach(async (chatRoom) => {
+            const docRef = doc(ChatsCollection, chatRoom.id);
+            await deleteDoc(docRef);
+        });
+        return true;
+    } catch (error) {
+        console.error("Error deleting chatroom:", error);
+        return false;
+    }
+}
+
+export { getChatRooms, getChatMessages, isFirstMessage, sendFirstMessage, sendMessage, updateReadStatus, getChatStatus, updateChatStatus, reportUser, generateChatId, deleteChatroomsByUserId };
