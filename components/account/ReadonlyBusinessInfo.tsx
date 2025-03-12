@@ -112,30 +112,6 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
           >
             Manage Bookings
           </Button>
-          <Button
-            style={{
-              backgroundColor: colors.secondary,
-              borderRadius: 8,
-              paddingLeft: 5,
-              paddingRight: 5,
-              marginBottom: 15,
-            }}
-            labelStyle={{
-              fontFamily: "Lato",
-              fontSize: 16,
-              fontWeight: "normal",
-              color: colors.tertiary,
-            }}
-            mode="contained-tonal"
-            onPress={() => {
-              router.push({
-                pathname: "./reviews",
-                params: {},
-              });
-            }}
-          >
-            Check Reviews
-          </Button>
         </View>
       </>
     );
