@@ -138,6 +138,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     gap: 5,
   },
+  delButtonContainer: {
+    flexDirection: "column",
+    justifyContent: "space-between", 
+    alignItems: "center", 
+    marginVertical: 10, 
+  },
   proButtonContainer: {
     flex: 1,
     flexDirection: "column",
