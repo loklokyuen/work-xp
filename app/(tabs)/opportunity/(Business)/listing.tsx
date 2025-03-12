@@ -13,7 +13,7 @@ import {
 import { db } from "../../../../database/firebase";
 import { useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
-import { router, Redirect } from "expo-router";
+import { router, Redirect, useNavigation } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
 import { useTheme } from "react-native-paper";
 
@@ -26,6 +26,7 @@ type DayPressEvent = {
 };
 
 export default function Listing() {
+  const navigation = useNavigation();
   const { user, accountType } = useUserContext();
   const { listingId } = useLocalSearchParams<Record<string, string>>();
 
@@ -46,6 +47,13 @@ export default function Listing() {
   if (accountType === "Student") {
     return <Redirect href="/+not-found" />;
   }
+
+  useEffect(() => {
+    navigation.setOptions({
+        headerShown: true,
+        headerTitle: "Listing",
+    });
+  }, [navigation]);
 
   useEffect(() => {
     if (user?.uid) {
@@ -272,7 +280,7 @@ export default function Listing() {
         />
       </View>
       <Text variant="titleSmall" style={{ marginHorizontal: 20 }}>
-        Related Subjects:
+        Related Subjects (optional):
       </Text>
 
       <View
@@ -321,7 +329,7 @@ export default function Listing() {
             justifyContent: "center",
           }}
           labelStyle={{
-            fontFamily: "SpaceMono",
+            fontFamily: "Lato",
             fontSize: 16,
             fontWeight: "normal",
             color: colors.tertiary,

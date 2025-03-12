@@ -57,9 +57,7 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
         <Text variant="bodyMedium" style={styles.data}>
           {businessInfo.address}
         </Text>
-        <Text
-          style={(styles.text, { fontFamily: "Lato", textAlign: "center" })}
-        >
+        <Text variant="titleMedium" style={{ marginHorizontal: 10 }}>
           DBS Certificate:
         </Text>
         <Text variant="bodyMedium" style={styles.data}>
