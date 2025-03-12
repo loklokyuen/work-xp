@@ -81,12 +81,9 @@ export default function ViewAcceptedApplications() {
         )}
         {applications.map((application, index) => {
           const opportunity = opportunities[index];
-
-          // Only render the accordion if both application and opportunity are defined
           if (!application || !opportunity) {
-            return null; // Don't render anything if either is undefined
+            return null;
           }
-
           return (
             <Accordion
               key={application.uid}
