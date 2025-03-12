@@ -332,7 +332,7 @@ export default function ProfilePage() {
           <View style={styles.proButtonContainer}>
             <Button
               style={{
-                backgroundColor: colors.primary,
+                backgroundColor: colors.secondary,
                 borderRadius: 8,
                 paddingLeft: 5,
                 paddingRight: 5,
@@ -342,7 +342,7 @@ export default function ProfilePage() {
                 fontFamily: "Lato",
                 fontSize: 16,
                 fontWeight: "normal",
-                color: colors.onPrimary,
+                color: colors.onSecondary,
               }}
               // mode="outlined"
               onPress={() => {

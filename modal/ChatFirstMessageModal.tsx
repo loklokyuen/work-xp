@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, View } from "react-native";
-import { Button, IconButton, Text, TextInput } from "react-native-paper";
+import { Button, IconButton, Text, TextInput, useTheme } from "react-native-paper";
 import styles from "@/app/styles";
 interface ChatFirstMessageModalProps {
   open: boolean;
@@ -26,6 +26,8 @@ export const ChatFirstMessageModal = ({
     onClose();
   };
 
+    const { colors, fonts } = useTheme();
+
   return (
     <Modal
       style={{ maxWidth: "90%"}}
@@ -48,8 +50,36 @@ export const ChatFirstMessageModal = ({
             onChangeText={(text) => setFirstMessage(text)}
         />
           <View style={styles.buttonContainer}>
-            <Button  mode="outlined" onPress={onClose}  style={{ margin: 10}}>Cancel</Button>
-            <Button mode="contained-tonal" onPress={handleSend} style={{ margin: 10 }}>Send</Button>
+            <Button  mode="outlined" onPress={onClose}
+            style={{
+                margin: 10,
+                backgroundColor: colors.errorContainer,
+                borderWidth: 0,
+                borderRadius: 8,
+                paddingLeft: 5,
+                paddingRight: 5,
+              }}
+              labelStyle={{
+                fontFamily: "Lato",
+                fontSize: 16,
+                fontWeight: "normal",
+                color: colors.onErrorContainer,
+              }}>
+              Cancel</Button>
+            <Button mode="contained-tonal" onPress={handleSend} 
+             style={{
+               margin: 10,
+               backgroundColor: colors.secondary,
+               borderRadius: 8,
+               paddingLeft: 5,
+               paddingRight: 5,
+             }}
+             labelStyle={{
+               fontFamily: "Lato",
+               fontSize: 16,
+               fontWeight: "normal",
+               color: colors.onSecondary,
+             }}>Send</Button>
           </View>
         </View>
       </View>

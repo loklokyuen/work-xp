@@ -68,7 +68,7 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
         <View style={styles.proButtonContainer}>
           <Button
             style={{
-              backgroundColor: colors.secondary,
+              backgroundColor: colors.primary,
               borderRadius: 8,
               paddingLeft: 5,
               paddingRight: 5,
@@ -78,7 +78,7 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
               fontFamily: "Lato",
               fontSize: 16,
               fontWeight: "normal",
-              color: colors.tertiary,
+              color: colors.onPrimary,
             }}
             mode="contained-tonal"
             onPress={() => {
@@ -91,7 +91,7 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
           </Button>
           <Button
             style={{
-              backgroundColor: colors.secondary,
+              backgroundColor: colors.primary,
               borderRadius: 8,
               paddingLeft: 5,
               paddingRight: 5,
@@ -101,7 +101,7 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
               fontFamily: "Lato",
               fontSize: 16,
               fontWeight: "normal",
-              color: colors.tertiary,
+              color: colors.onPrimary,
             }}
             mode="contained-tonal"
             onPress={() => {
