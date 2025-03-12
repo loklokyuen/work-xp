@@ -45,57 +45,49 @@ export default function AvatarPickingModal({
       quality: 1,
     });
 
-    if (!result.canceled) {
-      setImage(result.assets[0]);
-    }
-  }
-  async function handleImageUpload() {
-    if (!image && !selectedAvatar) {
-      setError("Please select an image");
-      return;
-    }
-    setLoading(true);
-    let imageURL = "";
-    if (image) {
-      imageURL = await uploadImage(image);
-    } else {
-      imageURL = selectedAvatar;
-    }
-    if (auth.currentUser && accountType) {
-      updateProfile(auth.currentUser, {
-        photoURL: imageURL,
-      });
-      const isUpdateSuccess = await updateUserProfileImage(
-        auth.currentUser.uid,
-        accountType,
-        imageURL
-      );
-      setLoading(false);
-      if (isUpdateSuccess) {
-        alert("Avatar updated successfully");
-        setError("");
-        if (user) {
-          const oldProfileImage = user.photoUrl;
-          if (
-            oldProfileImage &&
-            oldProfileImage.includes("https://res.cloudinary.com/")
-          ) {
-            const publicId = oldProfileImage.split("/").pop()?.split(".")[0];
-            if (publicId) {
-              await deleteImage(publicId);
-              alert("Old image deleted");
-            }
-          }
-          setUser({ ...user, photoUrl: imageURL || "" });
+        if (!result.canceled) {
+            setImage(result.assets[0]);
         }
-        onClose();
-      } else {
-        alert("Failed to update avatar");
-      }
-    } else alert("No user signed in");
-
-    handleClose();
-  }
+    }
+    async function handleImageUpload(){
+        if (!image && !selectedAvatar){
+            setError("Please select an image");
+            return;
+        }
+        setLoading(true);
+        let imageURL = '';
+        if (image){
+            imageURL = await uploadImage(image);
+        } else {
+            imageURL = selectedAvatar;
+        }
+        if ( auth.currentUser && accountType){
+            updateProfile(auth.currentUser, {
+                photoURL: imageURL,
+            });
+            const isUpdateSuccess = await updateUserProfileImage(auth.currentUser.uid, accountType, imageURL)
+            setLoading(false);
+            if (isUpdateSuccess) {
+                alert("Avatar updated successfully");
+                setError("");
+                if (user) {
+                    const oldProfileImage = user.photoUrl;
+                    if (oldProfileImage && oldProfileImage.includes("https://res.cloudinary.com/")) {
+                        const publicId = oldProfileImage.split("/").pop()?.split(".")[0];
+                        if (publicId) {
+                            await deleteImage(publicId);
+                        }
+                    }
+                    setUser({...user, photoUrl: imageURL || ""});
+                }
+                onClose();
+            } else {
+                alert("Failed to update avatar");
+            }
+        } else alert("No user signed in");
+        
+        handleClose();
+    }
 
   function handleClose() {
     setImage(null);
@@ -170,28 +162,21 @@ export default function AvatarPickingModal({
                 Clear Image
               </Button>
             </View>
-          ) : (
-            <Button
-              mode="contained"
-              onPress={handleImageSelection}
-              style={{
-                margin: 10,
-                backgroundColor: colors.primary,
-                borderWidth: 0,
-                borderRadius: 8,
-                paddingLeft: 5,
-                paddingRight: 5,
-              }}
-              labelStyle={{
-                fontFamily: "Lato",
-                fontSize: 16,
-                fontWeight: "normal",
-                color: colors.onPrimary,
-              }}
-            >
-              Upload your own image
-            </Button>
-          )}
+            { image ? 
+                <View>
+                    <View style={styles.buttonContainer}>
+                        <Button mode="contained" onPress={()=>{
+                            setImage(null);  setError('')
+                        }} >Pick from our avatars</Button>
+                        <Button mode="outlined" onPress={()=>{
+                            setImage(null);  setError('')
+                        }} >Clear Image</Button>
+                    </View>
+                    <Text style={{ color: 'grey', fontSize: 12, padding: 5, textAlign: 'center'}}>Please make sure your image is smaller than 10mb.</Text>
+                </View>
+
+            :
+            <Button mode="contained" onPress={handleImageSelection} style={{ margin: 10}}>Upload your own image</Button>}
 
           {error ? <Text style={styles.error}>{error}</Text> : null}
           <View style={styles.buttonContainer}>
