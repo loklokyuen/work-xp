@@ -110,6 +110,28 @@ const CreateAccount = () => {
             color: colors.tertiary,
           }}
           //   mode="contained-tonal"
+          onPress={() => setAccountType("Student")}
+        >
+          Student 🎒
+        </Button>
+        <Text variant="titleMedium" style={{ margin: 10, color: "#3E92CC" }}>
+          or
+        </Text>
+        <Button
+          style={{
+            backgroundColor: colors.secondary,
+            borderRadius: 8,
+            paddingLeft: 5,
+            paddingRight: 5,
+            marginBottom: 15,
+          }}
+          labelStyle={{
+            fontFamily: "Lato",
+            fontSize: 16,
+            fontWeight: "normal",
+            color: colors.tertiary,
+          }}
+          //   mode="contained-tonal"
           onPress={() => setAccountType("Business")}
         >
           Business 🏢
