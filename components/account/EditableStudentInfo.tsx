@@ -147,7 +147,7 @@ export function EditableStudentInfo({ studentInfo, onUpdateInfo, setChangesMade,
                         justifyContent: "center",
                     }}
                     labelStyle={{
-                        fontFamily: "SpaceMono",
+                        fontFamily: "Lato",
                         fontSize: 16,
                         fontWeight: "normal",
                         color: colors.tertiary,
@@ -174,7 +174,7 @@ export function EditableStudentInfo({ studentInfo, onUpdateInfo, setChangesMade,
                         marginBottom: 15,
                     }}
                     labelStyle={{
-                        fontFamily: "SpaceMono",
+                        fontFamily: "Lato",
                         fontSize: 16,
                         fontWeight: "normal",
                         color: colors.tertiary,

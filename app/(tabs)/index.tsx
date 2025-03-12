@@ -187,7 +187,7 @@ export default function ProfilePage() {
                                     marginBottom: 0,
                                 }}
                                 labelStyle={{
-                                    fontFamily: "SpaceMono",
+                                    fontFamily: "Lato",
                                     fontSize: 12,
                                     fontWeight: "normal",
                                     color: colors.surface,
@@ -211,7 +211,7 @@ export default function ProfilePage() {
                                     marginBottom: 0,
                                 }}
                                 labelStyle={{
-                                    fontFamily: "SpaceMono",
+                                    fontFamily: "Lato",
                                     fontSize: 12,
                                     fontWeight: "normal",
                                     color: colors.surface,
@@ -259,7 +259,15 @@ export default function ProfilePage() {
                     </View>
                 )}
                 {!editMode && !guestMode && (
-                    <Text variant="titleLarge" style={{ textAlign: "center", margin: 10, color: "#3E92CC", paddingTop: 10 }}>
+                    <Text
+                        variant="titleLarge"
+                        style={{
+                            textAlign: "center",
+                            margin: 10,
+                            color: "#3E92CC",
+                            paddingTop: 10,
+                        }}
+                    >
                         {studentInfo?.displayName || businessInfo?.displayName}
                     </Text>
                 )}
@@ -297,7 +305,7 @@ export default function ProfilePage() {
                                 marginBottom: 15,
                             }}
                             labelStyle={{
-                                fontFamily: "SpaceMono",
+                                fontFamily: "Lato",
                                 fontSize: 16,
                                 fontWeight: "normal",
                                 color: colors.onPrimary,
@@ -323,7 +331,7 @@ export default function ProfilePage() {
                                 marginBottom: 15,
                             }}
                             labelStyle={{
-                                fontFamily: "SpaceMono",
+                                fontFamily: "Lato",
                                 fontSize: 16,
                                 fontWeight: "normal",
                                 color: colors.onError,

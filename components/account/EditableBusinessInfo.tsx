@@ -162,7 +162,7 @@ export function EditableBusinessInfo({ businessInfo, onUpdateInfo, setChangesMad
                         marginBottom: 15,
                     }}
                     labelStyle={{
-                        fontFamily: "SpaceMono",
+                        fontFamily: "Lato",
                         fontSize: 16,
                         fontWeight: "normal",
                         color: colors.tertiary,

@@ -1,107 +1,143 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Dimensions, StyleSheet } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import Carousel from "react-native-reanimated-carousel";
+import { View, Text, Dimensions, StyleSheet, ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
-import { styleTransfer } from "@cloudinary/url-gen/actions/effect";
-import { bold } from "@cloudinary/url-gen/qualifiers/fontWeight";
 import { getBusinessReviews } from "@/database/business";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Rating } from "react-native-ratings";
+
+const screenWidth = Dimensions.get("window").width;
 
 interface ReviewCardProps {
   businessId: string;
 }
 const ReviewCard: React.FC<ReviewCardProps> = ({ businessId }) => {
   // export default function ReviewCard: React.FC<ReviewCardProps> = ({ businessId }) {
-  const screenWidth = Dimensions.get("window").width;
   const { colors, fonts } = useTheme();
-  const [reviews, setReviews] = useState<Review[] | undefined>();
+  const [reviews, setReviews] = useState<Review[] | []>([]);
 
+  // Get data
   useEffect(() => {
     getBusinessReviews(businessId).then((res) => {
-      setReviews(res);
+      if (res) {
+        setReviews(res);
+      } else {
+        setReviews([]);
+      }
     });
-  }, []);
+  }, [businessId]);
 
-  const renderItem = ({ item }) => (
-    <View
-      style={StyleSheet.compose(styles.card, {
-        backgroundColor: colors.primaryContainer,
-      })}
-    >
-      <Text
-        style={StyleSheet.compose(styles.review, {
-          color: colors.primary,
-          fontFamily: "SpaceMono",
-          fontWeight: "normal",
-        })}
-      >
-        "{item.review}"
+  // Msg if reviews data is not available yet
+  if (reviews.length === 0) {
+    return (
+      <Text style={styles.body}>
+        We're waiting for our first review! Could it be you?
       </Text>
-      <Text
-        style={StyleSheet.compose(styles.name, {
-          color: colors.tertiary,
-          fontFamily: "SpaceMono",
-          fontSize: 15,
-          fontWeight: "bold",
-        })}
-      >
-        {item.name}
-      </Text>
-    </View>
-  );
+    );
+  }
 
-  const data = [
-    {
-      id: 1,
-      review: "Great!",
-      name: "Stu",
-    },
-    {
-      id: 2,
-      review: "Loved it",
-      name: "Hue",
-    },
-    {
-      id: 3,
-      review: "Best experience ever!",
-      name: "Lou",
-    },
-  ];
+  // Render carousel items____
+  // const renderItem = ({ item }) => (
+  //   <View
+  //     style={StyleSheet.compose(styles.card, {
+  //       backgroundColor: colors.primaryContainer,
+  //     })}
+  //   >
+  //     <Text
+  //       style={StyleSheet.compose(styles.review, {
+  //         color: colors.primary,
+  //         fontFamily: "Lato",
+  //         fontWeight: "normal",
+  //       })}
+  //     >
+  //       "{item.review}"
+  //     </Text>
+  //     <Text
+  //       style={StyleSheet.compose(styles.name, {
+  //         color: colors.tertiary,
+  //         fontFamily: "Lato",
+  //         fontSize: 15,
+  //         fontWeight: "bold",
+  //       })}
+  //     >
+  //       {item.name}
+  //     </Text>
+  //   </View>
+  // );
 
   return (
-    <Carousel
-      data={data}
-      renderItem={renderItem}
-      width={screenWidth}
-      height={screenWidth / 2}
-      loop={true}
-      autoPlay={true}
-      autoPlayInterval={2000}
-    />
+    <SafeAreaView style={styles.revContainer}>
+      <ScrollView contentContainerStyle={styles.revScrollViewContent}>
+        {reviews.map((item, index) => (
+          <View key={index} style={styles.revCard}>
+            {/* Use the Rating component to display star ratings */}
+            <Rating
+              imageSize={24}
+              readonly
+              startingValue={item.stars}
+              ratingColor="#ffcc00"
+              ratingBackgroundColor="white"
+              tintColor="#1E80A4"
+              style={styles.revStars}
+            />
+            {/* <Text style={styles.revStars}>{`${item.stars} Stars`}</Text> */}
+            <Text style={styles.revBody}>"{item.review}"</Text>
+            <Text style={styles.revName}>{item.studentName}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
+
+    // <Carousel
+    //   data={data}
+    //   renderItem={renderItem}
+    //   width={screenWidth}
+    //   height={screenWidth / 2}
+    //   loop={true}
+    //   autoPlay={true}
+    //   autoPlayInterval={2000}
+    // />
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    padding: 35,
-    borderRadius: 20,
-    marginLeft: 10,
-    marginRight: 30,
-    alignItems: "center",
+  revContainer: {
+    flex: 1,
     justifyContent: "center",
+    alignItems: "center",
   },
-  review: {
-    fontSize: 16,
+  revScrollViewContent: {
+    paddingHorizontal: 20,
+    paddingBottom: 40,
+  },
+  revCard: {
+    width: screenWidth - 60,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 16,
+    marginVertical: 20,
+    padding: 30,
+    backgroundColor: "#1E80A4",
+  },
+  revStars: {
+    marginBottom: 15,
+  },
+  revBody: {
+    fontSize: 15,
+    textAlign: "center",
+    marginBottom: 10,
+    color: "white",
+  },
+  revName: {
+    fontSize: 15,
     fontWeight: "bold",
-    marginBottom: 20,
-    // color: "#FFFAFF",
+    textAlign: "center",
+    marginBottom: 10,
+    color: "white",
   },
-  // name: {
-  //   fontSize: 14,
-  //   color: "#FFFAFF",
-  // },
-  carouselContainer: {
-    flex: 1, // Allow the carousel to take up available space
+  body: {
+    fontSize: 15,
+    margin: 16,
+    textAlign: "center",
   },
 });
 

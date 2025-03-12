@@ -29,7 +29,7 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
         {/* Username */}
         <Text
           style={{
-            fontFamily: "SpaceMono",
+            fontFamily: "Lato",
             color: colors.primary,
             fontSize: 20,
             fontWeight: "bold",
@@ -48,7 +48,7 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
         {/* Why they applied */}
         <Text
           style={{
-            fontFamily: "SpaceMono",
+            fontFamily: "Lato",
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
@@ -56,12 +56,12 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
         >
           Why they applied:
         </Text>
-        <Text style={{ fontFamily: "SpaceMono" }}>{application.whyApply}</Text>
+        <Text style={{ fontFamily: "Lato" }}>{application.whyApply}</Text>
 
         {/* Why they are suitable */}
         <Text
           style={{
-            fontFamily: "SpaceMono",
+            fontFamily: "Lato",
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
@@ -69,14 +69,12 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
         >
           Why they're suitable:
         </Text>
-        <Text style={{ fontFamily: "SpaceMono" }}>
-          {application.whySuitable}
-        </Text>
+        <Text style={{ fontFamily: "Lato" }}>{application.whySuitable}</Text>
 
         {/* Chosen subjects */}
         <Text
           style={{
-            fontFamily: "SpaceMono",
+            fontFamily: "Lato",
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
@@ -84,12 +82,12 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
         >
           Chosen subjects:
         </Text>
-        <Text style={{ fontFamily: "SpaceMono" }}>{application.subjects}</Text>
+        <Text style={{ fontFamily: "Lato" }}>{application.subjects}</Text>
 
         {/* Previous experience */}
         <Text
           style={{
-            fontFamily: "SpaceMono",
+            fontFamily: "Lato",
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
@@ -97,14 +95,12 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
         >
           Previous experience:
         </Text>
-        <Text style={{ fontFamily: "SpaceMono" }}>
-          {application.experience}
-        </Text>
+        <Text style={{ fontFamily: "Lato" }}>{application.experience}</Text>
 
         {/* Dates applied for */}
         <Text
           style={{
-            fontFamily: "SpaceMono",
+            fontFamily: "Lato",
             color: colors.primary,
             fontSize: 15,
             fontWeight: "bold",
@@ -112,14 +108,14 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
         >
           Dates applied for:
         </Text>
-        <Text style={{ fontFamily: "SpaceMono" }}>
+        <Text style={{ fontFamily: "Lato" }}>
           {application.datesApplied.join(", ")}
         </Text>
 
         {/* Buttiins */}
         <Button
           labelStyle={{
-            fontFamily: "SpaceMono",
+            fontFamily: "Lato",
             color: colors.tertiary,
           }}
           style={{
@@ -134,7 +130,7 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
 
         <Button
           labelStyle={{
-            fontFamily: "SpaceMono",
+            fontFamily: "Lato",
             color: colors.onPrimary,
           }}
           style={{
@@ -171,7 +167,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     marginBottom: 8,
-    fontFamily: "SpaceMono",
+    fontFamily: "Lato",
   },
   bold: {
     fontWeight: "bold",
