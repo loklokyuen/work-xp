@@ -1,8 +1,5 @@
 import styles from "@/app/styles";
-import {
-  getAvailabilitiesByOpportunity,
-  getBusinessOpportunityById,
-} from "@/database/business";
+import { getBusinessOpportunityById } from "@/database/business";
 import { getStudentById } from "@/database/student";
 import { ConfirmActionModal } from "@/modal/ConfirmActionModal";
 import { center } from "@cloudinary/url-gen/qualifiers/textAlignment";
@@ -77,8 +74,13 @@ export default function BookingCard({
       <Card.Content>
         <Image
           source={{ uri: photoUrl }}
-          style={{ width: 200, height: 200 }}
-        ></Image>
+          style={{
+            width: 200,
+            height: 200,
+            borderRadius: 100,
+            alignSelf: "center",
+          }}
+        />
         <Text
           style={{
             color: colors.onSecondary,
