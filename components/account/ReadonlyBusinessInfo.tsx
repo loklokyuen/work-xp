@@ -110,6 +110,30 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
           >
             Manage Bookings
           </Button>
+          <Button
+            style={{
+              backgroundColor: colors.primary,
+              borderRadius: 8,
+              paddingLeft: 5,
+              paddingRight: 5,
+              marginBottom: 15,
+            }}
+            labelStyle={{
+              fontFamily: "Lato",
+              fontSize: 16,
+              fontWeight: "normal",
+              color: colors.onPrimary,
+            }}
+            mode="contained-tonal"
+            onPress={() => {
+              router.push({
+                pathname: "/(tabs)/explore/publicProfile",
+                params: { uid: businessInfo.uid }
+              });
+            }}
+          >
+            View Public Profile
+          </Button>
         </View>
       </>
     );
