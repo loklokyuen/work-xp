@@ -163,10 +163,10 @@ const styles = StyleSheet.create({
   proButtonContainer: {
     flex: 1,
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "stretch",
     justifyContent: "center",
     marginTop: 40,
-    gap: 10,
+    gap: 5
   },
   data: {
     minHeight: 40,

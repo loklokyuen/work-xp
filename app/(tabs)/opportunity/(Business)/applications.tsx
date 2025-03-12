@@ -94,6 +94,10 @@ export default function Applications() {
       )}
 
       <View style={{ alignContent: "center" }}>
+        {applications.length === 0 && 
+        <Text variant="bodyMedium" style={{ padding: 20, textAlign: "center" }}>
+          No application yet
+        </Text>}
         {applications.map((application, index) => (
           <ApplicationCard
             key={index}

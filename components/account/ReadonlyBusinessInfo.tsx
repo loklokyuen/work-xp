@@ -71,6 +71,8 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
               paddingLeft: 5,
               paddingRight: 5,
               marginBottom: 15,
+              width: "60%",
+              alignSelf: "center",
             }}
             labelStyle={{
               fontFamily: "Lato",
@@ -94,6 +96,8 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
               paddingLeft: 5,
               paddingRight: 5,
               marginBottom: 15,
+              width: "60%",
+              alignSelf: "center",
             }}
             labelStyle={{
               fontFamily: "Lato",
@@ -117,6 +121,8 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
               paddingLeft: 5,
               paddingRight: 5,
               marginBottom: 15,
+              width: "60%",
+              alignSelf: "center",
             }}
             labelStyle={{
               fontFamily: "Lato",

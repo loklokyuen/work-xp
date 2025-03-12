@@ -10,9 +10,11 @@ import {
   updateDoc,
   deleteDoc,
   arrayUnion,
+  setDoc,
 } from "firebase/firestore";
 
 import { db } from "./firebase";
+import { deleteChatroomsByUserId } from "./chat";
 const BusinessUsersCollection = collection(db, "Business");
 const UsersCollection = collection(db, 'Users')
 const ChatCollection = collection(db, 'chats')
@@ -39,45 +41,6 @@ async function getBusinessBySector(sector: string): Promise<Business[]> {
     return { uid: doc.id, ...doc.data() } as Business;
   });
   return businessesList;
-}
-
-async function getBusinessOpportunities(uid: string): Promise<Opportunity[]> {
-  const subCollectionRef = collection(
-    doc(db, "Business", uid),
-    "Opportunities"
-  );
-  const querySnapshot = await getDocs(subCollectionRef);
-  const opportunitiesList = querySnapshot.docs.map((doc) => {
-    return { id: doc.id, ...doc.data() } as Opportunity;
-  });
-  return opportunitiesList;
-}
-
-async function getBusinessOpportunityById(
-  uid: string,
-  opportunityId: string
-): Promise<Opportunity> {
-  const docRef = doc(db, "Business", uid, "Opportunities", opportunityId);
-  const docSnap = await getDoc(docRef);
-  const opportunity = docSnap.data();
-  return opportunity as Opportunity;
-}
-
-async function getAvailabilitiesByBusinessIdOpportunityId(
-  uid: string,
-  opportunityId: string
-): Promise<any[]> {
-  const subCollectionRef = collection(
-    doc(db, "Business", uid),
-    "Opportunities",
-    opportunityId,
-    "Availabilities"
-  );
-  const querySnapshot = await getDocs(subCollectionRef);
-  const applicationsList = querySnapshot.docs.map((doc) => {
-    return { id: doc.id, ...doc.data() } as any;
-  });
-  return applicationsList;
 }
 
 async function updateBusinesInfo(
@@ -108,6 +71,7 @@ async function updateBusinesInfo(
   }
 }
 
+
 async function getBusinessByCounty(county: string): Promise<Business[]> {
   const q = query(BusinessUsersCollection, where("county", "==", county));
   const querySnapshot = await getDocs(q);
@@ -123,8 +87,7 @@ async function deleteBusinessById(uid:string): Promise<boolean> {
       await deleteDoc(docRef);
       const userDocRef = doc(UsersCollection, uid)
       await deleteDoc(userDocRef)
-      const chatDocRef = doc(ChatCollection, uid)
-      await deleteDoc(chatDocRef)
+      await deleteChatroomsByUserId(uid)
       return true;
   } catch (error) {
       alert("Error deleting business: " + error);
@@ -189,16 +152,122 @@ async function getBusinessReviews(
   }
 }
 
+
+async function getBusinessOpportunities(uid: string): Promise<Opportunity[]> {
+  const subCollectionRef = collection(
+    doc(db, "Business", uid),
+    "Opportunities"
+  );
+  const querySnapshot = await getDocs(subCollectionRef);
+  const opportunitiesList = querySnapshot.docs.map((doc) => {
+    return { id: doc.id, ...doc.data() } as Opportunity;
+  });
+  return opportunitiesList;
+}
+
+async function getBusinessOpportunityById(
+  uid: string,
+  opportunityId: string
+): Promise<Opportunity> {
+  const docRef = doc(db, "Business", uid, "Opportunities", opportunityId);
+  const docSnap = await getDoc(docRef);
+  const opportunity = docSnap.data();
+  return opportunity as Opportunity;
+}
+
+async function addBusinessOpportunity(uid: string, jobRole: string, description: string, subjects: string[]): Promise<Opportunity | null> {
+  try {
+    const opp = await addDoc(collection(doc(db, "Business", uid), "Opportunities"),{
+        jobRole,
+        description,
+        subjects
+      });
+    return { id: opp.id } as Opportunity;
+  } catch (error) {
+    alert("Error adding opportunity: " + error);
+    return null;
+  }
+}
+
+async function updateBusinessOpportunity(uid: string, opportunityId: string, jobRole: string, description: string, subjects: string[]): Promise<boolean> {
+  try {
+    const docRef = doc(BusinessUsersCollection, uid, "Opportunities", opportunityId);
+    await updateDoc(docRef, {
+      description: description,
+      jobRole: jobRole,
+      subjects: subjects
+    });
+    return true;
+  } catch (error) {
+    alert("Error updating opportunity: " + error);
+    return false;
+  }
+}
+
+async function deleteBusinessOpportunity(uid: string, opportunityId: string): Promise<boolean> {
+  try {
+    const docRef = doc(BusinessUsersCollection, uid, "Opportunities", opportunityId);
+    await deleteDoc(docRef);
+    return true;
+  } catch (error) {
+    alert("Error deleting opportunity: " + error);
+    return false;
+  }
+}
+
+async function getAvailabilitiesByBusinessIdOpportunityId(
+  uid: string,
+  opportunityId: string
+): Promise<any[]> {
+  const subCollectionRef = collection(
+    doc(db, "Business", uid),
+    "Opportunities",
+    opportunityId,
+    "Availabilities"
+  );
+  const querySnapshot = await getDocs(subCollectionRef);
+  const applicationsList = querySnapshot.docs.map((doc) => {
+    return { id: doc.id, ...doc.data() } as any;
+  });
+  return applicationsList;
+}
+
+async function addAvailability(uid: string, opportunityId: string, period: Record<string, any>): Promise<boolean> {
+  try {
+    await addDoc(collection(doc(db, "Business", uid, "Opportunities", opportunityId), "Availabilities"), period);
+    return true;
+  } catch (error) {
+    alert("Error adding availability: " + error);
+    return false;
+  }
+}
+
+async function deleteAvailability(uid: string, opportunityId: string, availabilityId: string): Promise<boolean> {
+  try {
+    const docRef = doc(BusinessUsersCollection, uid, "Opportunities", opportunityId, "Availabilities", availabilityId);
+    await deleteDoc(docRef);
+    return true;
+  } catch (error) {
+    alert("Error deleting availability: " + error);
+    return false;
+  }
+}
+
 export {
   getBusinessById,
   getBusinesses,
   getBusinessBySector,
-  getBusinessOpportunities,
-  getBusinessOpportunityById,
   getBusinessByCounty,
   updateBusinesInfo,
-  getAvailabilitiesByBusinessIdOpportunityId,
   deleteBusinessById,
   postReview,
-  getBusinessReviews,
+  getBusinessReviews,  
+  getBusinessOpportunities,
+  getBusinessOpportunityById,
+  addBusinessOpportunity,
+  updateBusinessOpportunity,
+  deleteBusinessOpportunity,
+  getAvailabilitiesByBusinessIdOpportunityId,
+  addAvailability,
+  deleteAvailability
 };

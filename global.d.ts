@@ -28,9 +28,12 @@ declare global {
     }
     interface Opportunity {
         id: string;
+        businessId: string;
+        businessName: string;
         availability: string[];
         description: string;
         jobRole: string;
+        subjects: string[];
     }
     interface Review {
         review: string;

@@ -9,6 +9,8 @@ import { router, Redirect, useNavigation } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
 import { useTheme } from "react-native-paper";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import { addAvailability, addBusinessOpportunity, deleteAvailability, getAvailabilitiesByBusinessIdOpportunityId, getBusinessOpportunityById, updateBusinessOpportunity } from "@/database/business";
+import { addOpportunity, updateOpportunity } from "@/database/opportunities";
 
 type DayPressEvent = {
     dateString: string;
@@ -51,20 +53,20 @@ export default function Listing() {
     useEffect(() => {
         if (user?.uid) {
             if (listingId) {
-                getDoc(doc(db, "Business", user.uid, "Opportunities", listingId)).then((result) => {
-                    const data = result.data();
-                    if (data) {
-                        setJobRole(data.jobRole);
-                        setDescription(data.description);
-                        setSubjects(data.subjects || []);
+                getBusinessOpportunityById(user.uid, listingId).then((opportunity) => {
+                    if (opportunity) {
+                      setJobRole(opportunity.jobRole);
+                      setDescription(opportunity.description);
+                      setSubjects(opportunity.subjects || []);
                     }
-                });
-                getDocs(collection(db, "Business", user.uid, "Opportunities", listingId, "Availabilities")).then((result) => {
-                    result.docs.forEach((doc) => {
-                        const period = doc.data().period;
-                        markDates(period, doc.id, "red");
+                  });
+                  getAvailabilitiesByBusinessIdOpportunityId(user.uid, listingId).then(
+                    (availabilities) => {
+                      availabilities.forEach((availability) => {
+                        const period = availability.period;
+                        markDates(period, availability.id, "red");
+                      });
                     });
-                });
                 return () => {
                     // unsubscribe1();
                     // unsubscribe2();
@@ -153,25 +155,22 @@ export default function Listing() {
                     subjects: subjects,
                 };
                 if (listingId) {
-                    await updateDoc(doc(db, "Opportunities", listingId), document);
-                    await updateDoc(doc(db, "Business", user.uid, "Opportunities", listingId), document);
+                    await updateOpportunity(listingId, jobRole, description, subjects);
+                    await updateBusinessOpportunity(user.uid, listingId, jobRole, description, subjects);
                     for (let id of remove) {
-                        await deleteDoc(doc(db, "Business", user.uid, "Opportunities", listingId, "Availabilities", id));
+                        await deleteAvailability(user.uid, listingId, id);
+
                     }
                     for (let period in periods) {
                         if (!periods[period]) {
-                            await addDoc(collection(db, "Business", user.uid, "Opportunities", listingId, "Availabilities"), {
-                                period: period,
-                            });
+                            await addAvailability(user.uid, listingId, { period: period });
                         }
                     }
                 } else {
-                    const opp = await addDoc(collection(db, "Business", user.uid, "Opportunities"), document);
-                    await setDoc(doc(db, "Opportunities", opp.id), document);
+                    const opp = await addBusinessOpportunity(user.uid, jobRole, description, subjects);
+                    await addOpportunity(opp?.id || "", user.uid, user.displayName, jobRole, description, subjects);
                     for (let period in periods) {
-                        await addDoc(collection(db, "Business", user.uid, "Opportunities", opp.id, "Availabilities"), {
-                            period: period,
-                        });
+                        await addAvailability(user.uid, opp?.id || "", { period: period });
                     }
                 }
                 router.back();
@@ -370,6 +369,7 @@ export default function Listing() {
                         }}
                         mode="contained-tonal"
                         onPress={() => {
+                            if (newSubject.trim() === "") return;
                             setSubjects([...subjects, newSubject]);
                             setNewSubject("");
                         }}
@@ -459,15 +459,16 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     title: {
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: "bold",
         textAlign: "center",
-        marginBottom: 20,
+        margin: 20,
     },
     inputContainer: {
         marginBottom: 15,
         marginLeft: 10,
         marginRight: 10,
+        padding: 10,
     },
     label: {
         fontSize: 16,

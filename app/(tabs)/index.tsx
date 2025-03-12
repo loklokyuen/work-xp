@@ -345,6 +345,8 @@ export default function ProfilePage() {
                 paddingLeft: 5,
                 paddingRight: 5,
                 marginBottom: 15,
+                width: "50%",
+                alignSelf: "center",
               }}
               labelStyle={{
                 fontFamily: "Lato",
@@ -371,6 +373,8 @@ export default function ProfilePage() {
                 paddingLeft: 5,
                 paddingRight: 5,
                 marginBottom: 15,
+                width: "50%",
+                alignSelf: "center",
               }}
               labelStyle={{
                 fontFamily: "Lato",
