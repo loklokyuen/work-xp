@@ -1,73 +1,81 @@
-import { useUserContext } from "@/context/UserContext";
-import { video } from "@cloudinary/url-gen/qualifiers/source";
+import { Button, Card, Text, useTheme } from "react-native-paper";
+import styles from "@/app/styles"; // Assuming the styles are similar to those used in BusinessCards
 import { router } from "expo-router";
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
-import { Button, Modal, PaperProvider, Portal, useTheme, Card } from "react-native-paper";
-import styles from "@/app/styles";
+import { View } from "react-native";
 
-interface opportunity {
-    id: string;
-    jobRole: string;
-    description: string;
-    businessId: string;
-    businessName: string;
+interface OpportunityInfoProps {
+  id: string;
+  jobRole: string;
+  description: string;
+  businessName: string;
+  business: {
+    uid: string;
+    displayName: string;
+    county: string;
+    photoUrl: string;
+  };
 }
 
-const OpportunityCard = ({ opp }: { opp: opportunity }) => {
-    const { accountType } = useUserContext();
+const OpportunityCard = ({ opp }: { opp: OpportunityInfoProps }) => {
+  const { colors } = useTheme();
 
-    const screenHeight = Dimensions.get("window").height;
-    const modalHeight = screenHeight * 0.3;
+  const businessPhotoUrl = opp.business ? opp.business.photoUrl : null;
+  const placeholderImage =
+    "https://res.cloudinary.com/dyu00bdps/image/upload/v1740651936/samples/cup-on-a-table.jpg";
 
-    // modal states
-    const [oppModalvisible, setOppModalVisible] = useState<number | null>(null);
-    const showOppModal = (index: number) => setOppModalVisible(index);
-    const hideOppModal = () => setOppModalVisible(null);
-    const containerStyle = {
-        backgroundColor: "transparent",
-        padding: 0,
-        margin: 15,
-        height: modalHeight,
-    };
+  const imageSource = businessPhotoUrl
+    ? { uri: businessPhotoUrl }
+    : { uri: placeholderImage };
 
-    const { colors, fonts } = useTheme();
+  const handlePress = () => {
+    console.log("Navigating to business UID:", opp.business.uid);
+    router.push({
+      pathname: "/explore/publicProfile",
+      params: { uid: opp.business.uid },
+    });
+  };
 
-    return (
-        <Card
-            style={[
-                styles.card,
-                {
-                    backgroundColor: colors.primaryContainer,
-                },
-            ]}
-        >
-            <Card.Content style={styles.cardContent}>
-                <Card.Title
-                    titleVariant="titleLarge"
-                    title={opp.businessName}
-                    titleStyle={styles.cardTitle}
-                    style={{ paddingLeft: 0, paddingRight: 0 }}
-                />
-                <Text>{opp.description}</Text>
-                {/* <Card.Cover style={styles.cardCover} source={{ uri: photoUrl || placeholderImage }} />
-                <Card.Actions style={styles.cardActions}>
-               <Button
-                        labelStyle={{
-                            fontFamily: "SpaceMono",
-                            color: colors.onPrimary,
-                        }}
-                        style={{
-                            backgroundColor: colors.primary,
-                        }}
-                        onPress={handlePress}
-                    >
-                        View Business
-                    </Button> 
-                </Card.Actions> */}
-            </Card.Content>
-        </Card>
-    );
+  return (
+    <Card
+      style={[
+        styles.card,
+        {
+          backgroundColor: colors.primaryContainer,
+        },
+      ]}
+    >
+      <Card.Content style={styles.cardContent}>
+        <Card.Title
+          titleVariant="titleLarge"
+          title={opp.businessName}
+          titleStyle={styles.cardTitle}
+          style={{ paddingLeft: 0, paddingRight: 0 }}
+        />
+        <Text style={styles.text} variant="bodyMedium">
+          {opp.jobRole}
+        </Text>
+        <Text style={styles.text} variant="bodySmall">
+          {opp.description}
+        </Text>
+
+        <Card.Cover style={styles.cardCover} source={imageSource} />
+        <Card.Actions style={styles.cardActions}>
+          <Button
+            labelStyle={{
+              fontFamily: "Lato",
+              color: colors.onPrimary,
+            }}
+            style={{
+              backgroundColor: colors.primary,
+            }}
+            onPress={handlePress}
+          >
+            Apply for Opportunities
+          </Button>
+        </Card.Actions>
+      </Card.Content>
+    </Card>
+  );
 };
 
 export default OpportunityCard;
