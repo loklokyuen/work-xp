@@ -71,7 +71,7 @@ export function DeleteAccountButton() {
 
   return (
     <>
-       <View style={styles.buttonContainer}>
+       <View style={styles.delButtonContainer}>
       <Button 
       mode="contained-tonal" 
       style={{
