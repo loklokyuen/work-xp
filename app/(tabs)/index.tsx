@@ -65,6 +65,7 @@ export default function ProfilePage() {
     if (!user) return;
     setGuestMode(false);
     getUserAccountType(user.uid).then((userAccountType) => {
+      setAccountType(userAccountType)
       if (userAccountType === "Business") {
         getBusinessById(user.uid).then((res) => {
           setBusinessInfo({

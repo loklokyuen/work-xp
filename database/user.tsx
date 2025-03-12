@@ -28,7 +28,7 @@ async function getAllBusinessUsers(): Promise<User[]> {
     return businessList;
 }
 
-async function getUserAccountType(uid: string): Promise<string> {
+async function getUserAccountType(uid: string): Promise<AccountType> {
     const docRef = doc(db, "Student", uid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
