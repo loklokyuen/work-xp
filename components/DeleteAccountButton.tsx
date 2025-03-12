@@ -9,12 +9,29 @@ import { ConfirmActionModal } from "@/modal/ConfirmActionModal";
 import { useState } from "react";
 import { deleteBusinessById } from "@/database/business";
 import { getAuth, deleteUser } from "firebase/auth";
+import { Redirect } from "expo-router";
 
 export function DeleteAccountButton() {
-  const { user, accountType } = useUserContext();
+  const { user, accountType, setUser, setAccountType } = useUserContext();
   const auth = getAuth();
   const userCurr = auth.currentUser;
   const [openDelete, setOpenDelete] = useState<boolean>(false);
+
+  if (!accountType) {
+    return <Redirect href="/(auth)/main" />;
+  }
+
+  const handleLogout = () => {
+    auth
+      .signOut()
+      .then(() => {
+        setUser(null);
+        setAccountType(null);
+      })
+      .catch((err) => {
+        console.log(err)
+      });
+  };
 
   const handleDelete = async () => {
     if (accountType === "Student") {
@@ -27,6 +44,7 @@ export function DeleteAccountButton() {
         });
         await deleteUser(userCurr);
         await deleteStudentById(user.uid);
+        await handleLogout()
       } catch (err) {
         console.log(err);
       }
@@ -40,6 +58,7 @@ export function DeleteAccountButton() {
         });
         await deleteUser(userCurr);
         await deleteBusinessById(user.uid);
+        await handleLogout()
       } catch (err) {
         console.log(err);
       }
