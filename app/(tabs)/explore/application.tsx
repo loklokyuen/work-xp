@@ -19,6 +19,7 @@ import { useLocalSearchParams } from "expo-router";
 import { ConfirmationModal } from "@/modal/ConfirmationModal";
 import { useRouter } from "expo-router";
 import { useTheme } from "react-native-paper";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 type DayPressEvent = {
   dateString: string;
@@ -234,7 +235,7 @@ export default function Application() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <KeyboardAwareScrollView enableOnAndroid contentContainerStyle={styles.container}>
       {hasApplied && (
         <Text
           style={{
@@ -322,7 +323,7 @@ export default function Application() {
         message="Your application has been successfully submitted."
         confirmText="OK"
       />
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -331,6 +332,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     padding: 20,
+    paddingBottom: 85,
   },
   title: {
     fontSize: 24,
