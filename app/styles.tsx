@@ -71,13 +71,16 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingRight: 0,
     paddingLeft: 0,
+    paddingBottom: 5,
     textAlign: "center",
+    fontSize: 24,
   },
   cardActions: {
     alignItems: "center",
     justifyContent: "center",
     margin: "auto",
-    padding: 20,
+    paddingTop: 30,
+    paddingBottom: 10,
   },
   cardCover: {
     width: 320,
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
-    padding: 10,
+    paddingBottom: 10,
   },
   centeredView: {
     flex: 1,
