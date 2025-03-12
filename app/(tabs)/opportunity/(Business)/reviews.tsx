@@ -1,7 +1,7 @@
 import { useUserContext } from "@/context/UserContext";
 import { center } from "@cloudinary/url-gen/qualifiers/textAlignment";
-import { View, ScrollView, Text, Platform } from "react-native";
-import { List, TextInput, Button } from "react-native-paper";
+import { View, ScrollView, Text, Platform, StyleSheet } from "react-native";
+import { List, TextInput, Button, useTheme } from "react-native-paper";
 import { useState, useEffect } from "react";
 import { getApplicationByStudentId } from "@/database/applications";
 import { Rating } from "react-native-ratings";
@@ -9,6 +9,7 @@ import { postReview } from "@/database/business";
 import { updateReviewPosted } from "@/database/applications";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "@/database/firebase";
+import { rgbaColor } from "react-native-reanimated/lib/typescript/Colors";
 
 export default function ReviewsPage() {
   const { user } = useUserContext();
@@ -22,7 +23,7 @@ export default function ReviewsPage() {
   const [review, setReview] = useState<string>("");
   const [stars, setStars] = useState<number>(0);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-
+  const { colors } = useTheme();
   useEffect(() => {
     getApplicationByStudentId(user.uid).then((res) => {
       const filteredArray = res.filter(
@@ -39,13 +40,27 @@ export default function ReviewsPage() {
   };
 
   return (
-    <ScrollView style={{}}>
-      You need to leave a review for the following businesses
+    <ScrollView style={{ alignContent: center }}>
+      <Text
+        style={[styles.title, { color: colors.onSurface, fontFamily: "Lato" }]}
+      >
+        {" "}
+        You need to leave a review for the following businesses
+      </Text>
+
       {oppsToReview.map((opp, index) => {
         return (
           <List.Accordion
             key={index}
             title={opp.businessName}
+            titleStyle={{
+              textAlign: "center",
+              fontSize: 18,
+              fontWeight: "bold",
+              color: colors.onPrimary,
+              fontFamily: "Lato",
+            }}
+            style={{ backgroundColor: colors.quarternary }}
             expanded={expandedAccordion === opp.uid}
             onPress={() => {
               setExpandedAccordion(
@@ -58,7 +73,7 @@ export default function ReviewsPage() {
             }}
           >
             <View>
-              <Text> {opp.businessName} </Text>
+              {/* <Text> {opp.businessName} </Text> */}
 
               <TextInput
                 style={{ margin: 10 }}
@@ -71,9 +86,12 @@ export default function ReviewsPage() {
                 keyboardType={Platform.OS === "ios" ? "number-pad" : "numeric"}
               ></TextInput>
               <Rating
+                type="custom"
                 showRating
                 onFinishRating={(rating: number) => setStars(rating)}
                 style={{ paddingVertical: 10 }}
+                ratingColor="#FFA500"
+                // tintColor="#FFA500"
               />
               <Button
                 style={{ margin: 10 }}
@@ -89,3 +107,12 @@ export default function ReviewsPage() {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  title: {
+    textAlign: "center",
+    paddingBottom: 10,
+
+    fontSize: 20,
+  },
+});
