@@ -194,12 +194,11 @@ export default function ProfilePage() {
         enableOnAndroid
         contentContainerStyle={styles.scrollViewContent}
       >
-        {/* <Text
-          variant="titleLarge"
-          style={{ textAlign: "center", margin: 15, paddingTop: 10 }}
+        <Text
+          style={{ textAlign: "left", margin: 15, paddingTop: 10, fontSize: 16 }}
         >
-          {!guestMode && "Profile"}
-        </Text> */}
+          {!guestMode && accountType + " User Profile"}
+        </Text>
         {guestMode && <GuestModePrompt />}
         {!guestMode && (
           <View
@@ -241,6 +240,7 @@ export default function ProfilePage() {
                   backgroundColor: colors.quarternary,
                   borderRadius: 100,
                   marginBottom: 0,
+                  top: 10
                 }}
                 labelStyle={{
                   fontFamily: "Lato",
@@ -271,7 +271,7 @@ export default function ProfilePage() {
         />
         {!editMode && !guestMode && (
           <View style={styles.centeredView}>
-            <View style={{ alignItems: "center", position: "relative", marginTop: 20 }}>
+            <View style={{ alignItems: "center", position: "relative" }}>
               <ImageViewer
                 imgSource={
                   studentInfo?.photoUrl ||

@@ -30,7 +30,7 @@ const fontConfig: Record<string, TextStyle> = {
     letterSpacing: 0.5,
     lineHeight: 20,
     fontSize: 16,
-    marginBottom: 10,
+    // marginBottom: 10,
     textAlign: "center",
   },
 };
