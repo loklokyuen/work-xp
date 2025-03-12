@@ -141,27 +141,6 @@ export default function AvatarPickingModal({
               ))
             )}
           </View>
-          {image ? (
-            <View style={styles.buttonContainer}>
-              <Button
-                mode="contained"
-                onPress={() => {
-                  setImage(null);
-                  setError("");
-                }}
-              >
-                Pick from our avatars
-              </Button>
-              <Button
-                mode="outlined"
-                onPress={() => {
-                  setImage(null);
-                  setError("");
-                }}
-              >
-                Clear Image
-              </Button>
-            </View>
             { image ? 
                 <View>
                     <View style={styles.buttonContainer}>
@@ -174,7 +153,6 @@ export default function AvatarPickingModal({
                     </View>
                     <Text style={{ color: 'grey', fontSize: 12, padding: 5, textAlign: 'center'}}>Please make sure your image is smaller than 10mb.</Text>
                 </View>
-
             :
             <Button mode="contained" onPress={handleImageSelection} style={{ margin: 10}}>Upload your own image</Button>}
 
