@@ -61,13 +61,20 @@ const OpportunityCard = ({ opp }: { opp: OpportunityInfoProps }) => {
         <Card.Cover style={styles.cardCover} source={imageSource} />
         <Card.Actions style={styles.cardActions}>
           <Button
-            labelStyle={{
-              fontFamily: "Lato",
-              color: colors.onPrimary,
-            }}
             style={{
               backgroundColor: colors.primary,
+              borderRadius: 8,
+              paddingLeft: 5,
+              paddingRight: 5,
+              marginBottom: 15,
             }}
+            labelStyle={{
+              fontFamily: "Lato",
+              fontSize: 16,
+              fontWeight: "normal",
+              color: colors.onPrimary,
+            }}
+            mode="contained-tonal"
             onPress={handlePress}
           >
             Apply for Opportunities

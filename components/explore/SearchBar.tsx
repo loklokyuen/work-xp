@@ -21,12 +21,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <View>
+    <View style={{ paddingTop: 0 }}>
       <Searchbar
         placeholder={placeholder}
         inputStyle={{ ...fonts.bodyMedium }}
         onChangeText={handleSearch}
         value={searchQuery}
+        style={{ marginTop: 10 }}
       />
     </View>
   );
