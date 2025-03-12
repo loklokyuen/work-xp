@@ -9,10 +9,11 @@ import { useLocalSearchParams } from "expo-router/build/hooks";
 import { StyleSheet, Image } from "react-native";
 import { View, ScrollView } from "react-native";
 import { Text, Button, useTheme } from "react-native-paper";
-import { Redirect } from "expo-router";
+import { Redirect, useNavigation } from "expo-router";
 import ApplicationCard from "./ApplicationCard";
 
 export default function Applications() {
+  const navigation = useNavigation();
   const [applications, setApplications] = useState<Application1[]>([]);
   const { user, accountType } = useUserContext();
   const { id } = useLocalSearchParams<Record<string, string>>();
@@ -22,6 +23,12 @@ export default function Applications() {
   if (accountType === "Student") {
     return <Redirect href="/+not-found" />;
   }
+  useEffect(() => {
+    navigation.setOptions({
+        headerShown: true,
+        headerTitle: "Applications",
+    });
+  }, [navigation]);
 
   useEffect(() => {
     if (id) {

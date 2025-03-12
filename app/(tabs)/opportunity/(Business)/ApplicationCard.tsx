@@ -1,5 +1,5 @@
 import { Text, StyleSheet } from "react-native";
-import { useTheme, Button, Card } from "react-native-paper";
+import { useTheme, Button, Card, Chip } from "react-native-paper";
 
 interface ApplicationCardProps {
   application: Application1;
@@ -88,7 +88,14 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
         >
           Chosen subjects:
         </Text>
-        <Text style={{ fontFamily: "Lato" }}>{application.subjects}</Text>
+        {application.subjects.map((subject) => {
+          return (
+            <Chip key={subject} style={{ margin: 3 }}>
+              {subject}
+            </Chip>
+          );
+        })}
+        {/* <Text style={{ fontFamily: "Lato" }}>{application.subjects}</Text> */}
 
         {/* Previous experience */}
         <Text
