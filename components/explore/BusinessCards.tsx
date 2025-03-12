@@ -1,6 +1,7 @@
 import { Button, Card, Text, useTheme } from "react-native-paper";
 import styles from "@/app/styles";
 import { router } from "expo-router";
+import { View } from "react-native";
 
 interface BusinessInfoProps {
   uid: string;
