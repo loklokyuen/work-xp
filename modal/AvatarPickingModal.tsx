@@ -64,7 +64,6 @@ export default function AvatarPickingModal({ open, onClose }: AvatarPickingModal
                         const publicId = oldProfileImage.split("/").pop()?.split(".")[0];
                         if (publicId) {
                             await deleteImage(publicId);
-                            alert("Old image deleted");
                         }
                     }
                     setUser({...user, photoUrl: imageURL || ""});
@@ -105,14 +104,18 @@ export default function AvatarPickingModal({ open, onClose }: AvatarPickingModal
                 }
             </View>
             { image ? 
-                <View style={styles.buttonContainer}>
-                    <Button mode="contained" onPress={()=>{
-                        setImage(null);  setError('')
-                    }} >Pick from our avatars</Button>
-                    <Button mode="outlined" onPress={()=>{
-                        setImage(null);  setError('')
-                    }} >Clear Image</Button>
+                <View>
+                    <View style={styles.buttonContainer}>
+                        <Button mode="contained" onPress={()=>{
+                            setImage(null);  setError('')
+                        }} >Pick from our avatars</Button>
+                        <Button mode="outlined" onPress={()=>{
+                            setImage(null);  setError('')
+                        }} >Clear Image</Button>
+                    </View>
+                    <Text style={{ color: 'grey', fontSize: 12, padding: 5, textAlign: 'center'}}>Please make sure your image is smaller than 10mb.</Text>
                 </View>
+
             :
             <Button mode="contained" onPress={handleImageSelection} style={{ margin: 10}}>Upload your own image</Button>}
 
