@@ -1,13 +1,20 @@
 import { View } from "react-native";
 import { Button, Text, useTheme } from "react-native-paper";
 import styles from "@/app/styles";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { useUserContext } from "@/context/UserContext";
+import { useEffect } from "react";
 
 export default function Briefcase() {
+  const navigation = useNavigation();
   const { user } = useUserContext();
   const { colors, fonts } = useTheme();
-
+  useEffect(() => {
+    navigation.setOptions({
+        headerShown: true,
+        headerTitle: "Briefcase",
+    });
+  }, [navigation]);
   return (
     <>
       <Text

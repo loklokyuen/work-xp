@@ -5,10 +5,11 @@ import { unsubscribe } from "diagnostics_channel";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import React, { Button, List, useTheme } from "react-native-paper";
-import { Redirect, router } from "expo-router";
+import { Redirect, router, useNavigation } from "expo-router";
 import Accordion from "./Accordian";
 
 export default function ViewAcceptedApplications() {
+  const navigation = useNavigation();
   const { user, accountType } = useUserContext();
   const [applications, setApplications] = useState<any[]>([]);
   const [opportunities, setOpportunities] = useState<any[]>([]);
@@ -16,6 +17,12 @@ export default function ViewAcceptedApplications() {
     null
   );
   const { colors } = useTheme();
+  useEffect(() => {
+    navigation.setOptions({
+        headerShown: true,
+        headerTitle: "Applications",
+    });
+  }, [navigation]);
 
   if (accountType === "Business") {
     return <Redirect href="/+not-found" />;
