@@ -23,7 +23,8 @@ export default function ReviewsPage() {
   const [review, setReview] = useState<string>("");
   const [stars, setStars] = useState<number>(0);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-  const { colors } = useTheme();
+  const { colors, fonts } = useTheme();
+  
   useEffect(() => {
     getApplicationByStudentId(user.uid).then((res) => {
       const filteredArray = res.filter(
@@ -39,13 +40,37 @@ export default function ReviewsPage() {
     setRefreshTrigger((prev) => prev + 1);
   };
 
+  // Msg if reviews data is not available yet
+  if (oppsToReview.length === 0) {
+    return (
+      <>
+        <Text
+          style={[styles.title, { color: colors.primary, ...fonts.titleLarge }]}
+        >
+          Oops, not yet! ✋
+        </Text>
+        <Text
+          style={[styles.body, { color: colors.tertiary, ...fonts.bodyMedium }]}
+        >
+          You have no reviews to give yet. Once you have completed your work
+          experience, your review button will appear here!
+        </Text>
+      </>
+    );
+  }
+
   return (
     <ScrollView style={{ alignContent: center }}>
+       <Text
+          style={[styles.title, { color: colors.primary, ...fonts.titleLarge }]}
+        >
+          Congratulations! 👏
+        </Text>
       <Text
-        style={[styles.title, { color: colors.onSurface, fontFamily: "Lato" }]}
+        style={[styles.body, { color: colors.onSurface, fontFamily: "Lato" }]}
       >
         {" "}
-        You need to leave a review for the following businesses
+        Well done for completing your work experience! Don't forget to leave a review below 😎
       </Text>
 
       {oppsToReview.map((opp, index) => {
@@ -126,9 +151,15 @@ export default function ReviewsPage() {
 const styles = StyleSheet.create({
   title: {
     textAlign: "center",
-    paddingBottom: 10,
-
+    paddingBottom: 0,
+    paddingTop: 20,
     fontSize: 20,
+  },
+  body: {
+    fontSize: 15,
+    textAlign: "center",
+    paddingTop: 20,
+    margin: 20,
   },
   buttonContainer: {
     flexDirection: "row",
