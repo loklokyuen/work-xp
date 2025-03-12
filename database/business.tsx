@@ -79,6 +79,10 @@ async function getAvailabilitiesByOpportunity(
 
 async function updateBusinesInfo(
   uid: string,
+  displayName: string,
+  email: string,
+  county: string,
+  description: string,
   phoneNumber: string,
   sector: string,
   address: string
@@ -163,6 +167,7 @@ async function getBusinessReviews(
     } else return null;
   } catch (error) {
     console.log("Error getting reviews:" + error);
+    return null;
   }
 }
 
