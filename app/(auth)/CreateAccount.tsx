@@ -57,7 +57,6 @@ const CreateAccount = () => {
           accountType: accountType,
         });
         setUser(userData);
-        setAccountType(accountType);
         setError("");
         router.replace("/(tabs)");
         // sendEmailVerification(user)
@@ -96,141 +95,117 @@ const CreateAccount = () => {
         >
           Create {accountType} Account
         </Text>
-        <View style={styles.buttonContainer}>
-          <Button
-            style={{
-              backgroundColor: colors.secondary,
-              borderRadius: 8,
-              paddingLeft: 5,
-              paddingRight: 5,
-              marginBottom: 15,
-            }}
-            labelStyle={{
-              fontFamily: "SpaceMono",
-              fontSize: 16,
-              fontWeight: "normal",
-              color: colors.tertiary,
-            }}
-            //   mode="contained-tonal"
-            onPress={() => setAccountType("Student")}
-          >
-            Student 🎒
-          </Button>
-          <Text variant="titleMedium" style={{ margin: 10, color: "#3E92CC" }}>
-            or
-          </Text>
-          <Button
-            style={{
-              backgroundColor: colors.secondary,
-              borderRadius: 8,
-              paddingLeft: 5,
-              paddingRight: 5,
-              marginBottom: 15,
-            }}
-            labelStyle={{
-              fontFamily: "SpaceMono",
-              fontSize: 16,
-              fontWeight: "normal",
-              color: colors.tertiary,
-            }}
-            //   mode="contained-tonal"
-            onPress={() => setAccountType("Business")}
-          >
-            Business 🏢
-          </Button>
-        </View>
-        <TextInput
-          style={[
-            styles.input,
-            {
-              backgroundColor: colors.primaryContainer,
-              color: colors.primary,
-              ...fonts.bodyMedium,
-            },
-          ]}
-          label="Display Name"
-          value={displayName}
-          onChangeText={setDisplayName}
-          autoCapitalize="words"
-        />
-        <TextInput
-          style={[
-            styles.input,
-            {
-              backgroundColor: colors.primaryContainer,
-              color: colors.primary,
-              ...fonts.bodyMedium,
-            },
-          ]}
-          label="Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={[
-            styles.input,
-            {
-              backgroundColor: colors.primaryContainer,
-              color: colors.primary,
-              ...fonts.bodyMedium,
-            },
-          ]}
-          label="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        {error ? <Text style={styles.error}>{error}</Text> : null}
-        <View style={styles.buttonContainer}>
-          <Button
-            style={{
-              backgroundColor: colors.secondary,
-              borderRadius: 8,
-              paddingLeft: 5,
-              paddingRight: 5,
-              marginBottom: 15,
-              marginTop: 10,
-            }}
-            labelStyle={{
-              fontFamily: "SpaceMono",
-              fontSize: 16,
-              fontWeight: "normal",
-              color: colors.tertiary,
-            }}
-            mode="contained-tonal"
-            onPress={handleCreateAccount}
-          >
-            Create Account
-          </Button>
-        </View>
-        <Text variant="titleMedium" style={{ margin: 20, color: "#3E92CC" }}>
-          Already have an account?
-        </Text>
-        <View style={styles.buttonContainer}>
-          <Button
-            style={{
-              backgroundColor: colors.secondary,
-              borderRadius: 8,
-              paddingLeft: 5,
-              paddingRight: 5,
-              marginBottom: 15,
-            }}
-            labelStyle={{
-              fontFamily: "SpaceMono",
-              fontSize: 16,
-              fontWeight: "normal",
-              color: colors.tertiary,
-            }}
-            mode="contained-tonal"
-            onPress={() => {
-              router.replace("/SignIn");
-            }}
-          >
-            Sign in
-          </Button>
-        </View>
+        <Button
+          style={{
+            backgroundColor: colors.secondary,
+            borderRadius: 8,
+            paddingLeft: 5,
+            paddingRight: 5,
+            marginBottom: 15,
+          }}
+          labelStyle={{
+            fontFamily: "Lato",
+            fontSize: 16,
+            fontWeight: "normal",
+            color: colors.tertiary,
+          }}
+          //   mode="contained-tonal"
+          onPress={() => setAccountType("Business")}
+        >
+          Business 🏢
+        </Button>
+      </View>
+      <TextInput
+        style={[
+          styles.input,
+          {
+            backgroundColor: colors.primaryContainer,
+            color: colors.primary,
+            ...fonts.bodyMedium,
+          },
+        ]}
+        label="Display Name"
+        value={displayName}
+        onChangeText={setDisplayName}
+        autoCapitalize="words"
+      />
+      <TextInput
+        style={[
+          styles.input,
+          {
+            backgroundColor: colors.primaryContainer,
+            color: colors.primary,
+            ...fonts.bodyMedium,
+          },
+        ]}
+        label="Email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+      <TextInput
+        style={[
+          styles.input,
+          {
+            backgroundColor: colors.primaryContainer,
+            color: colors.primary,
+            ...fonts.bodyMedium,
+          },
+        ]}
+        label="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+      {error ? <Text style={styles.error}>{error}</Text> : null}
+      <View style={styles.buttonContainer}>
+        <Button
+          style={{
+            backgroundColor: colors.secondary,
+            borderRadius: 8,
+            paddingLeft: 5,
+            paddingRight: 5,
+            marginBottom: 15,
+            marginTop: 10,
+          }}
+          labelStyle={{
+            fontFamily: "Lato",
+            fontSize: 16,
+            fontWeight: "normal",
+            color: colors.tertiary,
+          }}
+          mode="contained-tonal"
+          onPress={handleCreateAccount}
+        >
+          Create Account
+        </Button>
+      </View>
+      <Text variant="titleMedium" style={{ margin: 20, color: "#3E92CC" }}>
+        Already have an account?
+      </Text>
+      <View style={styles.buttonContainer}>
+        <Button
+          style={{
+            backgroundColor: colors.secondary,
+            borderRadius: 8,
+            paddingLeft: 5,
+            paddingRight: 5,
+            marginBottom: 15,
+          }}
+          labelStyle={{
+            fontFamily: "Lato",
+            fontSize: 16,
+            fontWeight: "normal",
+            color: colors.tertiary,
+          }}
+          mode="contained-tonal"
+          onPress={() => {
+            router.replace("/SignIn");
+          }}
+        >
+          Sign in
+        </Button>
       </View>
     </KeyboardAwareScrollView>
   );

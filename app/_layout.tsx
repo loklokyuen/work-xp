@@ -9,7 +9,11 @@ import Header from "@/components/Header";
 import { UserProvider } from "@/context/UserContext";
 
 import { PaperProvider, adaptNavigationTheme } from "react-native-paper";
-import { DarkTheme as NavigationDarkTheme, DefaultTheme as NavigationDefaultTheme, ThemeProvider } from "@react-navigation/native";
+import {
+  DarkTheme as NavigationDarkTheme,
+  DefaultTheme as NavigationDefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
 
 import merge from "deepmerge";
 import theme from "./styles/theme";
@@ -17,8 +21,8 @@ import theme from "./styles/theme";
 const { lightTheme, darkTheme } = theme;
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
-    reactNavigationLight: NavigationDefaultTheme,
-    reactNavigationDark: NavigationDarkTheme,
+  reactNavigationLight: NavigationDefaultTheme,
+  reactNavigationDark: NavigationDarkTheme,
 });
 
 const CombinedLightTheme = merge(LightTheme, lightTheme);
@@ -27,38 +31,38 @@ const CombinedDarkTheme = merge(DarkTheme, darkTheme);
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-    const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme();
 
-    const theme = colorScheme === "dark" ? CombinedDarkTheme : CombinedLightTheme;
+  const theme = colorScheme === "dark" ? CombinedDarkTheme : CombinedLightTheme;
 
-    const [loaded] = useFonts({
-        SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-    });
+  const [loaded] = useFonts({
+    Lato: require("../assets/fonts/Lato-Regular.ttf"),
+  });
 
-    useEffect(() => {
-        if (loaded) {
-            SplashScreen.hideAsync();
-        }
-    }, [loaded]);
-
-    if (!loaded) {
-        return null;
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
     }
+  }, [loaded]);
 
-    return (
-        <PaperProvider theme={CombinedLightTheme}>
-            <UserProvider>
-                <ThemeProvider value={CombinedLightTheme}>
-                    {/* <Text style={{ fontFamily: "SpaceMono", fontSize: 20 }}>Test Font</Text> */}
-                    <Header />
-                    <Stack>
-                        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                        <Stack.Screen name="+not-found" />
-                    </Stack>
-                    <StatusBar style="auto" />
-                </ThemeProvider>
-            </UserProvider>
-        </PaperProvider>
-    );
+  if (!loaded) {
+    return null;
+  }
+
+  return (
+    <PaperProvider theme={CombinedLightTheme}>
+      <UserProvider>
+        <ThemeProvider value={CombinedLightTheme}>
+          {/* <Text style={{ fontFamily: "Lato", fontSize: 20 }}>Test Font</Text> */}
+          <Header />
+          <Stack>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          <StatusBar style="auto" />
+        </ThemeProvider>
+      </UserProvider>
+    </PaperProvider>
+  );
 }

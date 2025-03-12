@@ -67,7 +67,7 @@ export default function Opportunities() {
             style={{
               padding: 10,
               textAlign: "center",
-              fontFamily: "SpaceMono",
+              fontFamily: "Lato",
               color: colors.quarternary,
               fontSize: 16,
             }}
@@ -82,7 +82,7 @@ export default function Opportunities() {
             style={{
               padding: 20,
               textAlign: "center",
-              fontFamily: "SpaceMono",
+              fontFamily: "Lato",
             }}
           >
             You have not posted any opportunity yet.
@@ -93,7 +93,7 @@ export default function Opportunities() {
               <View style={styles.card} key={index}>
                 <Text
                   style={StyleSheet.compose(styles.role, {
-                    fontFamily: "SpaceMono",
+                    fontFamily: "Lato",
                     color: colors.primary,
                   })}
                 >
@@ -101,13 +101,13 @@ export default function Opportunities() {
                 </Text>
                 <Text
                   style={StyleSheet.compose(styles.description, {
-                    fontFamily: "SpaceMono",
+                    fontFamily: "Lato",
                   })}
                 >
                   {opp.description}
                 </Text>
                 <Button
-                  labelStyle={{ fontFamily: "SpaceMono" }}
+                  labelStyle={{ fontFamily: "Lato" }}
                   onPress={() => {
                     router.push({
                       pathname: "/(tabs)/opportunity/(Business)/listing",
@@ -118,7 +118,7 @@ export default function Opportunities() {
                   Edit Listing
                 </Button>
                 <Button
-                  labelStyle={{ fontFamily: "SpaceMono" }}
+                  labelStyle={{ fontFamily: "Lato" }}
                   onPress={() => {
                     setDeleteId(opp.id);
                     setOpenConfirm(true);
@@ -127,7 +127,7 @@ export default function Opportunities() {
                   Delete Listing
                 </Button>
                 <Button
-                  labelStyle={{ fontFamily: "SpaceMono" }}
+                  labelStyle={{ fontFamily: "Lato" }}
                   onPress={() => {
                     router.push({
                       pathname: "/(tabs)/opportunity/(Business)/applications",
@@ -145,7 +145,7 @@ export default function Opportunities() {
 
       <Button
         mode="contained"
-        labelStyle={{ fontFamily: "SpaceMono" }}
+        labelStyle={{ fontFamily: "Lato" }}
         style={{ marginHorizontal: 20 }}
         onPress={() => {
           router.push({

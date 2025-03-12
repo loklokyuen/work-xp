@@ -135,9 +135,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     gap: 5,
   },
+  proButtonContainer: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    gap: 10,
+  },
   data: {
     minHeight: 40,
-    margin: 12,
+    margin: 10,
     borderWidth: 1,
     padding: 10,
   },

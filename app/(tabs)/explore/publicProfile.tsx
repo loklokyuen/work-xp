@@ -30,14 +30,16 @@ const publicComProfile: React.FC = () => {
   const { colors } = useTheme();
 
   useEffect(() => {
-    navigation.setOptions({ headerShown: true, title: "Back to all", 
+    navigation.setOptions({
+      headerShown: true,
+      title: "Back to all",
       headerLeft: () => (
-      <IconButton
+        <IconButton
           icon="arrow-left"
-          onPress={() => router.replace('/explore')}
-      />
-  ) });
-
+          onPress={() => router.replace("/explore")}
+        />
+      ),
+    });
   }, [navigation]);
 
   useEffect(() => {
@@ -80,7 +82,7 @@ const publicComProfile: React.FC = () => {
           <Text
             style={[
               styles.title,
-              { color: colors.onSurface, fontFamily: "SpaceMono" },
+              { color: colors.onSurface, fontFamily: "Lato" },
             ]}
           >
             {business?.displayName}{" "}
@@ -88,7 +90,7 @@ const publicComProfile: React.FC = () => {
           <Text
             style={[
               styles.industry,
-              { color: colors.primary, fontFamily: "SpaceMono" },
+              { color: colors.primary, fontFamily: "Lato" },
             ]}
           >
             {" "}
@@ -97,7 +99,7 @@ const publicComProfile: React.FC = () => {
           <Text
             style={[
               styles.desc,
-              { color: colors.onBackground, fontFamily: "SpaceMono" },
+              { color: colors.onBackground, fontFamily: "Lato" },
             ]}
           >
             {" "}
@@ -113,9 +115,9 @@ const publicComProfile: React.FC = () => {
               fontSize: 18,
               fontWeight: "bold",
               color: colors.onPrimary,
-              fontFamily: "SpaceMono",
+              fontFamily: "Lato",
             }}
-            style={{ backgroundColor: colors.primary }}
+            style={{ backgroundColor: colors.quarternary }}
             expanded={expanded}
             onPress={() => setExpanded(!expanded)}
             right={() => (
@@ -130,7 +132,7 @@ const publicComProfile: React.FC = () => {
               <Text
                 style={[
                   styles.text,
-                  { color: colors.onSurface, fontFamily: "SpaceMono" },
+                  { color: colors.onSurface, fontFamily: "Lato" },
                 ]}
               >
                 Email: {business?.email}
@@ -138,12 +140,16 @@ const publicComProfile: React.FC = () => {
               <Text
                 style={[
                   styles.text,
-                  { color: colors.onSurface, fontFamily: "SpaceMono" },
+                  { color: colors.onSurface, fontFamily: "Lato" },
                 ]}
               >
                 Visit us: {business?.address}, {business?.county}
               </Text>
-             <ChatButton receiverUid={uid} receiverDisplayName={businessName} receiverAccountType="Business"/>
+              <ChatButton
+                receiverUid={uid}
+                receiverDisplayName={businessName}
+                receiverAccountType="Business"
+              />
             </View>
           </List.Accordion>
         </List.Section>
@@ -153,7 +159,7 @@ const publicComProfile: React.FC = () => {
           <Text
             style={[
               styles.subtitle,
-              { color: colors.onSurface, fontFamily: "SpaceMono" },
+              { color: colors.onSurface, fontFamily: "Lato" },
             ]}
           >
             Work Experience Available
@@ -165,21 +171,20 @@ const publicComProfile: React.FC = () => {
           />
         </View>
 
-        {/* reviews carousel */}
+        {/* reviews */}
         <Text
           style={[
             styles.reviewsHeader,
-            { color: colors.tertiary, fontFamily: "SpaceMono", flex: 10 },
+            { color: colors.tertiary, fontFamily: "Lato", flex: 10 },
           ]}
         >
           Hear from past students
         </Text>
-        <ReviewCard businessId={uid} />
+        <ScrollView style={styles.scrollContainer}>
+          <ReviewCard businessId={uid} />
+        </ScrollView>
         <Text
-          style={[
-            styles.text,
-            { color: colors.onSurface, fontFamily: "SpaceMono" },
-          ]}
+          style={[styles.text, { color: colors.onSurface, fontFamily: "Lato" }]}
         >
           🎉
         </Text>
@@ -219,7 +224,7 @@ const styles = StyleSheet.create({
   reviewsHeader: {
     textAlign: "center",
     paddingTop: 70,
-    paddingBottom: 40,
+    paddingBottom: 20,
     fontSize: 18,
     fontWeight: "bold",
   },

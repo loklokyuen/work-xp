@@ -1,4 +1,4 @@
-import { Button, IconButton, Text, TextInput, Menu } from "react-native-paper";
+import { Button, IconButton, Text, TextInput, Menu, useTheme } from "react-native-paper";
 import ImageViewer from "../expoComponents/imageViewer";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
@@ -7,6 +7,8 @@ import { db } from "@/database/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { useUserContext } from "@/context/UserContext";
 import { updateBusinesInfo } from "@/database/business";
+import styles from "@/app/styles";
+import { Dispatch, SetStateAction } from "react";
 
 import { industries, counties } from "@/data/businessData";
 import { DeleteAccountButton } from "../DeleteAccountButton";
@@ -14,9 +16,10 @@ type BusinessInfoProps = {
     businessInfo: Business;
     onUpdateInfo: () => void;
     setChangesMade: (value: boolean) => void;
+    setEditMode: Dispatch<SetStateAction<Boolean>>;
 };
 
-export function EditableBusinessInfo({ businessInfo, onUpdateInfo, setChangesMade }: BusinessInfoProps) {
+export function EditableBusinessInfo({ businessInfo, onUpdateInfo, setChangesMade, setEditMode }: BusinessInfoProps) {
     const [displayName, setDisplayName] = useState<string>(businessInfo.displayName || "");
     const [bio, setBio] = useState<string>(businessInfo.description || "");
     const [industry, setIndustry] = useState<string>(businessInfo.sector || "");
@@ -30,14 +33,16 @@ export function EditableBusinessInfo({ businessInfo, onUpdateInfo, setChangesMad
 
     const { user } = useUserContext();
 
+    const { colors, fonts } = useTheme();
+
     const handleSave = async () => {
         try {
             if (!user) return;
             const isUpdateSuccess = await updateBusinesInfo(user.uid, displayName, email, county, bio, phoneNum, industry, address);
             if (isUpdateSuccess) {
-                alert("Changes have been saved");
                 onUpdateInfo();
                 setChangesMade(false);
+                setEditMode(false);
             } else {
                 alert("Error updating profile");
             }
@@ -148,11 +153,27 @@ export function EditableBusinessInfo({ businessInfo, onUpdateInfo, setChangesMad
                     setChangesMade(true);
                 }}
             />
-
-            <Button style={{ margin: 10 }} mode="contained-tonal" onPress={handleSave}>
-                Save Changes
-            </Button>
-            <DeleteAccountButton/>
+            <View style={styles.buttonContainer}>
+                <Button
+                    style={{
+                        backgroundColor: colors.secondary,
+                        borderRadius: 8,
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                        marginBottom: 15,
+                    }}
+                    labelStyle={{
+                        fontFamily: "Lato",
+                        fontSize: 16,
+                        fontWeight: "normal",
+                        color: colors.tertiary,
+                    }}
+                    mode="contained-tonal"
+                    onPress={handleSave}
+                >
+                    Save Changes
+                </Button>
+            </View>
         </>
     );
 }

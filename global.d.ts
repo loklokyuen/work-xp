@@ -35,7 +35,7 @@ declare global {
     interface Review {
         review: string;
         stars: number;
-        student: string;
+        studentName: string;
        
     }
     interface Student {
