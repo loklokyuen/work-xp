@@ -91,15 +91,30 @@ export default function ReviewsPage() {
                 onFinishRating={(rating: number) => setStars(rating)}
                 style={{ paddingVertical: 10 }}
                 ratingColor="#FFA500"
-                // tintColor="#FFA500"
+                tintColor="#FEF7FF"
+                ratingBackgroundColor="#D3D3D3"
               />
-              <Button
-                style={{ margin: 10 }}
-                mode="contained-tonal"
-                onPress={handleSubmit}
-              >
-                Submit Review
-              </Button>
+              <View style={styles.buttonContainer}>
+                <Button
+                  style={{
+                    backgroundColor: colors.secondary,
+                    borderRadius: 8,
+                    paddingLeft: 5,
+                    paddingRight: 5,
+                    marginBottom: 15,
+                  }}
+                  labelStyle={{
+                    fontFamily: "Lato",
+                    fontSize: 16,
+                    fontWeight: "normal",
+                    color: colors.onSecondary,
+                  }}
+                  mode="contained-tonal"
+                  onPress={handleSubmit}
+                >
+                  Submit Review
+                </Button>
+              </View>
             </View>
           </List.Accordion>
         );
@@ -114,5 +129,10 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
 
     fontSize: 20,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    gap: 5,
   },
 });
