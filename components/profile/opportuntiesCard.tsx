@@ -36,6 +36,8 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
     padding: 0,
     margin: 15,
     height: modalHeight,
+    boxShadow: "none",
+    borderColor: "transparent",
   };
 
   const { colors, fonts } = useTheme();
@@ -99,20 +101,20 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
                   {/* <Text style={styles.text}>Availability: {opp.availability}</Text> */}
                   {accountType === "Student" && (
                     <Button
-                    style={{
-                      backgroundColor: colors.secondary,
-                      borderRadius: 8,
-                      paddingLeft: 5,
-                      paddingRight: 5,
-                      marginBottom: 15,
-                    }}
-                    labelStyle={{
-                      fontFamily: "Lato",
-                      fontSize: 16,
-                      fontWeight: "normal",
-                      color: colors.onSecondary,
-                    }}
-                    mode="contained-tonal"
+                      style={{
+                        backgroundColor: colors.secondary,
+                        borderRadius: 8,
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                        marginBottom: 15,
+                      }}
+                      labelStyle={{
+                        fontFamily: "Lato",
+                        fontSize: 16,
+                        fontWeight: "normal",
+                        color: colors.onSecondary,
+                      }}
+                      mode="contained-tonal"
                       onPress={() => {
                         router.push({
                           pathname: "./application",
