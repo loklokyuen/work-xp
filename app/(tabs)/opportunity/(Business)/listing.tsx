@@ -1,6 +1,6 @@
 import { useUserContext } from "@/context/UserContext";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { Text, TextInput, Button, Chip } from "react-native-paper";
+import { Text, TextInput, Button, Chip, Card } from "react-native-paper";
 import {
   addDoc,
   collection,
@@ -16,6 +16,7 @@ import { Calendar } from "react-native-calendars";
 import { router, Redirect, useNavigation } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
 import { useTheme } from "react-native-paper";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 type DayPressEvent = {
   dateString: string;
@@ -50,8 +51,8 @@ export default function Listing() {
 
   useEffect(() => {
     navigation.setOptions({
-        headerShown: true,
-        headerTitle: "Listing",
+      headerShown: true,
+      headerTitle: "Listing",
     });
   }, [navigation]);
 
@@ -108,8 +109,8 @@ export default function Listing() {
       let dateAsString = current.toISOString().split("T")[0];
       if (dates[dateAsString]) return;
       markedDates[dateAsString] = {
-        color: color,
-        textColor: "white",
+        color: colors.secondary,
+        textColor: colors.tertiary,
         startingDay: dateAsString === start,
         endingDay: dateAsString === end,
         period: period,
@@ -245,147 +246,261 @@ export default function Listing() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {listingId ? (
-        <Text style={styles.title}>Edit an Opportunity...</Text>
-      ) : (
-        <Text style={styles.title}>Post an Opportunity...</Text>
-      )}
-
-      <View style={styles.inputContainer}>
-        {listingId ? (
-          <Text style={styles.label}>Edit the job role</Text>
-        ) : (
-          <Text style={styles.label}>What is the job role?</Text>
-        )}
-        <TextInput
-          style={styles.input}
-          value={jobRole}
-          onChangeText={setJobRole}
-          placeholder="The job role is.."
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        {listingId ? (
-          <Text style={styles.label}>Edit the description</Text>
-        ) : (
-          <Text style={styles.label}>What is the description?</Text>
-        )}
-        <TextInput
-          multiline
-          style={styles.input}
-          value={description}
-          onChangeText={setDescription}
-          placeholder="The opportunity involves.."
-        />
-      </View>
-      <Text variant="titleSmall" style={{ marginHorizontal: 20 }}>
-        Related Subjects (optional):
-      </Text>
-
-      <View
-        style={{ flexDirection: "row", flexWrap: "wrap", marginHorizontal: 10 }}
-      >
-        {subjects.map((subject) => {
-          return (
-            <Chip
-              key={subject}
-              style={{ margin: 3 }}
-              closeIcon="close"
-              onClose={() => {
-                handleDeleteSubject(subject);
-              }}
-            >
-              {subject}
-            </Chip>
-          );
-        })}
-      </View>
-      <View
+      <Card
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          // flexWrap: "wrap",
-          marginHorizontal: 10,
-          justifyContent: "center",
+          backgroundColor: colors.secondaryContainer,
+          marginTop: 10,
+          marginBottom: 10,
         }}
       >
-        <TextInput
-          style={{ margin: 5, width: "70%", height: 40 }}
-          dense
-          label="Add a subject"
-          mode="outlined"
-          value={newSubject}
-          onChangeText={(text) => {
-            setNewSubject(text);
-          }}
-        />
-        <Button
-          style={{
-            backgroundColor: colors.secondary,
-            borderRadius: 8,
-            paddingHorizontal: 10,
-            height: 40,
-            justifyContent: "center",
-          }}
-          labelStyle={{
-            fontFamily: "Lato",
-            fontSize: 16,
-            fontWeight: "normal",
-            color: colors.tertiary,
-          }}
-          mode="contained-tonal"
-          // mode="outlined"
-          onPress={() => {
-            setSubjects([...subjects, newSubject]);
-            setNewSubject("");
-          }}
-        >
-          Add
-        </Button>
-      </View>
-      <View style={styles.inputContainer}>
         {listingId ? (
-          <Text style={styles.label}>
-            What are the new dates for this opportunity
+          <Text
+            style={[
+              styles.title,
+              {
+                color: colors.onSecondary, // Update title color to onSecondary
+              },
+            ]}
+          >
+            Edit an Opportunity...
           </Text>
         ) : (
-          <Text style={styles.label}>
-            What dates would like to advertise the opportunity?
+          <Text
+            style={[
+              styles.title,
+              {
+                color: colors.onSecondary, // Update title color to onSecondary
+              },
+            ]}
+          >
+            Post an Opportunity...
           </Text>
         )}
-        <Calendar
-          style={{
-            borderWidth: 1,
-            borderColor: "gray",
-            height: 400,
-          }}
-          theme={{
-            backgroundColor: "#ffffff",
-            calendarBackground: "#ffffff",
-            textSectionTitleColor: "#b6c1cd",
-            selectedDayBackgroundColor: "#00adf5",
-            selectedDayTextColor: "#ffffff",
-            todayTextColor: "#00adf5",
-            dayTextColor: "#2d4150",
-            textDisabledColor: "#dd99ee",
-          }}
-          markingType={"period"}
-          markedDates={{
-            [firstDay]: {
-              color: "green",
-              textColor: "white",
-              startingDay: true,
-            },
-            ...dates,
-          }}
-          onDayPress={(day: DayPressEvent) => handleDay(day.dateString)}
-        />
-      </View>
 
-      <Button mode="contained" onPress={handleSubmit}>
-        Submit
-      </Button>
+        <View style={styles.inputContainer}>
+          {listingId ? (
+            <Text
+              style={[
+                styles.label,
+                {
+                  color: colors.onSecondary, // Update label color to onSecondary
+                },
+              ]}
+            >
+              Edit the job role
+            </Text>
+          ) : (
+            <Text
+              style={[
+                styles.label,
+                {
+                  color: colors.onSecondary, // Update label color to onSecondary
+                },
+              ]}
+            >
+              What is the job role?
+            </Text>
+          )}
+          <TextInput
+            style={[
+              styles.input,
+              {
+                backgroundColor: colors.surfaceVariant, // Background color for input
+              },
+            ]}
+            value={jobRole}
+            onChangeText={setJobRole}
+            placeholder="The job role is.."
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          {listingId ? (
+            <Text
+              style={[
+                styles.label,
+                {
+                  color: colors.onSecondary, // Update label color to onSecondary
+                },
+              ]}
+            >
+              Edit the description
+            </Text>
+          ) : (
+            <Text
+              style={[
+                styles.label,
+                {
+                  color: colors.onSecondary, // Update label color to onSecondary
+                },
+              ]}
+            >
+              What is the description?
+            </Text>
+          )}
+          <TextInput
+            multiline
+            style={[
+              styles.input,
+              {
+                backgroundColor: colors.surfaceVariant, // Background color for input
+              },
+            ]}
+            value={description}
+            onChangeText={setDescription}
+            placeholder="The opportunity involves.."
+          />
+        </View>
+
+        <Text
+          variant="titleSmall"
+          style={[
+            {
+              marginHorizontal: 20,
+              color: colors.onSecondary, // Update text color to onSecondary
+            },
+          ]}
+        >
+          Related Subjects (optional):
+        </Text>
+
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            marginHorizontal: 10,
+          }}
+        >
+          {subjects.map((subject) => {
+            return (
+              <Chip
+                key={subject}
+                style={{
+                  margin: 3,
+                  backgroundColor: colors.secondary, // Chip background color
+                }}
+                closeIcon="close"
+                onClose={() => {
+                  handleDeleteSubject(subject);
+                }}
+              >
+                {subject}
+              </Chip>
+            );
+          })}
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginHorizontal: 10,
+            justifyContent: "center",
+          }}
+        >
+          <TextInput
+            style={{
+              margin: 5,
+              width: "70%",
+              height: 40,
+              backgroundColor: colors.surfaceVariant, // Input background color
+            }}
+            dense
+            label="Add a subject"
+            mode="outlined"
+            value={newSubject}
+            onChangeText={(text) => {
+              setNewSubject(text);
+            }}
+          />
+          <Button
+            style={{
+              backgroundColor: colors.secondary,
+              borderRadius: 8,
+              paddingHorizontal: 10,
+              height: 40,
+              justifyContent: "center",
+            }}
+            labelStyle={{
+              fontFamily: "Lato",
+              fontSize: 16,
+              fontWeight: "normal",
+              color: colors.onSecondary, // Text color for the button
+            }}
+            mode="contained-tonal"
+            onPress={() => {
+              setSubjects([...subjects, newSubject]);
+              setNewSubject("");
+            }}
+          >
+            Add
+          </Button>
+        </View>
+
+        <View style={styles.inputContainer}>
+          {listingId ? (
+            <Text
+              style={[
+                styles.label,
+                {
+                  color: colors.onSecondary, // Update label color to onSecondary
+                },
+              ]}
+            >
+              What are the new dates for this opportunity
+            </Text>
+          ) : (
+            <Text
+              style={[
+                styles.label,
+                {
+                  color: colors.onSecondary, // Update label color to onSecondary
+                },
+              ]}
+            >
+              What dates would like to advertise the opportunity?
+            </Text>
+          )}
+          <Calendar
+            style={{
+              borderWidth: 0,
+              height: 400,
+              backgroundColor: colors.tertiaryContainer, // Calendar background color
+            }}
+            theme={{
+              calendarBackground: colors.tertiaryContainer,
+              textSectionTitleColor: colors.primary,
+              todayTextColor: colors.quarternary,
+              dayTextColor: colors.tertiary,
+              textDisabledColor: "#dd99ee",
+              textDayFontFamily: "Lato",
+              textMonthFontFamily: "Lato",
+              textDayHeaderFontFamily: "Lato",
+              monthTextColor: colors.primary,
+            }}
+            markingType={"period"}
+            markedDates={{
+              [firstDay]: {
+                color: "green",
+                textColor: "white",
+                startingDay: true,
+              },
+              ...dates,
+            }}
+            onDayPress={(day: DayPressEvent) => handleDay(day.dateString)}
+          />
+        </View>
+
+        <Button
+          mode="contained"
+          onPress={handleSubmit}
+          style={{
+            backgroundColor: colors.secondary, // Button background color
+          }}
+        >
+          Submit
+        </Button>
+      </Card>
     </ScrollView>
   );
 }
@@ -396,6 +511,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
   },
+  card: {
+    borderRadius: 8,
+    padding: 20,
+    backgroundColor: "#fff",
+    elevation: 5,
+  },
   title: {
     fontSize: 24,
     fontWeight: "bold",
@@ -404,6 +525,8 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: 15,
+    marginLeft: 10,
+    marginRight: 10,
   },
   label: {
     fontSize: 16,
@@ -412,7 +535,6 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ddd",
     borderRadius: 5,
     padding: 2,
     fontSize: 16,
