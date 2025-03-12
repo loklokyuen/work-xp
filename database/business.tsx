@@ -8,11 +8,14 @@ import {
   query,
   where,
   updateDoc,
+  deleteDoc,
   arrayUnion,
 } from "firebase/firestore";
 
 import { db } from "./firebase";
 const BusinessUsersCollection = collection(db, "Business");
+const UsersCollection = collection(db, 'Users')
+const ChatCollection = collection(db, 'chats')
 
 async function getBusinessById(uid: string): Promise<Business> {
   const docRef = doc(BusinessUsersCollection, uid);
@@ -110,6 +113,21 @@ async function getBusinessByCounty(county: string): Promise<Business[]> {
   return businessesList;
 }
 
+async function deleteBusinessById(uid:string): Promise<boolean> {
+  try {
+      const docRef = doc(BusinessUsersCollection, uid);
+      await deleteDoc(docRef);
+      const userDocRef = doc(UsersCollection, uid)
+      await deleteDoc(userDocRef)
+      const chatDocRef = doc(ChatCollection, uid)
+      await deleteDoc(chatDocRef)
+      return true;
+  } catch (error) {
+      alert("Error deleting business: " + error);
+      return false;
+  }
+}
+
 async function postReview(
   businessId: string,
   review: string,
@@ -175,6 +193,7 @@ export {
   getBusinessByCounty,
   updateBusinesInfo,
   getAvailabilitiesByOpportunity,
+  deleteBusinessById,
   postReview,
   getBusinessReviews,
 };

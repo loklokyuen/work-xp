@@ -14,6 +14,7 @@ import { useUserContext } from "@/context/UserContext";
 import { setDoc, doc } from "firebase/firestore";
 
 import { router } from "expo-router";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const CreateAccount = () => {
   const { user, setUser, accountType, setAccountType } = useUserContext();
@@ -84,34 +85,15 @@ const CreateAccount = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text
-        style={[styles.title, { color: colors.primary, ...fonts.titleLarge }]}
-      >
-        Create {accountType} Account
-      </Text>
-      <View style={styles.buttonContainer}>
-        <Button
-          style={{
-            backgroundColor: colors.secondary,
-            borderRadius: 8,
-            paddingLeft: 5,
-            paddingRight: 5,
-            marginBottom: 15,
-          }}
-          labelStyle={{
-            fontFamily: "Lato",
-            fontSize: 16,
-            fontWeight: "normal",
-            color: colors.tertiary,
-          }}
-          //   mode="contained-tonal"
-          onPress={() => setAccountType("Student")}
+    <KeyboardAwareScrollView
+      enableOnAndroid
+      contentContainerStyle={styles.scrollViewContent}
+    >
+      <View style={styles.container}>
+        <Text
+          style={[styles.title, { color: colors.primary, ...fonts.titleLarge }]}
         >
-          Student 🎒
-        </Button>
-        <Text variant="titleMedium" style={{ margin: 10, color: "#3E92CC" }}>
-          or
+          Create {accountType} Account
         </Text>
         <Button
           style={{
@@ -225,7 +207,7 @@ const CreateAccount = () => {
           Sign in
         </Button>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 

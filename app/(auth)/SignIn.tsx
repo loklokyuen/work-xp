@@ -12,6 +12,7 @@ import e from "express";
 import { router } from "expo-router";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "@/database/firebase";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const SignIn = () => {
   const { setUser, setAccountType } = useUserContext();

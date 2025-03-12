@@ -11,6 +11,7 @@ import styles from "@/app/styles";
 import { Dispatch, SetStateAction } from "react";
 
 import { industries, counties } from "@/data/businessData";
+import { DeleteAccountButton } from "../DeleteAccountButton";
 type BusinessInfoProps = {
     businessInfo: Business;
     onUpdateInfo: () => void;
