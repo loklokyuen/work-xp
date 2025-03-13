@@ -1,21 +1,24 @@
 import { useUserContext } from "@/context/UserContext";
 
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
 import { getStudentById } from "@/database/student";
 
-import { addApplication, checkApplicationExists } from "@/database/applications";
+import {
+  addApplication,
+  checkApplicationExists,
+} from "@/database/applications";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { ConfirmationModal } from "@/modal/ConfirmationModal";
 import { useRouter } from "expo-router";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { getAvailabilitiesByBusinessIdOpportunityId, getBusinessById, getBusinessOpportunityById } from "@/database/business";
+import {
+  getAvailabilitiesByBusinessIdOpportunityId,
+  getBusinessById,
+  getBusinessOpportunityById,
+} from "@/database/business";
 import { SnackbarContext } from "@/context/SnackbarProvider";
 
 type DayPressEvent = {
@@ -30,7 +33,7 @@ export default function Application() {
   const navigation = useNavigation();
   const { user } = useUserContext();
   const { showSnackbar } = useContext(SnackbarContext);
-  
+
   const { businessId, oppId, businessName } = useLocalSearchParams<{
     businessId: string;
     oppId: string;
@@ -52,11 +55,12 @@ export default function Application() {
 
   const [chosen, setChosen] = useState<Record<string, any>>({});
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [isErrorModalVisible, setIsErrorModalVisible] = useState<boolean>(false);
+  const [isErrorModalVisible, setIsErrorModalVisible] =
+    useState<boolean>(false);
 
   const [hasApplied, setHasApplied] = useState<boolean>(false);
   const [missingFields, setMissingFields] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const router = useRouter();
   const { colors, fonts } = useTheme();
 
@@ -65,8 +69,8 @@ export default function Application() {
 
   useEffect(() => {
     navigation.setOptions({
-        headerShown: true,
-        headerTitle: "Application",
+      headerShown: true,
+      headerTitle: "Application",
     });
   }, [navigation]);
   useEffect(() => {
@@ -76,10 +80,13 @@ export default function Application() {
           setJobRole(opp.jobRole);
         }
       });
-      getAvailabilitiesByBusinessIdOpportunityId(BusinessId, OpportunityId).then((availabilities) => {
+      getAvailabilitiesByBusinessIdOpportunityId(
+        BusinessId,
+        OpportunityId
+      ).then((availabilities) => {
         availabilities.forEach((availability) => {
           const period = availability.period;
-          markDates(period, "blue");
+          markDates(period, colors.quarternary);
         });
       });
       getBusinessById(BusinessId).then((business) => {
@@ -141,14 +148,14 @@ export default function Application() {
 
     while (current <= new Date(end)) {
       let dateAsString = current.toISOString().split("T")[0];
-      markedDates[dateAsString].color === "blue"
+      markedDates[dateAsString].color === colors.quarternary
         ? (markedDates[dateAsString] = {
             ...markedDates[dateAsString],
-            color: "green",
+            color: colors.secondary,
           })
         : (markedDates[dateAsString] = {
             ...markedDates[dateAsString],
-            color: "blue",
+            color: colors.quarternary,
           });
       current.setDate(current.getDate() + 1);
     }
@@ -171,18 +178,29 @@ export default function Application() {
       setTimeout(() => setMissingFields(false), 5000);
       // setErrorMessage("Please fill in all fields and select from available dates to proceed.");
       // setIsErrorModalVisible(true);
-      showSnackbar("Please fill in all fields and select from available dates to proceed.", "error", 5000);
+      showSnackbar(
+        "Please fill in all fields and select from available dates to proceed.",
+        "error",
+        5000
+      );
       return;
     }
     if (!user) return;
     try {
-      const hasAppliedAlready = await checkApplicationExists(user.uid, OpportunityId);
+      const hasAppliedAlready = await checkApplicationExists(
+        user.uid,
+        OpportunityId
+      );
       if (hasAppliedAlready) {
         setHasApplied(true);
         setTimeout(() => setHasApplied(false), 5000);
         // setErrorMessage("You have already applied for this opportunity! Please check on the status of your application or apply for another.");
         // setIsErrorModalVisible(true);
-        showSnackbar("You have already applied for this opportunity! Please check on the status of your application or apply for another.", "error", 5000);
+        showSnackbar(
+          "You have already applied for this opportunity! Please check on the status of your application or apply for another.",
+          "error",
+          5000
+        );
         return;
       }
       const data = {
@@ -227,8 +245,16 @@ export default function Application() {
   };
 
   return (
-    <KeyboardAwareScrollView enableOnAndroid contentContainerStyle={styles.container}>
-      <ConfirmationModal open={isErrorModalVisible} onClose={() => setIsErrorModalVisible(false)} title="Error" message={errorMessage} />
+    <KeyboardAwareScrollView
+      enableOnAndroid
+      contentContainerStyle={styles.container}
+    >
+      <ConfirmationModal
+        open={isErrorModalVisible}
+        onClose={() => setIsErrorModalVisible(false)}
+        title="Error"
+        message={errorMessage}
+      />
 
       {/* {hasApplied && (
         <Text
@@ -258,25 +284,35 @@ export default function Application() {
           Please fill in all fields and select from available dates to proceed.
         </Text>
       )} */}
-      <Text style={styles.title1}>
+      <Text
+        variant="titleLarge"
+        style={{
+          textAlign: "center",
+          paddingBottom: 15,
+          color: colors.primary,
+        }}
+      >
         {jobRole} at {companyName}
       </Text>
-      <Text style={styles.title}>Select the dates you'd like to apply for</Text>
+      <Text variant="titleLarge" style={styles.title}>
+        Select the dates you'd like to apply for
+      </Text>
       <Calendar
         style={{
-          borderWidth: 1,
-          borderColor: "gray",
+          borderWidth: 0,
           height: 400,
+          backgroundColor: colors.tertiaryContainer,
         }}
         theme={{
-          backgroundColor: "#ffffff",
-          calendarBackground: "#ffffff",
-          textSectionTitleColor: "#b6c1cd",
-          selectedDayBackgroundColor: "#00adf5",
-          selectedDayTextColor: "#ffffff",
-          todayTextColor: "#00adf5",
-          dayTextColor: "#2d4150",
+          calendarBackground: colors.tertiaryContainer,
+          textSectionTitleColor: colors.primary, // mon tues weds thurs
+          todayTextColor: colors.quarternary,
+          dayTextColor: colors.tertiary,
           textDisabledColor: "#dd99ee",
+          textDayFontFamily: "Lato",
+          textMonthFontFamily: "Lato",
+          textDayHeaderFontFamily: "Lato",
+          monthTextColor: colors.primary,
         }}
         markingType={"period"}
         markedDates={dates}
@@ -287,12 +323,15 @@ export default function Application() {
       />
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>
+        <Text variant="titleMedium" style={{ paddingTop: 15 }}>
           Why do you want to apply for this role?
         </Text>
         <TextInput
           multiline
-          style={[styles.input, { flexGrow: 1}]}
+          style={[
+            styles.input,
+            { flexGrow: 1, backgroundColor: colors.primaryContainer },
+          ]}
           value={why}
           onChangeText={setWhy}
           placeholder="I would like to apply for this role because..."
@@ -300,17 +339,37 @@ export default function Application() {
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Why should we pick you?</Text>
+        <Text variant="titleMedium">Why should we pick you?</Text>
         <TextInput
           multiline
-          style={styles.input}
+          style={[
+            styles.input,
+            { flexGrow: 1, backgroundColor: colors.primaryContainer },
+          ]}
           value={reason}
           onChangeText={setReason}
           placeholder="I would make a strong candidate because..."
         />
       </View>
-      <Text style={{ padding: 10, textAlign: "center", color: "grey"}}>Your profile will be sent to the business once you've submitted your application.</Text>
-      <Button onPress={handleSubmit} mode="contained" style={[styles.button]} labelStyle={styles.buttonLabel}>Submit Application</Button>
+      <Text
+        style={{
+          padding: 10,
+          textAlign: "center",
+          color: "grey",
+          fontFamily: "Lato",
+        }}
+      >
+        Your profile will be sent to the business once you've submitted your
+        application.
+      </Text>
+      <Button
+        onPress={handleSubmit}
+        mode="contained"
+        style={[styles.button]}
+        labelStyle={styles.buttonLabel}
+      >
+        Submit Application
+      </Button>
 
       <ConfirmationModal
         open={isModalVisible}
@@ -334,6 +393,7 @@ const styles = StyleSheet.create({
     // fontWeight: "bold",
     textAlign: "center",
     marginBottom: 20,
+    paddingTop: 15,
   },
   title1: {
     fontSize: 22,
@@ -360,7 +420,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 12,
-    borderRadius: 8, 
+    borderRadius: 8,
     paddingLeft: 5,
     paddingRight: 5,
   },
