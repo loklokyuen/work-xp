@@ -33,6 +33,7 @@ const publicComProfile: React.FC = () => {
     navigation.setOptions({
       headerShown: true,
       title: "Back to all",
+      headerBackVisible: true,
     });
   }, [navigation]);
 

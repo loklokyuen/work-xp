@@ -6,7 +6,7 @@ import styles from "@/app/styles";
 export function ReadonlyStudentInfo({ studentInfo }: StudentProps) {
     return (
         <View>
-            <Text variant="titleMedium" style={{ marginHorizontal: 10 }}>
+            <Text variant="titleMedium" style={{ marginHorizontal: 10, textAlign: "left" }}>
                 Personal Statement:
             </Text>
             <View style={{ flexDirection: "row" }}>
@@ -14,25 +14,25 @@ export function ReadonlyStudentInfo({ studentInfo }: StudentProps) {
                     {studentInfo.personalStatement}
                 </Text>
             </View>
-            <Text variant="titleMedium" style={{ marginHorizontal: 10 }}>
+            <Text variant="titleMedium" style={{ marginHorizontal: 10, textAlign: "left" }}>
                 Experience:
             </Text>
             <Text variant="bodyMedium" style={styles.data}>
                 {studentInfo.experience}
             </Text>
-            <Text variant="titleMedium" style={{ marginHorizontal: 10 }}>
+            <Text variant="titleMedium" style={{ marginHorizontal: 10, textAlign: "left" }}>
                 Email:
             </Text>
             <Text variant="bodyMedium" style={styles.data}>
                 {studentInfo.email}
             </Text>
-            <Text variant="titleMedium" style={{ marginHorizontal: 10 }}>
+            <Text variant="titleMedium" style={{ marginHorizontal: 10, textAlign: "left" }}>
                 County:
             </Text>
             <Text variant="bodyMedium" style={styles.data}>
                 {studentInfo.county}
             </Text>
-            <Text variant="titleMedium" style={{ marginHorizontal: 10 }}>
+            <Text variant="titleMedium" style={{ marginHorizontal: 10, textAlign: "left" }}>
                 Subjects:
             </Text>
             {studentInfo.subjects.length === 0? <Text variant="bodyMedium" style={styles.data}>No subjects added yet</Text> :

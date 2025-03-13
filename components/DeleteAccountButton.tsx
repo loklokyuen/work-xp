@@ -80,6 +80,7 @@ export function DeleteAccountButton() {
         paddingLeft: 5,
         paddingRight: 5,
         marginBottom: 15,
+        width: "50%",
       }}
       labelStyle={{
         fontFamily: "Lato",

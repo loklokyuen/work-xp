@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Text, TextInput, Button, useTheme } from "react-native-paper";
 import {
@@ -13,8 +13,10 @@ import { router } from "expo-router";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "@/database/firebase";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { SnackbarContext } from "@/context/SnackbarProvider";
 
 const SignIn = () => {
+  const { showSnackbar } = useContext(SnackbarContext);
   const { setUser, setAccountType } = useUserContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -69,7 +71,8 @@ const SignIn = () => {
     }
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        alert("Password reset email sent!");
+        showSnackbar("Password reset email sent!", "information", 5000);
+        // alert("Password reset email sent!");
       })
       .catch((error) => {
         setError(error.message);

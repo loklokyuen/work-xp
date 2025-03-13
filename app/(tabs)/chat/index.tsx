@@ -18,8 +18,8 @@ export default function ChatScreen() {
 
     useEffect(() => {
         navigation.setOptions({
-            headerShown: true,
             headerTitle: "Chat",
+            headerLeft: ()=> null,
         });
     }, [navigation]);
 

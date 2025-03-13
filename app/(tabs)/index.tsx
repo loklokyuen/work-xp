@@ -4,7 +4,7 @@ import { EditableBusinessInfo } from "../../components/account/EditableBusinessI
 import { EditableStudentInfo } from "../../components/account/EditableStudentInfo";
 import GuestModePrompt from "../../components/account/GuestModePrompt";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Modal, Platform, SafeAreaView, StyleSheet, View } from "react-native";
 import {
   ActivityIndicator,
@@ -33,9 +33,12 @@ import { ChangePasswordModal } from "@/modal/ChangePasswordModal";
 import { ConfirmActionModal } from "@/modal/ConfirmActionModal";
 import { Redirect, useNavigation } from "expo-router";
 import { getUserAccountType } from "@/database/user";
+import { SnackbarContext } from "@/context/SnackbarProvider";
 
 export default function ProfilePage() {
   const navigation = useNavigation();
+  const { showSnackbar } = useContext(SnackbarContext);
+  
   const [loading, setLoading] = useState<Boolean>(true);
   const [editMode, setEditMode] = useState<Boolean>(false);
   const [guestMode, setGuestMode] = useState<Boolean>(false);
@@ -168,17 +171,21 @@ export default function ProfilePage() {
       await reauthenticateWithCredential(user, credential);
       updatePassword(user, newPassword)
         .then(() => {
-          alert("Password changed successfully!");
+          showSnackbar("Password changed successfully!", "success", 5000);
+          // alert("Password changed successfully!");
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           if (errorCode === "auth/wrong-password") {
-            alert("Error: The current password is incorrect.");
+            showSnackbar("Error: The current password is incorrect.", "error", 5000);
+            // alert("Error: The current password is incorrect.");
           } else if (errorCode === "auth/weak-password") {
-            alert("Error: The new password is too weak.");
+            showSnackbar("Error: The new password is too weak.", "error", 5000);
+            // alert("Error: The new password is too weak.");
           } else {
-            alert("Error" + errorMessage);
+            showSnackbar("Error: " + errorMessage, "error", 5000);
+            // alert("Error" + errorMessage);
           }
         });
     }

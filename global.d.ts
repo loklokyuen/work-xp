@@ -30,7 +30,7 @@ declare global {
         id: string;
         businessId: string;
         businessName: string;
-        availability: string[];
+        // availability: string[];
         description: string;
         jobRole: string;
         subjects: string[];
@@ -111,5 +111,7 @@ declare global {
         content: string;
         timestamp: string;
     }
+    type ChatStatus = "active" | "blocked" | "blocked and reported" | "not found";
+
 }
 export {};

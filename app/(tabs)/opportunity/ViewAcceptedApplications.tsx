@@ -98,7 +98,7 @@ export default function ViewAcceptedApplications() {
       <Text
         style={[
           styles.title,
-          { color: colors.onSecondary, ...fonts.bodyLarge },
+          { color: colors.onSecondary, ...fonts.bodyLarge, margin: 10 },
         ]}
       >
         If you have finished your experience, please leave a review for other

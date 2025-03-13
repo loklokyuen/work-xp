@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Image, TouchableOpacity, Modal, View, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import styles from "@/app/styles";
@@ -15,6 +15,7 @@ import {
   TextInput,
   useTheme,
 } from "react-native-paper";
+import { SnackbarContext } from "@/context/SnackbarProvider";
 
 interface AvatarPickingModalProps {
   open: boolean;
@@ -25,6 +26,7 @@ export default function AvatarPickingModal({
   open,
   onClose,
 }: AvatarPickingModalProps) {
+  const { showSnackbar } = useContext(SnackbarContext);
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null);
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
@@ -68,7 +70,8 @@ export default function AvatarPickingModal({
             const isUpdateSuccess = await updateUserProfileImage(auth.currentUser.uid, accountType, imageURL)
             setLoading(false);
             if (isUpdateSuccess) {
-                alert("Avatar updated successfully");
+                showSnackbar("Avatar updated successfully", "success", 5000);
+                // alert("Avatar updated successfully");
                 setError("");
                 if (user) {
                     const oldProfileImage = user.photoUrl;
@@ -82,9 +85,10 @@ export default function AvatarPickingModal({
                 }
                 onClose();
             } else {
-                alert("Failed to update avatar");
+                showSnackbar("Failed to update avatar", "error", 5000);
+                // alert("Failed to update avatar");
             }
-        } else alert("No user signed in");
+        } 
         
         handleClose();
     }

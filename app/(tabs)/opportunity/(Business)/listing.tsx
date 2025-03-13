@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView } from "react-native";
 import { Text, TextInput, Button, Chip, Card } from "react-native-paper";
 import { addDoc, collection, getDoc, doc, updateDoc, deleteDoc, getDocs } from "firebase/firestore";
 import { db } from "../../../../database/firebase";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Calendar } from "react-native-calendars";
 import { router, Redirect, useNavigation } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
@@ -11,6 +11,7 @@ import { useTheme } from "react-native-paper";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { addAvailability, addBusinessOpportunity, deleteAvailability, getAvailabilitiesByBusinessIdOpportunityId, getBusinessOpportunityById, updateBusinessOpportunity } from "@/database/business";
 import { addOpportunity, updateOpportunity } from "@/database/opportunities";
+import { SnackbarContext } from "@/context/SnackbarProvider";
 
 type DayPressEvent = {
     dateString: string;
@@ -23,6 +24,7 @@ type DayPressEvent = {
 export default function Listing() {
     const navigation = useNavigation();
     const { user, accountType } = useUserContext();
+    const { showSnackbar } = useContext(SnackbarContext);
     const { listingId } = useLocalSearchParams<Record<string, string>>();
 
     const [jobRole, setJobRole] = useState<string>("");
@@ -159,19 +161,20 @@ export default function Listing() {
                     await updateBusinessOpportunity(user.uid, listingId, jobRole, description, subjects);
                     for (let id of remove) {
                         await deleteAvailability(user.uid, listingId, id);
-
                     }
                     for (let period in periods) {
                         if (!periods[period]) {
                             await addAvailability(user.uid, listingId, { period: period });
                         }
                     }
+                    showSnackbar("Opportunity successfully updated!", "success", 5000);
                 } else {
                     const opp = await addBusinessOpportunity(user.uid, jobRole, description, subjects);
                     await addOpportunity(opp?.id || "", user.uid, user.displayName, jobRole, description, subjects);
                     for (let period in periods) {
                         await addAvailability(user.uid, opp?.id || "", { period: period });
                     }
+                    showSnackbar("Opportunity successfully posted!", "success", 5000);
                 }
                 router.back();
                 // setDates({});
@@ -179,7 +182,12 @@ export default function Listing() {
                 // setJobRole("");
                 // setDescription("");
             } catch (err) {
-                console.log(err);
+                if (listingId) {
+                    showSnackbar("Error updating opportunity", "error", 5000);
+                } else {
+                    showSnackbar("Error posting opportunity", "error", 5000);
+                }
+                // console.log(err);
             }
         }
     };

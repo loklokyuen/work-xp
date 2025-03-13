@@ -170,6 +170,7 @@ async function updateApplicationAccepted(
 
     return true;
   } catch (error) {
+    
     alert("Error accepting application" + error);
     return false;
   }

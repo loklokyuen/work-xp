@@ -16,7 +16,6 @@ export default function AccountScreen() {
   const { colors, fonts } = useTheme();
 
   const handleGuestSignIn = () => {
-    console.log(accountType);
     signInAnonymously(auth)
       .then((userCredential) => {
         const user = userCredential.user;

@@ -1,11 +1,12 @@
 import { Button, Chip, IconButton, Text, TextInput, useTheme } from "react-native-paper";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Platform, View } from "react-native";
 import { useUserContext } from "@/context/UserContext";
 import { updateStudentInfo } from "@/database/student";
 import styles from "@/app/styles";
 import { DeleteAccountButton } from "../DeleteAccountButton";
 import { Dispatch, SetStateAction } from "react";
+import { SnackbarContext } from "@/context/SnackbarProvider";
 
 type StudentInfoProps = {
     studentInfo: Student;
@@ -15,6 +16,7 @@ type StudentInfoProps = {
 };
 
 export function EditableStudentInfo({ studentInfo, onUpdateInfo, setChangesMade, setEditMode }: StudentInfoProps) {
+    const { showSnackbar } = useContext(SnackbarContext);
     const [displayName, setDisplayName] = useState<string>(studentInfo.displayName || "");
     const [bio, setBio] = useState<string>(studentInfo.personalStatement || "");
     const [experience, setExperience] = useState<string>(studentInfo.experience || "");
@@ -35,7 +37,8 @@ export function EditableStudentInfo({ studentInfo, onUpdateInfo, setChangesMade,
                 setChangesMade(false);
                 setEditMode(false);
             } else {
-                alert("Error updating profile");
+                showSnackbar("Error updating profile", "error", 5000);
+                // alert("Error updating profile");
             }
         } catch (error) {
             console.log(error);
@@ -173,6 +176,7 @@ export function EditableStudentInfo({ studentInfo, onUpdateInfo, setChangesMade,
                         paddingRight: 5,
                         marginTop: 15,
                         marginBottom: 15,
+                        width: "50%",
                     }}
                     labelStyle={{
                         fontFamily: "Lato",

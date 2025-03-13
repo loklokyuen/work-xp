@@ -88,7 +88,7 @@ async function updateReadStatus(chatId: string, uid: string): Promise<boolean> {
     }
 }
 
-async function getChatStatus(chatId: string): Promise<string> {
+async function getChatStatus(chatId: string): Promise<ChatStatus> {
     const docRef = doc(ChatsCollection, chatId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -98,7 +98,7 @@ async function getChatStatus(chatId: string): Promise<string> {
     }
 }
 
-async function updateChatStatus(blockingUid: string, blockedUid: string, status: string): Promise<boolean> {
+async function updateChatStatus(blockingUid: string, blockedUid: string, status: ChatStatus): Promise<boolean> {
     try {
         const chatId = generateChatId(blockingUid, blockedUid);
         const docRef = doc(ChatsCollection, chatId);

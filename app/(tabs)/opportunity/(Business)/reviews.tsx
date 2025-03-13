@@ -2,7 +2,7 @@ import { useUserContext } from "@/context/UserContext";
 import { center } from "@cloudinary/url-gen/qualifiers/textAlignment";
 import { View, ScrollView, Text, Platform, StyleSheet } from "react-native";
 import { List, TextInput, Button, useTheme } from "react-native-paper";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { getApplicationByStudentId } from "@/database/applications";
 import { Rating } from "react-native-ratings";
 import { postReview } from "@/database/business";
@@ -10,8 +10,12 @@ import { updateReviewPosted } from "@/database/applications";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "@/database/firebase";
 import { rgbaColor } from "react-native-reanimated/lib/typescript/Colors";
+import { useNavigation } from "expo-router";
+import { SnackbarContext } from "@/context/SnackbarProvider";
 
 export default function ReviewsPage() {
+  const { showSnackbar } = useContext(SnackbarContext);
+  const navigation = useNavigation();
   const { user } = useUserContext();
   const [oppsToReview, setOppsToReview] = useState<Application1[]>([]);
   const [expandedAccordion, setExpandedAccordion] = useState<string | null>(
@@ -26,6 +30,11 @@ export default function ReviewsPage() {
   const { colors, fonts } = useTheme();
   
   useEffect(() => {
+    navigation.setOptions({
+        headerTitle: "Reviews",
+    });
+}, [navigation]);
+  useEffect(() => {
     getApplicationByStudentId(user.uid).then((res) => {
       const filteredArray = res.filter(
         (opp) => opp.isAccepted === true && !opp.reviewPosted
@@ -37,6 +46,7 @@ export default function ReviewsPage() {
   const handleSubmit = async () => {
     postReview(currentBusinessId, review, stars, user?.displayName);
     updateReviewPosted(currentOppId, true);
+    showSnackbar("Review submitted successfully!", "success", 5000);
     setRefreshTrigger((prev) => prev + 1);
   };
 
