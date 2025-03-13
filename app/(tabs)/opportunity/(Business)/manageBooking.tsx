@@ -31,6 +31,9 @@ export default function ManageBooking() {
         <Text variant="titleLarge" style={styles.title}>
           Manage Bookings
         </Text>
+        {bookings.length === 0 && <Text variant="bodyMedium" style={{ padding: 20, textAlign: "center" }}>
+            No booking yet
+        </Text>}
         {bookings.map((booking) => {
           return (
             <BookingCard
