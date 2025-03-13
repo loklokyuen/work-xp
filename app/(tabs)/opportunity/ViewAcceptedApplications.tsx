@@ -70,8 +70,6 @@ export default function ViewAcceptedApplications() {
     setExpandedAccordion((prev) => (prev === uid ? null : uid));
   };
 
-  console.log(applications, "here");
-  console.log(opportunities, "heeey");
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>

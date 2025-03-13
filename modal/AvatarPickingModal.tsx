@@ -10,9 +10,7 @@ import { uploadImage, deleteImage } from "@/Cloudinary/cloudinaryWrapper";
 import {
   ActivityIndicator,
   Button,
-  IconButton,
   Text,
-  TextInput,
   useTheme,
 } from "react-native-paper";
 import { SnackbarContext } from "@/context/SnackbarProvider";
@@ -40,16 +38,15 @@ export default function AvatarPickingModal({
 
   const { colors, fonts } = useTheme();
 
-  async function handleImageSelection() {
-    setSelectedAvatar("");
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      quality: 1,
-    });
-
-        if (!result.canceled) {
-            setImage(result.assets[0]);
-        }
+    async function handleImageSelection() {
+      setSelectedAvatar("");
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ["images"],
+        quality: 1,
+      });
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+          setImage(result.assets[0]);
+      }
     }
     async function handleImageUpload(){
         if (!image && !selectedAvatar){
@@ -64,14 +61,13 @@ export default function AvatarPickingModal({
             imageURL = selectedAvatar;
         }
         if ( auth.currentUser && accountType){
-            updateProfile(auth.currentUser, {
+            await updateProfile(auth.currentUser, {
                 photoURL: imageURL,
             });
             const isUpdateSuccess = await updateUserProfileImage(auth.currentUser.uid, accountType, imageURL)
             setLoading(false);
             if (isUpdateSuccess) {
                 showSnackbar("Avatar updated successfully", "success", 5000);
-                // alert("Avatar updated successfully");
                 setError("");
                 if (user) {
                     const oldProfileImage = user.photoUrl;
@@ -86,7 +82,6 @@ export default function AvatarPickingModal({
                 onClose();
             } else {
                 showSnackbar("Failed to update avatar", "error", 5000);
-                // alert("Failed to update avatar");
             }
         } 
         

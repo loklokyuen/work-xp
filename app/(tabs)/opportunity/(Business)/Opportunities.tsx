@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useUserContext } from "../../../../context/UserContext";
 import { View, ScrollView } from "react-native";
 import { Text, Button, useTheme } from "react-native-paper";
@@ -7,8 +7,10 @@ import { db } from "../../../../database/firebase";
 import { StyleSheet } from "react-native";
 import { Redirect, router } from "expo-router";
 import { ConfirmActionModal } from "@/modal/ConfirmActionModal";
+import { SnackbarContext } from "@/context/SnackbarProvider";
 
 export default function Opportunities() {
+  const { showSnackbar } = useContext(SnackbarContext);
   const { user, accountType } = useUserContext();
   const [opportunities, setOpportunities] = useState<any[]>([]);
   const [openConfirm, setOpenConfirm] = useState(false);
@@ -47,6 +49,7 @@ export default function Opportunities() {
         doc(db, "Business", user!.uid, "Opportunities", deleteId!)
       );
       setDeleteSuccess(true);
+      showSnackbar("Listing deleted successfully!", "success", 5000);
       setTimeout(() => {
         setDeleteSuccess(false);
         window.location.reload();
@@ -62,7 +65,7 @@ export default function Opportunities() {
   return (
     <ScrollView>
       <View>
-        {deleteSuccess && (
+        {/* {deleteSuccess && (
           <Text
             style={{
               padding: 10,
@@ -74,7 +77,7 @@ export default function Opportunities() {
           >
             Listing deleted successfully!
           </Text>
-        )}
+        )} */}
 
         {opportunities.length === 0 ? (
           <Text
