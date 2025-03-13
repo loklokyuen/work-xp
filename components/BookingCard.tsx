@@ -64,106 +64,108 @@ export default function BookingCard({
 
   function handleCancel() {}
   return (
-    <Card
-      style={{
-        backgroundColor: colors.secondaryContainer,
-        marginTop: 10,
-        marginBottom: 10,
-      }}
-    >
-      <Card.Content>
-        <Image
-          source={{ uri: photoUrl }}
-          style={{
-            width: 200,
-            height: 200,
-            borderRadius: 100,
-            alignSelf: "center",
-          }}
-        />
-        <Text
-          style={{
-            color: colors.onSecondary,
-            padding: 5,
-            margin: 10,
-            fontFamily: "Lato",
-            fontWeight: "bold",
-            textAlign: "center",
-          }}
-        >
-          Booking Details
-        </Text>
-        <Text
-          style={{
-            color: colors.onSecondary,
-            padding: 5,
-            margin: 10,
-            fontFamily: "Lato",
-            fontWeight: "bold",
-            textAlign: "center",
-          }}
-        >
-          Student: {student?.displayName}
-        </Text>
-        <Text
-          style={{
-            color: colors.onSecondary,
-            padding: 5,
-            margin: 10,
-            fontFamily: "Lato",
-            fontWeight: "bold",
-            textAlign: "center",
-          }}
-        >
-          Opportunity: {opportunity?.jobRole}
-        </Text>
-        <View>
-          <Calendar
+    <>
+      <Card
+        style={{
+          backgroundColor: colors.secondaryContainer,
+          marginTop: 10,
+          marginBottom: 10,
+        }}
+      >
+        <Card.Content>
+          <Image
+            source={{ uri: photoUrl }}
             style={{
-              borderWidth: 0,
-              height: 400,
-              backgroundColor: colors.tertiaryContainer,
+              width: 200,
+              height: 200,
+              borderRadius: 100,
+              alignSelf: "center",
             }}
-            theme={{
-              calendarBackground: colors.tertiaryContainer,
-              textSectionTitleColor: colors.primary, // mon tues weds thurs
-              todayTextColor: colors.quarternary,
-              dayTextColor: colors.tertiary,
-              textDisabledColor: "#dd99ee",
-              textDayFontFamily: "Lato",
-              textMonthFontFamily: "Lato",
-              textDayHeaderFontFamily: "Lato",
-              monthTextColor: colors.primary,
-            }}
-            markingType={"period"}
-            markedDates={confirmedDates}
-            setJobRole
-            // onDayPress={(day: DayPressEvent) => {
-            //     handleDay(day.dateString);
-            // }}
           />
-        </View>
+          <Text
+            style={{
+              color: colors.onSecondary,
+              padding: 5,
+              margin: 10,
+              fontFamily: "Lato",
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Booking Details
+          </Text>
+          <Text
+            style={{
+              color: colors.onSecondary,
+              padding: 5,
+              margin: 10,
+              fontFamily: "Lato",
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Student: {student?.displayName}
+          </Text>
+          <Text
+            style={{
+              color: colors.onSecondary,
+              padding: 5,
+              margin: 10,
+              fontFamily: "Lato",
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Opportunity: {opportunity?.jobRole}
+          </Text>
+          <View>
+            <Calendar
+              style={{
+                borderWidth: 0,
+                height: 400,
+                backgroundColor: colors.tertiaryContainer,
+              }}
+              theme={{
+                calendarBackground: colors.tertiaryContainer,
+                textSectionTitleColor: colors.primary, // mon tues weds thurs
+                todayTextColor: colors.quarternary,
+                dayTextColor: colors.tertiary,
+                textDisabledColor: "#dd99ee",
+                textDayFontFamily: "Lato",
+                textMonthFontFamily: "Lato",
+                textDayHeaderFontFamily: "Lato",
+                monthTextColor: colors.primary,
+              }}
+              markingType={"period"}
+              markedDates={confirmedDates}
+            />
+          </View>
+        </Card.Content>
+      </Card>
 
-        {/* <Text variant="bodyMedium" style={{ margin: 10 }}>Date: {startDate} - {endDate}</Text> */}
+      {/* Move the button outside the card */}
+      <View style={{ alignItems: "center", marginBottom: 20 }}>
         <Button
           mode="contained-tonal"
           style={{ margin: 10 }}
-          labelStyle={{ fontFamily: "Lato" }}
+          labelStyle={{ fontFamily: "Lato", color: colors.onPrimary }}
+          buttonColor={colors.error}
           onPress={() => {
             setOpenCancel(true);
           }}
         >
           Cancel
         </Button>
-        <ConfirmActionModal
-          open={openCancel}
-          onClose={() => {
-            setOpenCancel(false);
-          }}
-          title="Cancel booking?"
-          onConfirmAction={handleCancel}
-        />
-      </Card.Content>
-    </Card>
+      </View>
+
+      <ConfirmActionModal
+        open={openCancel}
+        onClose={() => {
+          setOpenCancel(false);
+        }}
+        title="Cancel booking?"
+        onConfirmAction={handleCancel}
+      />
+    </>
   );
 }
