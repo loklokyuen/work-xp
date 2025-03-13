@@ -74,7 +74,7 @@ export default function ViewAcceptedApplications() {
   console.log(opportunities, "heeey");
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <List.Section>
         {applications.length === 0 && (
           <Text style={styles.text}>No applications found</Text>
@@ -218,5 +218,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     gap: 5,
+  },
+  scrollViewContent: {
+    paddingBottom: 75,
   },
 });
