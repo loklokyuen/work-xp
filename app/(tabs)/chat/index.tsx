@@ -83,7 +83,7 @@ export default function ChatScreen() {
             </View>
             {chatRooms.length === 0 && (
                 <Text variant="bodyMedium" style={{ padding: 20, textAlign: "center" }}>
-                    No chats yet
+                    No chat yet
                 </Text>
             )}
             {chatRooms.map((chatroom) => {

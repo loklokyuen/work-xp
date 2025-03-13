@@ -3,7 +3,7 @@ import {
   updateApplicationAccepted,
 } from "@/database/applications";
 import { getApplicationsByOppId } from "@/database/applications";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useUserContext } from "@/context/UserContext";
 import { useLocalSearchParams } from "expo-router/build/hooks";
 import { StyleSheet, Image } from "react-native";
@@ -11,8 +11,10 @@ import { View, ScrollView } from "react-native";
 import { Text, Button, useTheme } from "react-native-paper";
 import { Redirect, useNavigation } from "expo-router";
 import ApplicationCard from "./ApplicationCard";
+import { SnackbarContext } from "@/context/SnackbarProvider";
 
 export default function Applications() {
+  const { showSnackbar } = useContext(SnackbarContext);
   const navigation = useNavigation();
   const [applications, setApplications] = useState<Application1[]>([]);
   const { user, accountType } = useUserContext();
@@ -50,11 +52,7 @@ export default function Applications() {
   const handleDecision = async (uid: string, accepted: boolean) => {
     try {
       await updateApplicationAccepted(uid, accepted);
-      setSuccessMessage(
-        `You have successfully ${
-          accepted ? "accepted" : "declined"
-        } this application.`
-      );
+      showSnackbar(`You have successfully ${accepted ? "accepted" : "declined"} this application.`, "success", 5000);
 
       if (id) {
         const updatedApplications = await getApplicationsByOppId(id);
@@ -76,7 +74,7 @@ export default function Applications() {
 
   return (
     <ScrollView>
-      {successMessage && (
+      {/* {successMessage && (
         <View style={{ marginBottom: 10 }}>
           <Text
             style={{
@@ -91,7 +89,7 @@ export default function Applications() {
             {successMessage}
           </Text>
         </View>
-      )}
+      )} */}
 
       <View style={{ alignContent: "center" }}>
         {applications.length === 0 && 
