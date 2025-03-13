@@ -1,15 +1,18 @@
+import { SnackbarContext } from '@/context/SnackbarProvider';
 import { useUserContext } from '@/context/UserContext';
 import { generateChatId, getChatRooms, sendFirstMessage } from '@/database/chat';
 import { getAllBusinessUsers, getAllStudentUsers } from '@/database/user';
 import { ChatFirstMessageModal } from '@/modal/ChatFirstMessageModal';
 import { useNavigation, useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ActivityIndicator, Searchbar, SegmentedButtons, Text } from 'react-native-paper';
 
 const NewChat: React.FC = () => {
     const navigation = useNavigation();
     const router = useRouter();
+    const { showSnackbar } = useContext(SnackbarContext);
+    
     const { user, accountType} = useUserContext();
     const [allBusinessUsers, setAllBusinessUsers] = useState<User[]>([]);
     const [allStudentUsers, setAllStudentUsers] = useState<User[]>([]);
@@ -130,7 +133,8 @@ const NewChat: React.FC = () => {
                     router.navigate({ pathname: "/chat/chatroom", params: { chatRoomId: chatId, receiverAccountType: value, receiverUid: receiver.uid } });
                     refreshUsersList();
                 } else {
-                    alert("Error sending message");
+                    showSnackbar("Error sending message", "error", 5000);
+                    // alert("Error sending message");
                 }
               }} />
             </SafeAreaView>

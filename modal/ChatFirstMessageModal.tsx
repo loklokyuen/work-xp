@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Modal, View } from "react-native";
 import { Button, IconButton, Text, TextInput, useTheme } from "react-native-paper";
 import styles from "@/app/styles";
+import { SnackbarContext } from "@/context/SnackbarProvider";
 interface ChatFirstMessageModalProps {
   open: boolean;
   reciever: string;
@@ -15,10 +16,13 @@ export const ChatFirstMessageModal = ({
   onClose,
   onConfirmAction,
 }: ChatFirstMessageModalProps) => {
+  const { showSnackbar } = useContext(SnackbarContext);
+  
   const [firstMessage, setFirstMessage] = useState('');
   const handleSend = () => {
     if (!firstMessage || firstMessage === "") {
-        alert("Please enter a message");
+        showSnackbar("Please enter a message", "error", 5000);
+        // alert("Please enter a message");
         return;
     }
     onConfirmAction(firstMessage);

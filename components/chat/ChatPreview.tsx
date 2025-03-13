@@ -66,8 +66,8 @@ const ChatPreview: React.FC<ChatPreviewProps> = ({ chatRoom, onChatRoomPressed }
                 <IconButton icon="account" size={30} />
                 </View>}
             <View style={{ flex: 1, marginLeft: 10, justifyContent: "space-around" }}>
-                <Text style={{ paddingLeft: 0, paddingRight: 0, top: 0, justifyContent: "flex-start", fontSize: 14}}>{displayName}</Text>
-                <Text style={{ textAlign: "left", fontWeight: 300, fontSize: 12}} >
+                <Text style={{ paddingLeft: 0, paddingRight: 0, top: 0, justifyContent: "flex-start", fontSize: 14, textAlign: "left", letterSpacing: 0.2}}>{displayName}</Text>
+                <Text style={{ textAlign: "left", fontWeight: 300, fontSize: 12}}  variant='bodyMedium'>
                 {chatRoom.lastMessage.length > 30 ? chatRoom.lastMessage.slice(0, 30) + "..." : chatRoom.lastMessage}
                 </Text>
             </View>

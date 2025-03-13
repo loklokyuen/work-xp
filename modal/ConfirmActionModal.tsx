@@ -36,7 +36,7 @@ export const ConfirmActionModal = ({
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text variant="titleMedium" style={{ margin: 10, padding: 2 }}>
+          <Text variant="titleMedium" style={{ margin: 10, padding: 2, maxWidth: 280 }}>
             {title}
           </Text>
           <View style={styles.buttonContainer}>

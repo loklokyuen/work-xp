@@ -18,7 +18,8 @@ interface MessageBubbleProps {
                 isSentByCurrentUser ? styles.sentMessage : styles.receivedMessage
             ]}
         >
-            <Text style={isSentByCurrentUser ? styles.sentMessageText : styles.receivedMessageText}>
+            <Text variant="bodyMedium"
+            style={isSentByCurrentUser ? styles.sentMessageText : styles.receivedMessageText}>
                 {message.content}
             </Text>
             <Text style={isSentByCurrentUser ? styles.sentMessageTimestamp : styles.receivedMessageTimestamp}>

@@ -6,8 +6,14 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { IconButton, Menu, Text } from "react-native-paper";
-
-const ChatHeader = ({ displayName, photoUrl, receiverAccountType, receiverUid }: { displayName: string, photoUrl: string, receiverAccountType: string, receiverUid: string }) => {
+interface ChatHeaderProps { 
+    displayName: string, 
+    photoUrl: string, 
+    receiverAccountType: string, 
+    receiverUid: string, 
+    status: ChatStatus
+}
+const ChatHeader = ({ displayName, photoUrl, receiverAccountType, receiverUid, status }: ChatHeaderProps) => {
     const router = useRouter();
     const { user } = useUserContext();
     const [menuOpen, setMenuOpen] = useState(false);
@@ -21,8 +27,10 @@ const ChatHeader = ({ displayName, photoUrl, receiverAccountType, receiverUid }:
                     <View style={[styles.image, { backgroundColor: '#EADDFF', justifyContent: 'center', alignItems: 'center' }]}>
                     <IconButton icon="account" size={30} />
                     </View>}
-                <Text style={styles.title}>{displayName}</Text>
+                <Text style={styles.title} variant="titleMedium">{displayName}</Text>
             </View>
+        {status === "active" && 
+
         <Menu
             visible={menuOpen}
             onDismiss={() => setMenuOpen(false)}
@@ -64,7 +72,7 @@ const ChatHeader = ({ displayName, photoUrl, receiverAccountType, receiverUid }:
                     setMenuOpen(false);
                 }}
             />
-        </Menu>
+        </Menu>}
         </View>
     );
 };

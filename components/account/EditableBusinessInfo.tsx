@@ -1,7 +1,7 @@
 import { Button, IconButton, Text, TextInput, Menu, useTheme } from "react-native-paper";
 import ImageViewer from "../expoComponents/imageViewer";
 import * as ImagePicker from "expo-image-picker";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { View, Platform } from "react-native";
 import { db } from "@/database/firebase";
 import { doc, updateDoc } from "firebase/firestore";
@@ -12,6 +12,7 @@ import { Dispatch, SetStateAction } from "react";
 
 import { industries, counties } from "@/data/businessData";
 import { DeleteAccountButton } from "../DeleteAccountButton";
+import { SnackbarContext } from "@/context/SnackbarProvider";
 type BusinessInfoProps = {
     businessInfo: Business;
     onUpdateInfo: () => void;
@@ -20,6 +21,7 @@ type BusinessInfoProps = {
 };
 
 export function EditableBusinessInfo({ businessInfo, onUpdateInfo, setChangesMade, setEditMode }: BusinessInfoProps) {
+    const { showSnackbar } = useContext(SnackbarContext);
     const [displayName, setDisplayName] = useState<string>(businessInfo.displayName || "");
     const [bio, setBio] = useState<string>(businessInfo.description || "");
     const [industry, setIndustry] = useState<string>(businessInfo.sector || "");
@@ -44,7 +46,8 @@ export function EditableBusinessInfo({ businessInfo, onUpdateInfo, setChangesMad
                 setChangesMade(false);
                 setEditMode(false);
             } else {
-                alert("Error updating profile");
+                showSnackbar("Error updating profile", "error", 5000);
+                // alert("Error updating profile");
             }
         } catch (error) {
             console.log(error);
@@ -161,6 +164,7 @@ export function EditableBusinessInfo({ businessInfo, onUpdateInfo, setChangesMad
                         paddingLeft: 5,
                         paddingRight: 5,
                         marginBottom: 15,
+                        width: "50%",
                     }}
                     labelStyle={{
                         fontFamily: "Lato",

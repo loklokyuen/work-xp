@@ -24,7 +24,7 @@ const ChatRoom = () => {
     
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputMessage, setInputMessage] = useState('');
-    const [status, setStatus] = useState<string | null>(null);
+    const [status, setStatus] = useState<ChatStatus>();
     const [receiverData, setReceiverData] = useState<{
         displayName: string;
         photoUrl: string;
@@ -63,6 +63,7 @@ const ChatRoom = () => {
                         photoUrl={""} 
                         receiverAccountType={""}
                         receiverUid={""}
+                        status={status || "active"}
                     />
                 ),
                 headerLeft: () => (

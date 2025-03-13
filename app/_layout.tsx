@@ -17,6 +17,7 @@ import {
 
 import merge from "deepmerge";
 import theme from "./styles/theme";
+import { SnackbarProvider } from "@/context/SnackbarProvider";
 
 const { lightTheme, darkTheme } = theme;
 
@@ -53,6 +54,7 @@ export default function RootLayout() {
     <PaperProvider theme={CombinedLightTheme}>
       <UserProvider>
         <ThemeProvider value={CombinedLightTheme}>
+          <SnackbarProvider>
           {/* <Text style={{ fontFamily: "Lato", fontSize: 20 }}>Test Font</Text> */}
           <Header />
           <Stack>
@@ -60,7 +62,8 @@ export default function RootLayout() {
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="+not-found" />
           </Stack>
-          <StatusBar style="auto" />
+          <StatusBar style="auto" hidden={true} />
+          </SnackbarProvider>
         </ThemeProvider>
       </UserProvider>
     </PaperProvider>

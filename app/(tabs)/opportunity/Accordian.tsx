@@ -1,4 +1,5 @@
 import ChatButton from "@/components/chat/ChatButton";
+import { useRouter } from "expo-router";
 import { View, Text } from "react-native";
 import { List, useTheme, Card } from "react-native-paper";
 
@@ -28,7 +29,7 @@ const Accordion: React.FC<AccordionProps> = ({
   onPress,
 }) => {
   const { colors } = useTheme();
-
+  const router = useRouter();
   let backgroundColor;
   if (expanded) {
     backgroundColor = colors.quarternary;
@@ -39,13 +40,16 @@ const Accordion: React.FC<AccordionProps> = ({
   } else {
     backgroundColor = "#F5CA6B"; // Orange (Pending)
   }
+  function navigateToBusinessProfile() {
+    router.push({pathname: "/explore/publicProfile", params: {uid: application.businessId}});
+  }
 
   return (
     <View
       style={{
         padding: 5,
         margin: 10,
-        borderRadius: 5,
+        borderRadius: 15,
         shadowColor: "#000000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
@@ -63,12 +67,12 @@ const Accordion: React.FC<AccordionProps> = ({
           fontFamily: "Lato",
           color: expanded ? colors.surface : colors.tertiary,
         }}
-        style={{ backgroundColor }}
+        style={{ backgroundColor, borderRadius: 15 }}
         expanded={expanded}
         onPress={onPress}
       >
         <View style={{ alignItems: "center" }}>
-          <Text
+          <Text onPress={navigateToBusinessProfile}
             style={{
               fontFamily: "Lato",
               color: colors.primary,
@@ -112,7 +116,7 @@ const Accordion: React.FC<AccordionProps> = ({
             </>
           )}
           {application.isAccepted === true ? (
-            <Card style={{ backgroundColor: colors.secondaryContainer }}>
+            <Card style={{ backgroundColor: colors.secondaryContainer, margin: 10 }}>
               <Card.Content>
                 <Text
                   style={{
@@ -129,12 +133,12 @@ const Accordion: React.FC<AccordionProps> = ({
               </Card.Content>
             </Card>
           ) : application.isAccepted === false ? (
-            <Card style={{ backgroundColor: colors.errorContainer }}>
+            <Card style={{ backgroundColor: colors.errorContainer, margin: 10  }}>
               <Card.Content>
                 <Text
                   style={{
                     color: colors.error,
-                    padding: 20,
+                    padding: 10,
                     fontFamily: "Lato",
                     fontWeight: "bold",
                     textAlign: "center",
@@ -146,12 +150,12 @@ const Accordion: React.FC<AccordionProps> = ({
               </Card.Content>
             </Card>
           ) : (
-            <Card style={{ backgroundColor: colors.surfaceVariant }}>
+            <Card style={{ backgroundColor: colors.surfaceVariant, margin: 10  }}>
               <Card.Content>
                 <Text
                   style={{
                     color: colors.tertiary,
-                    padding: 20,
+                    padding: 10,
                     fontFamily: "Lato",
                     fontWeight: "bold",
                     textAlign: "center",

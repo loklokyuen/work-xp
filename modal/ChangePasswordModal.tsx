@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Modal, View } from "react-native";
 import {
   Button,
@@ -8,6 +8,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import styles from "@/app/styles";
+import { SnackbarContext } from "@/context/SnackbarProvider";
 interface ChangePasswordModalProps {
   open: boolean;
   onClose: () => void;
@@ -19,26 +20,33 @@ export const ChangePasswordModal = ({
   onClose,
   onChangePassword,
 }: ChangePasswordModalProps) => {
+  const { showSnackbar } = useContext(SnackbarContext);
+  
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const { colors, fonts } = useTheme();
   const handleSubmit = () => {
     if (oldPassword === "" || newPassword === "" || confirmPassword === "") {
-      alert("Please fill in all fields");
+      showSnackbar("Please fill in all fields", "error", 5000);
+      // alert("Please fill in all fields");
     } else if (oldPassword === newPassword) {
-      alert("New password must be different from old password!");
+      showSnackbar("New password must be different from old password!", "error", 5000);
+      // alert("New password must be different from old password!");
     } else if (newPassword !== confirmPassword) {
-      alert("New passwords do not match!");
+      showSnackbar("New passwords do not match!", "error", 5000);
+      // alert("New passwords do not match!");
     } else if (newPassword.length < 6) {
-      alert("Password must be at least 6 characters");
+      showSnackbar("Password must be at least 6 characters", "error", 5000);
+      // alert("Password must be at least 6 characters");
     } else if (
       newPassword.toUpperCase() === newPassword ||
       newPassword.toLowerCase() === newPassword
     ) {
-      alert(
-        "Password must contain at least one uppercase and one lowercase letter"
-      );
+      showSnackbar("Password must contain at least one uppercase and one lowercase letter", "error", 5000);
+      // alert(
+      //   "Password must contain at least one uppercase and one lowercase letter"
+      // );
     } else {
       onChangePassword(oldPassword, newPassword);
       onClose();

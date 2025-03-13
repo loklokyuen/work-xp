@@ -1,5 +1,6 @@
 import { collection, addDoc, getDocs, doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "./firebase";
+import { deleteChatroomsByUserId } from "./chat";
 const StudentUsersCollection = collection(db, 'Student');
 const UsersCollection = collection(db, 'Users')
 const ChatCollection = collection(db, 'chats')
@@ -71,8 +72,7 @@ async function deleteStudentById(uid:string): Promise<boolean> {
         await deleteDoc(docRef);
         const userDocRef = doc(UsersCollection, uid)
         await deleteDoc(userDocRef)
-        const chatDocRef = doc(ChatCollection, uid)
-        await deleteDoc(chatDocRef)
+        await deleteChatroomsByUserId(uid)
         return true;
     } catch (error) {
         alert("Error deleting student: " + error);

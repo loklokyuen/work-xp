@@ -1,8 +1,9 @@
+import { SnackbarContext } from "@/context/SnackbarProvider";
 import { useUserContext } from "@/context/UserContext";
 import { generateChatId, isFirstMessage, sendFirstMessage } from "@/database/chat";
 import { ChatFirstMessageModal } from "@/modal/ChatFirstMessageModal";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 
@@ -16,6 +17,8 @@ export default function ChatButton({
     receiverAccountType: string;
 }) {
     const { user } = useUserContext();
+    const { showSnackbar } = useContext(SnackbarContext);
+    
     const [chatModalOpen, setChatModalOpen] = useState<boolean>(false);
     const router = useRouter();
     const colors = useTheme().colors;
@@ -78,7 +81,8 @@ export default function ChatButton({
                             },
                         });
                     } else {
-                        alert("Error sending message");
+                        showSnackbar("Error sending message", "error", 5000);
+                        // alert("Error sending message");
                     }
                 }}
             />

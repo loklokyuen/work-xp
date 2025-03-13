@@ -5,7 +5,7 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
 import { getStudentById } from "@/database/student";
 
@@ -16,6 +16,7 @@ import { useRouter } from "expo-router";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { getAvailabilitiesByBusinessIdOpportunityId, getBusinessById, getBusinessOpportunityById } from "@/database/business";
+import { SnackbarContext } from "@/context/SnackbarProvider";
 
 type DayPressEvent = {
   dateString: string;
@@ -28,6 +29,8 @@ type DayPressEvent = {
 export default function Application() {
   const navigation = useNavigation();
   const { user } = useUserContext();
+  const { showSnackbar } = useContext(SnackbarContext);
+  
   const { businessId, oppId, businessName } = useLocalSearchParams<{
     businessId: string;
     oppId: string;
@@ -166,8 +169,9 @@ export default function Application() {
     if (!why || !reason || Object.keys(chosen).length === 0) {
       setMissingFields(true);
       setTimeout(() => setMissingFields(false), 5000);
-      setErrorMessage("Please fill in all fields and select from available dates to proceed.");
-      setIsErrorModalVisible(true);
+      // setErrorMessage("Please fill in all fields and select from available dates to proceed.");
+      // setIsErrorModalVisible(true);
+      showSnackbar("Please fill in all fields and select from available dates to proceed.", "error", 5000);
       return;
     }
     if (!user) return;
@@ -176,8 +180,9 @@ export default function Application() {
       if (hasAppliedAlready) {
         setHasApplied(true);
         setTimeout(() => setHasApplied(false), 5000);
-        setErrorMessage("You have already applied for this opportunity! Please check on the status of your application or apply for another.");
-        setIsErrorModalVisible(true);
+        // setErrorMessage("You have already applied for this opportunity! Please check on the status of your application or apply for another.");
+        // setIsErrorModalVisible(true);
+        showSnackbar("You have already applied for this opportunity! Please check on the status of your application or apply for another.", "error", 5000);
         return;
       }
       const data = {
