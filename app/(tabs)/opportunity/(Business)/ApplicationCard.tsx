@@ -1,4 +1,4 @@
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import { useTheme, Button, Card, Chip } from "react-native-paper";
 
 interface ApplicationCardProps {
@@ -88,13 +88,16 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
         >
           Chosen subjects:
         </Text>
+        <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
         {application.subjects.map((subject) => {
           return (
-            <Chip key={subject} style={{ margin: 3 }}>
+            <Chip key={subject} style={{ margin: 3, backgroundColor: colors.primary }} 
+            textStyle={{ color: colors.onPrimary, fontFamily: "Lato"}} >
               {subject}
             </Chip>
           );
         })}
+        </View>
         {/* <Text style={{ fontFamily: "Lato" }}>{application.subjects}</Text> */}
 
         {/* Previous experience */}
