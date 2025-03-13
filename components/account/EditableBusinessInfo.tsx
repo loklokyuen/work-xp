@@ -45,6 +45,7 @@ export function EditableBusinessInfo({ businessInfo, onUpdateInfo, setChangesMad
                 onUpdateInfo();
                 setChangesMade(false);
                 setEditMode(false);
+                showSnackbar("Profile successfully updated", "success", 5000);
             } else {
                 showSnackbar("Error updating profile", "error", 5000);
                 // alert("Error updating profile");
