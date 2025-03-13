@@ -97,8 +97,8 @@ export default function Application() {
       getStudentById(user.uid).then((res) => {
         setDisplayName(res.displayName);
         setSubjects(res.subjects);
-        setExperience(res.experience);
-        setPersonalStatement(res.personalStatement);
+        setExperience(res.experience || "");
+        setPersonalStatement(res.personalStatement || "");
         setPhotoUrl(res.photoUrl);
       });
 
@@ -218,7 +218,7 @@ export default function Application() {
         businessName: businessName,
       };
 
-      await addApplication(
+      const isAdded = await addApplication(
         data.oppId,
         data.businessId,
         data.datesApplied,
@@ -232,6 +232,16 @@ export default function Application() {
         data.photoUrl,
         data.businessName
       );
+      if (!isAdded) {
+        // setErrorMessage("Error submitting application. Please try again later.");
+        // setIsErrorModalVisible(true);
+        showSnackbar(
+          "Error submitting application. Please try again later.",
+          "error",
+          5000
+        );
+        return;
+      }
 
       setIsModalVisible(true);
       setMissingFields(false);
