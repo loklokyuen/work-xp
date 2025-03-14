@@ -1,50 +1,30 @@
-# Welcome to your Expo app 👋
+# Work-XP
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Work-XP is a platform designed to help users apply for and post work experience opportunities. Whether you're looking to gain valuable work experience or offer work experience roles for your business, Work-XP provides an easy and efficient way to connect.
 
-## Get started
+## Features
 
-1. Install dependencies
+- **Post Work Opportunities:** Employers can create and manage job postings for work experience positions.
+- **Apply for Work Experience:** Users can browse available opportunities and apply directly through the platform.
+- **User Profiles:** Create and manage personal profiles with details about your skills, experience, and work preferences.
 
-   ```bash
-   npm install
-   ```
+## Getting Started
 
-2. Start the app
+Follow these steps to set up and run the project locally:
 
-   ```bash
-    npx expo start
-   ```
+### 1. Clone the Repository
 
-In the output, you'll find options to open the app in a
+Clone this repository to your local machine:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+git clone https://github.com/loklokyuen/work-xp.git
+cd work-xp
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 2. Install dependencies
 
-## Get a fresh project
+npm install
 
-When you're ready, run:
+### 3. Run the project
 
-```bash
-npm run reset-project
-```
+npx expo start
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+you can then decide whether to view the project in a web browser (click w), on an emulator (click a for android or i for iOS), or on your mobile phone using the expo go app (scan the qr code in the app with an android device or with your camera app if you are on iOS)
