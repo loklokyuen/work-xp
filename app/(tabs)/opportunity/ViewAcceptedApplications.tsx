@@ -1,7 +1,6 @@
 import { useUserContext } from "@/context/UserContext";
 import { getApplicationByStudentId } from "@/database/applications";
 import { getBusinessOpportunityById } from "@/database/business";
-import { unsubscribe } from "diagnostics_channel";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import React, { Button, List, useTheme } from "react-native-paper";

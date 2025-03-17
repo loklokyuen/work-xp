@@ -11,7 +11,7 @@ export default function ManageBooking() {
   const navigation = useNavigation();
   const { user } = useUserContext();
 
-  const [bookings, setBookings] = useState<Application1[]>([]);
+  const [bookings, setBookings] = useState<Application[]>([]);
   useEffect(() => {
     if (!user) return;
     getAcceptedApplicationsByBusinessId(user.uid).then((res) => {

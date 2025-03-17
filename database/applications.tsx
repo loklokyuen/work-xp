@@ -2,47 +2,14 @@ import {
   collection,
   addDoc,
   getDocs,
-  getFirestore,
   doc,
-  getDoc,
   query,
   where,
   updateDoc,
-  QuerySnapshot,
   deleteDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
 const ApplicationsCollection = collection(db, "Applications");
-
-// async function addApplication(
-//     oppId: string,
-//     businessId: string,
-//     studentId: string,
-//     datesApplied: string[],
-//     whyApply: string,
-//     whySuitable: string
-// ): Promise<boolean> {
-//     try {
-//         const docRef = await addDoc(ApplicationsCollection, {
-//             oppId,
-//             businessId,
-//             studentId,
-//             datesApplied,
-//             whyApply,
-//             whySuitable,
-//         });
-
-//         await updateDoc(doc(db, "Applications", docRef.id), {
-//             uid: docRef.id,
-//         });
-
-//         console.log("Application added with uid:", docRef.id);
-//         return true;
-//     } catch (error) {
-//         alert("Error adding application: " + error);
-//         return false;
-//     }
-// }
 
 async function addApplication(
   oppId: string,
@@ -77,25 +44,23 @@ async function addApplication(
     await updateDoc(doc(db, "Applications", docRef.id), {
       uid: docRef.id,
     });
-
-    console.log("Application added with uid:", docRef.id);
     return true;
   } catch (error) {
     return false;
   }
 }
 
-async function getApplications(): Promise<Application1[]> {
+async function getApplications(): Promise<Application[]> {
   const querySnapshot = await getDocs(ApplicationsCollection);
   const applicationsList = querySnapshot.docs.map((doc) => {
-    return { uid: doc.id, ...doc.data() } as Application1;
+    return { uid: doc.id, ...doc.data() } as Application;
   });
   return applicationsList;
 }
 
 async function getAcceptedApplicationsByBusinessId(
   businessId: string
-): Promise<Application1[]> {
+): Promise<Application[]> {
   const q = query(
     ApplicationsCollection,
     where("businessId", "==", businessId),
@@ -103,41 +68,41 @@ async function getAcceptedApplicationsByBusinessId(
   );
   const QuerySnapshot = await getDocs(q);
   const AcceptedApplicationsList = QuerySnapshot.docs.map((doc) => {
-    return { uid: doc.id, ...doc.data() } as Application1;
+    return { uid: doc.id, ...doc.data() } as Application;
   });
   return AcceptedApplicationsList;
 }
 
 async function getApplicationsByBusinessId(
   businessId: string
-): Promise<Application1[]> {
+): Promise<Application[]> {
   const q = query(
     ApplicationsCollection,
     where("businessId", "==", businessId)
   );
   const QuerySnapshot = await getDocs(q);
   const applicationsList = QuerySnapshot.docs.map((doc) => {
-    return { uid: doc.id, ...doc.data() } as Application1;
+    return { uid: doc.id, ...doc.data() } as Application;
   });
   return applicationsList;
 }
 
-async function getApplicationsByOppId(oppId: string): Promise<Application1[]> {
+async function getApplicationsByOppId(oppId: string): Promise<Application[]> {
   const q = query(ApplicationsCollection, where("oppId", "==", oppId));
   const QuerySnapshot = await getDocs(q);
   const applicationsList = QuerySnapshot.docs.map((doc) => {
-    return { uid: doc.id, ...doc.data() } as Application1;
+    return { uid: doc.id, ...doc.data() } as Application;
   });
   return applicationsList;
 }
 
 async function getApplicationByStudentId(
   studentId: string
-): Promise<Application1[]> {
+): Promise<Application[]> {
   const q = query(ApplicationsCollection, where("studentId", "==", studentId));
   const QuerySnapshot = await getDocs(q);
   const applicationsList = QuerySnapshot.docs.map((doc) => {
-    return { uid: doc.id, ...doc.data() } as Application1;
+    return { uid: doc.id, ...doc.data() } as Application;
   });
   return applicationsList;
 }

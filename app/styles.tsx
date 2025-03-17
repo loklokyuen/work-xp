@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 16,
-    // backgroundColor: "#fff",
     marginHorizontal: 16,
   },
   title: {
@@ -61,7 +60,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   card: {
-    // backgroundColor: "#07070A",
     width: "100%",
     marginVertical: 10,
     alignItems: "center",
@@ -93,7 +91,6 @@ const styles = StyleSheet.create({
   cardCover: {
     width: 320,
     height: 200,
-    // resizeMode: "cover",
     alignSelf: "center",
     margin: 0,
   },

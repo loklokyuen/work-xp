@@ -11,8 +11,7 @@ interface ReviewCardProps {
   businessId: string;
 }
 const ReviewCard: React.FC<ReviewCardProps> = ({ businessId }) => {
-  // export default function ReviewCard: React.FC<ReviewCardProps> = ({ businessId }) {
-  const { colors, fonts } = useTheme();
+  const { colors } = useTheme();
   const [reviews, setReviews] = useState<Review[] | []>([]);
 
   // Get data
@@ -35,41 +34,11 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ businessId }) => {
     );
   }
 
-  // Render carousel items____
-  // const renderItem = ({ item }) => (
-  //   <View
-  //     style={StyleSheet.compose(styles.card, {
-  //       backgroundColor: colors.primaryContainer,
-  //     })}
-  //   >
-  //     <Text
-  //       style={StyleSheet.compose(styles.review, {
-  //         color: colors.primary,
-  //         fontFamily: "Lato",
-  //         fontWeight: "normal",
-  //       })}
-  //     >
-  //       "{item.review}"
-  //     </Text>
-  //     <Text
-  //       style={StyleSheet.compose(styles.name, {
-  //         color: colors.tertiary,
-  //         fontFamily: "Lato",
-  //         fontSize: 15,
-  //         fontWeight: "bold",
-  //       })}
-  //     >
-  //       {item.name}
-  //     </Text>
-  //   </View>
-  // );
-
   return (
     <SafeAreaView style={styles.revContainer}>
       <ScrollView contentContainerStyle={styles.revScrollViewContent}>
         {reviews.map((item, index) => (
           <View key={index} style={styles.revCard}>
-            {/* Use the Rating component to display star ratings */}
             <Rating
               imageSize={24}
               readonly
@@ -79,23 +48,12 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ businessId }) => {
               tintColor="#1E80A4"
               style={styles.revStars}
             />
-            {/* <Text style={styles.revStars}>{`${item.stars} Stars`}</Text> */}
             <Text style={styles.revBody}>"{item.review}"</Text>
             <Text style={styles.revName}>{item.studentName}</Text>
           </View>
         ))}
       </ScrollView>
     </SafeAreaView>
-
-    // <Carousel
-    //   data={data}
-    //   renderItem={renderItem}
-    //   width={screenWidth}
-    //   height={screenWidth / 2}
-    //   loop={true}
-    //   autoPlay={true}
-    //   autoPlayInterval={2000}
-    // />
   );
 };
 

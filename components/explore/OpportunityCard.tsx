@@ -28,7 +28,6 @@ const OpportunityCard = ({ opp }: { opp: OpportunityInfoProps }) => {
     : { uri: placeholderImage };
 
   const handlePress = () => {
-    // console.log("Navigating to business UID:", opp.business.uid);
     router.push({
       pathname: "/explore/publicProfile",
       params: { uid: opp.business.uid },

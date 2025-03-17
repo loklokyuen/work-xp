@@ -2,7 +2,9 @@ import { Button, Chip, IconButton, Text, TextInput } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { StyleSheet, Platform, View } from "react-native";
 import styles from "@/app/styles";
-
+type StudentProps = {
+    studentInfo: Student;
+} 
 export function ReadonlyStudentInfo({ studentInfo }: StudentProps) {
     return (
         <View>

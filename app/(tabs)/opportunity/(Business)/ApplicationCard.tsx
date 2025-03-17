@@ -2,12 +2,12 @@ import { Text, StyleSheet, View } from "react-native";
 import { useTheme, Button, Card, Chip } from "react-native-paper";
 
 interface ApplicationCardProps {
-  application: Application1;
+  application: Application;
   onDecision: (uid: string, accepted: boolean) => void;
 }
 
 const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
-  const { colors, fonts } = useTheme();
+  const { colors } = useTheme();
 
   const handleDecision = async (accepted: boolean) => {
     try {
@@ -98,7 +98,6 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
           );
         })}
         </View>
-        {/* <Text style={{ fontFamily: "Lato" }}>{application.subjects}</Text> */}
 
         {/* Previous experience */}
         <Text

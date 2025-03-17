@@ -25,10 +25,8 @@ export default function BookingCard({
   const [openCancel, setOpenCancel] = useState(false);
   const [student, setStudent] = useState<Student>();
   const [opportunity, setOpportunity] = useState<Opportunity>();
-  // const [startDate, setStartDate] = useState<string>();
-  // const [endDate, setEndDate] = useState<string>();
   const [confirmedDates, setConfirmedDates] = useState<Record<string, any>>({});
-  const { colors, fonts } = useTheme();
+  const { colors } = useTheme();
 
   const markDates = (date: string, color: string) => {
     let markedDates: Record<string, any> = {};

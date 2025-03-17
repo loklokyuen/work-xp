@@ -26,7 +26,7 @@ const BusinessCards = ({
     });
   };
 
-  const { colors, fonts } = useTheme();
+  const { colors } = useTheme();
 
   return (
     <Card

@@ -1,6 +1,6 @@
 import { useUserContext } from "@/context/UserContext";
 
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import { Calendar } from "react-native-calendars";
 import { getStudentById } from "@/database/student";
@@ -266,34 +266,6 @@ export default function Application() {
         message={errorMessage}
       />
 
-      {/* {hasApplied && (
-        <Text
-          style={{
-            color: colors.error,
-            textAlign: "center",
-            marginBottom: 20,
-            fontSize: 18,
-            fontFamily: "Lato",
-          }}
-        >
-          You have already applied for this opportunity! Please check on the
-          status of your application or apply for another.
-        </Text>
-      )}
-
-      {missingFields && (
-        <Text
-          style={{
-            color: colors.error,
-            textAlign: "center",
-            marginBottom: 20,
-            fontSize: 18,
-            fontFamily: "Lato",
-          }}
-        >
-          Please fill in all fields and select from available dates to proceed.
-        </Text>
-      )} */}
       <Text
         variant="titleLarge"
         style={{
