@@ -2,7 +2,7 @@
 
 Work-XP is a mobile platform that connects students seeking work experience with businesses offering short-term opportunities. Whether you're a student looking to gain valuable work experience or a business wanting to offer work experience roles, this platform simplifies the entire process of posting and applying.
 
-A live web preview can be found [here](https://work-xp.netlify.app/). *(Features mirror the mobile app)*
+A live web preview can be found [here](https://work-xp.netlify.app/). *(Features mirror the mobile app; web preview optimized for mobile view only as this is primarily a mobile application)*
 
 ## Tech Stack
 - **Framework**: React Native (Expo)
