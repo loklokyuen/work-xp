@@ -1,5 +1,4 @@
 import { useUserContext } from "@/context/UserContext";
-import { video } from "@cloudinary/url-gen/qualifiers/source";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
@@ -40,7 +39,7 @@ const OpportunityCards: React.FC<OpportunityCardProps> = ({
     borderColor: "transparent",
   };
 
-  const { colors, fonts } = useTheme();
+  const { colors } = useTheme();
 
   // when the opportunities array is empty, loads alternate message
   if (opportunities.length === 0) {
@@ -175,45 +174,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  // oppButtons: {
-  //   textAlign: "center",
-  //   backgroundColor: "#795663",
-  //   borderRadius: 20,
-  //   padding: 10,
-  //   paddingLeft: 20,
-  //   paddingRight: 20,
-  //   elevation: 2,
-  // },
-  // applyButton: {
-  //   textAlign: "center",
-  //   backgroundColor: "#795663",
-  //   borderRadius: 20,
-  //   padding: 5,
-  //   paddingLeft: 20,
-  //   paddingRight: 20,
-  //   elevation: 2,
-  //   marginTop: 10,
-  //   marginBottom: 10,
-  // },
-  // buttonText: {
-  //   textAlign: "center",
-  //   color: "white",
-  //   fontWeight: "bold",
-  // },
-  // subtitle: {
-  //   textAlign: "center",
-  //   fontWeight: "bold",
-  //   paddingBottom: 15,
-  //   fontSize: 18,
-  // },
   text: {
     textAlign: "center",
     paddingBottom: 10,
     fontSize: 15,
   },
-  // textOnWhite: {
-  //   color: "black",
-  //   textAlign: "center",
-  //   paddingBottom: 10,
-  // },
 });

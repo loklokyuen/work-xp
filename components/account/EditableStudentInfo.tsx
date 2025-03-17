@@ -1,7 +1,6 @@
 import {
   Button,
   Chip,
-  IconButton,
   Text,
   TextInput,
   useTheme,
@@ -175,7 +174,6 @@ export function EditableStudentInfo({
         style={{
           flexDirection: "row",
           alignItems: "center",
-          // flexWrap: "wrap",
           marginHorizontal: 10,
           justifyContent: "center",
         }}
@@ -211,8 +209,8 @@ export function EditableStudentInfo({
             color: colors.tertiary,
           }}
           mode="contained-tonal"
-          // mode="outlined"
           onPress={() => {
+            if (newSubject === "") return;
             setChangesMade(true);
             setSubjects([...subjects, newSubject]);
             setNewSubject("");

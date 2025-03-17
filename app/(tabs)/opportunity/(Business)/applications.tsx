@@ -6,9 +6,8 @@ import { getApplicationsByOppId } from "@/database/applications";
 import { useState, useEffect, useContext } from "react";
 import { useUserContext } from "@/context/UserContext";
 import { useLocalSearchParams } from "expo-router/build/hooks";
-import { StyleSheet, Image } from "react-native";
 import { View, ScrollView } from "react-native";
-import { Text, Button, useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import { Redirect, useNavigation } from "expo-router";
 import ApplicationCard from "./ApplicationCard";
 import { SnackbarContext } from "@/context/SnackbarProvider";
@@ -16,7 +15,7 @@ import { SnackbarContext } from "@/context/SnackbarProvider";
 export default function Applications() {
   const { showSnackbar } = useContext(SnackbarContext);
   const navigation = useNavigation();
-  const [applications, setApplications] = useState<Application1[]>([]);
+  const [applications, setApplications] = useState<Application[]>([]);
   const { user, accountType } = useUserContext();
   const { id } = useLocalSearchParams<Record<string, string>>();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -74,23 +73,6 @@ export default function Applications() {
 
   return (
     <ScrollView>
-      {/* {successMessage && (
-        <View style={{ marginBottom: 10 }}>
-          <Text
-            style={{
-              color: colors.tertiary,
-              fontWeight: "bold",
-              fontSize: 15,
-              fontFamily: "Lato",
-              alignContent: "center",
-              margin: 10,
-            }}
-          >
-            {successMessage}
-          </Text>
-        </View>
-      )} */}
-
       <View style={{ alignContent: "center" }}>
         {applications.length === 0 && 
         <Text variant="bodyMedium" style={{ padding: 20, textAlign: "center" }}>

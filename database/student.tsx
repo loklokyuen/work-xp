@@ -3,18 +3,12 @@ import { db } from "./firebase";
 import { deleteChatroomsByUserId } from "./chat";
 const StudentUsersCollection = collection(db, 'Student');
 const UsersCollection = collection(db, 'Users')
-const ChatCollection = collection(db, 'chats')
 
 async function getStudentById(uid: string): Promise<Student> {
-    // try {
-        const docRef = doc(StudentUsersCollection, uid);
-        const docSnap = await getDoc(docRef);
-        const student = docSnap.data();
-        return student as Student;
-    // } catch (error) {
-    //     alert("Error getting student: " + error);
-    //     return null;
-    // }
+    const docRef = doc(StudentUsersCollection, uid);
+    const docSnap = await getDoc(docRef);
+    const student = docSnap.data();
+    return student as Student;
 }
 
 async function getStudents(): Promise<Student[]> {
@@ -59,7 +53,7 @@ async function updateStudentInfo(uid: string, displayName: string, email: string
             experience,
             subjects
         })
-        return true
+        return true;
     } catch (error) {
         alert("Error updating students: " + error);
         return false;

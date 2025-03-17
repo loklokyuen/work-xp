@@ -114,40 +114,17 @@ async function postReview(
   }
 }
 
-// async function getBusinessReviews(
-//   businessId: string
-// ): Promise<Review[]> {
-//   try {
-//     const docRef = doc(BusinessUsersCollection, businessId);
-
-//     const docSnap = await getDoc(docRef);
-
-//     if (docSnap.exists()) {
-//       const data = docSnap.data();
-//       console.log(data);
-//       return data as Review;
-//     } else {
-//       return null;
-//     }
-//   } catch (error) {
-//     console.log("Error getting reviews" + error);
-//   }
-// }
-
 async function getBusinessReviews(
   businessId: string
 ): Promise<Review[] | null> {
   try {
     const docRef = doc(BusinessUsersCollection, businessId);
-
     const docSnap = await getDoc(docRef);
-
     const data = docSnap.data();
     if (data) {
       return data.reviews as Review[];
     } else return null;
   } catch (error) {
-    console.log("Error getting reviews:" + error);
     return null;
   }
 }

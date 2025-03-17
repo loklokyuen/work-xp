@@ -1,7 +1,6 @@
-import { collection, addDoc, getDocs, getFirestore, doc, getDoc, setDoc, query, where, updateDoc, QuerySnapshot, deleteDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, getDoc, setDoc, query, where, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "./firebase";
 const ChatsCollection = collection(db, "Chat");
-
 
 async function getChatRooms(uid: string): Promise<Chatroom[]> {
     const q = query(ChatsCollection, where("participants", "array-contains", uid));
@@ -114,7 +113,7 @@ async function updateChatStatus(blockingUid: string, blockedUid: string, status:
 
 async function reportUser(reportingUid: string, reportedUid: string, reason: string): Promise<boolean> {
     try {
-        const message = await addDoc(collection(db, "Report"), { reportingUid, reportedUid, reason, timestamp: Date.now() });
+        await addDoc(collection(db, "Report"), { reportingUid, reportedUid, reason, timestamp: Date.now() });
         updateChatStatus(reportingUid, reportedUid, "blocked and reported");
         return true;
     } catch (error) {

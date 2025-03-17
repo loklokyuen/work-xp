@@ -3,23 +3,20 @@ import OpportunityCards from "@/components/profile/opportuntiesCard";
 import ReviewCard from "@/components/profile/reviewCard";
 import { useUserContext } from "@/context/UserContext";
 import { getBusinessById, getBusinessOpportunities } from "@/database/business";
-import { color } from "@cloudinary/url-gen/qualifiers/background";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
-import { Button, IconButton, List, useTheme } from "react-native-paper";
+import { List, useTheme } from "react-native-paper";
 
 const publicComProfile: React.FC = () => {
-  const router = useRouter();
   const navigation = useNavigation();
   const { uid } = useLocalSearchParams<{ uid: string }>();
   const { user } = useUserContext();
   const [business, setBusiness] = useState<Business | null>(null);
   const [businessName, setBusinessName] = useState<string>("");
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
-  const [chatModalOpen, setChatModalOpen] = useState<boolean>(false);
 
   // Accordion state
   const [expanded, setExpanded] = React.useState(false);

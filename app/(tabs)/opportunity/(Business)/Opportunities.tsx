@@ -65,20 +65,6 @@ export default function Opportunities() {
   return (
     <ScrollView>
       <View>
-        {/* {deleteSuccess && (
-          <Text
-            style={{
-              padding: 10,
-              textAlign: "center",
-              fontFamily: "Lato",
-              color: colors.quarternary,
-              fontSize: 16,
-            }}
-          >
-            Listing deleted successfully!
-          </Text>
-        )} */}
-
         {opportunities.length === 0 ? (
           <Text
             variant="bodyMedium"

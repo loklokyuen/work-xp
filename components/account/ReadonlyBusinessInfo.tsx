@@ -9,13 +9,16 @@ import { StyleSheet, Platform, View } from "react-native";
 import { router } from "expo-router";
 import styles from "@/app/styles";
 
+type BusinessProps = {
+  businessInfo: Business;
+}
 export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
   const { colors, fonts } = useTheme();
 
   if (businessInfo)
     return (
       <>
-        <Text variant="titleMedium" style={{ marginHorizontal: 10 }}>
+        <Text variant="titleMedium" style={{ marginHorizontal: 10, textAlign: "left" }}>
           Company Bio:
         </Text>
         <View style={{ flexDirection: "row" }}>
@@ -33,31 +36,31 @@ export function ReadonlyBusinessInfo({ businessInfo }: BusinessProps) {
             {businessInfo.description}
           </Text>
         </View>
-        <Text variant="titleMedium" style={{ marginHorizontal: 10 }}>
+        <Text variant="titleMedium" style={{ marginHorizontal: 10, textAlign: "left" }}>
           Industry:
         </Text>
         <Text variant="bodyMedium" style={styles.data}>
           {businessInfo.sector}
         </Text>
-        <Text variant="titleMedium" style={{ marginHorizontal: 10 }}>
+        <Text variant="titleMedium" style={{ marginHorizontal: 10, textAlign: "left" }}>
           Telephone:
         </Text>
         <Text variant="bodyMedium" style={styles.data}>
           {businessInfo.phoneNumber}
         </Text>
-        <Text variant="titleMedium" style={{ marginHorizontal: 10 }}>
+        <Text variant="titleMedium" style={{ marginHorizontal: 10, textAlign: "left" }}>
           Email:
         </Text>
         <Text variant="bodyMedium" style={styles.data}>
           {businessInfo.email}
         </Text>
-        <Text variant="titleMedium" style={{ marginHorizontal: 10 }}>
+        <Text variant="titleMedium" style={{ marginHorizontal: 10, textAlign: "left" }}>
           Address:
         </Text>
         <Text variant="bodyMedium" style={styles.data}>
           {businessInfo.address}
         </Text>
-        <Text variant="titleMedium" style={{ marginHorizontal: 10 }}>
+        <Text variant="titleMedium" style={{ marginHorizontal: 10, textAlign: "left" }}>
           DBS Certificate:
         </Text>
         <Text variant="bodyMedium" style={styles.data}>

@@ -5,7 +5,7 @@ import { EditableStudentInfo } from "../../components/account/EditableStudentInf
 import GuestModePrompt from "../../components/account/GuestModePrompt";
 
 import { useContext, useEffect, useState } from "react";
-import { Modal, Platform, SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import {
   ActivityIndicator,
   Button,

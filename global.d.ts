@@ -30,7 +30,6 @@ declare global {
         id: string;
         businessId: string;
         businessName: string;
-        // availability: string[];
         description: string;
         jobRole: string;
         subjects: string[];
@@ -61,17 +60,8 @@ declare global {
         endDate: string;
         description: string;
     }
-    // interface Application {
-    //     id: string;
-    //     opportunityId: string;
-    //     businessId: string;
-    //     studentId: string;
-    //     status: string;
-    //     applicationMessage: string;
-    // }
 
-    interface Application1 {
-
+    interface Application {
         uid:string,
         oppId: string,
         businessId:string,
@@ -87,14 +77,6 @@ declare global {
         isAccepted: boolean,
         businessName: string,
         reviewPosted:boolean
-  
-    }
-
-    type StudentProps = {
-        studentInfo: Student;
-    } 
-    type BusinessProps = {
-        businessInfo: Business;
     }
 
     interface Chatroom {

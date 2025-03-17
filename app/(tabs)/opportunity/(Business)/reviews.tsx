@@ -17,7 +17,7 @@ export default function ReviewsPage() {
   const { showSnackbar } = useContext(SnackbarContext);
   const navigation = useNavigation();
   const { user } = useUserContext();
-  const [oppsToReview, setOppsToReview] = useState<Application1[]>([]);
+  const [oppsToReview, setOppsToReview] = useState<Application[]>([]);
   const [expandedAccordion, setExpandedAccordion] = useState<string | null>(
     null
   );
