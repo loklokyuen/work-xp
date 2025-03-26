@@ -57,12 +57,6 @@ export default function ProfilePage() {
 	if (!accountType) {
 		return <Redirect href="/(auth)/main" />;
 	}
-	// useEffect(() => {
-	//   navigation.setOptions({
-	//       headerTitle: guestMode ? "Guest" : "Profile",
-	//       headerLeft: () => null,
-	//   });
-	// }, [navigation, guestMode]);
 
 	useEffect(() => {
 		if (!user) return;
