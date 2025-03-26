@@ -1,14 +1,15 @@
+import GuestModePrompt from "@/components/account/GuestModePrompt";
 import { useUserContext } from "../../../context/UserContext";
-import { Redirect, router } from "expo-router";
-
-//need to add guest option here
+import { Redirect } from "expo-router";
 
 export default function index() {
-    const { accountType } = useUserContext();
+	const { accountType } = useUserContext();
 
-    if (accountType === "Business") {
-        return <Redirect href="/(tabs)/opportunity/(Business)" />;
-    } else if (accountType === "Student") {
-        return <Redirect href="/(tabs)/opportunity/ViewAcceptedApplications" />;
-    }
+	if (accountType === "Business") {
+		return <Redirect href="/(tabs)/opportunity/(Business)" />;
+	} else if (accountType === "Student") {
+		return <Redirect href="/(tabs)/opportunity/ViewAcceptedApplications" />;
+	} else if (accountType === "Guest") {
+		return <GuestModePrompt />;
+	}
 }
