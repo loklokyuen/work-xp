@@ -12,9 +12,9 @@ const Header = () => {
 
 	const handleTitlePress = () => {
 		if (!user) {
-			router.push("/(auth)/main");
+			router.replace("/(auth)/main");
 		} else {
-			router.push("/(tabs)/explore");
+			router.replace("/(tabs)/explore");
 		}
 	};
 
