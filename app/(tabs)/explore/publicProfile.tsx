@@ -29,7 +29,7 @@ const publicComProfile: React.FC = () => {
 	useEffect(() => {
 		navigation.setOptions({
 			headerShown: true,
-			title: "Back to all",
+			title: "Business Profile",
 			headerBackVisible: true,
 		});
 	}, [navigation]);
@@ -129,7 +129,7 @@ const publicComProfile: React.FC = () => {
 									styles.text,
 									{ color: colors.onSurface, fontFamily: "Lato" },
 								]}>
-								Visit us: {business?.address && ", "}
+								Visit us: {business?.address + ", "}
 								{business?.county}
 							</Text>
 							<ChatButton
