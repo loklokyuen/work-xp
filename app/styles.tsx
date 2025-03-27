@@ -106,6 +106,14 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		margin: 10,
 	},
+	modalContainerView: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		flexDirection: "row",
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
+		margin: 0,
+	},
 	modalView: {
 		margin: 10,
 		backgroundColor: "white",
