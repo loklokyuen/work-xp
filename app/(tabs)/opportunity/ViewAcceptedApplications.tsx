@@ -3,7 +3,13 @@ import { getApplicationByStudentId } from "@/database/applications";
 import { getBusinessOpportunityById } from "@/database/business";
 import { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
-import React, { Button, List, useTheme } from "react-native-paper";
+import React, {
+	ActivityIndicator,
+	Button,
+	IconButton,
+	List,
+	useTheme,
+} from "react-native-paper";
 import { Redirect, router, useNavigation } from "expo-router";
 import Accordion from "./Accordian";
 import { SnackbarContext } from "@/context/SnackbarProvider";
@@ -12,6 +18,7 @@ export default function ViewAcceptedApplications() {
 	const { showSnackbar } = useContext(SnackbarContext);
 	const navigation = useNavigation();
 	const { user, accountType } = useUserContext();
+	const [loading, setLoading] = useState<boolean>(true);
 	const [applications, setApplications] = useState<any[]>([]);
 	const [opportunities, setOpportunities] = useState<any[]>([]);
 	const [expandedAccordion, setExpandedAccordion] = useState<string | null>(
@@ -22,6 +29,15 @@ export default function ViewAcceptedApplications() {
 		navigation.setOptions({
 			headerShown: true,
 			headerTitle: "Applications",
+			headerRight: () => (
+				<IconButton
+					icon="refresh"
+					style={{ marginRight: 10 }}
+					size={20}
+					onPress={() => {
+						fetchApplications();
+					}}></IconButton>
+			),
 		});
 	}, [navigation]);
 
@@ -29,18 +45,20 @@ export default function ViewAcceptedApplications() {
 		return <Redirect href="/+not-found" />;
 	}
 
-	useEffect(() => {
-		const fetchApplications = async () => {
-			if (user?.uid) {
-				try {
-					const fetchedApplications = await getApplicationByStudentId(user.uid);
-					setApplications(fetchedApplications);
-				} catch (error) {
-					showSnackbar("Unable to fetch applications", "error", 5000);
-				}
+	const fetchApplications = async () => {
+		if (user?.uid) {
+			try {
+				const fetchedApplications = await getApplicationByStudentId(user.uid);
+				setApplications(fetchedApplications);
+				setLoading(false);
+			} catch (error) {
+				showSnackbar("Unable to fetch applications", "error", 5000);
+				setLoading(false);
 			}
-		};
-
+		}
+	};
+	useEffect(() => {
+		setLoading(true);
 		fetchApplications();
 	}, [user]);
 
@@ -58,18 +76,27 @@ export default function ViewAcceptedApplications() {
 						opps.push(opportunity);
 					}
 					setOpportunities(opps);
+					setLoading(false);
 				} catch (error) {
 					showSnackbar("Unable to fetch opportunities", "error", 5000);
+					setLoading(false);
 				}
 			}
 		};
-
+		setLoading(true);
 		fetchOpportunities();
 	}, [applications]);
 
 	const handleAccordionPress = (uid: string) => {
 		setExpandedAccordion((prev) => (prev === uid ? null : uid));
 	};
+	if (loading)
+		return (
+			<ActivityIndicator
+				size="large"
+				style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+			/>
+		);
 
 	return (
 		<ScrollView contentContainerStyle={styles.scrollViewContent}>
