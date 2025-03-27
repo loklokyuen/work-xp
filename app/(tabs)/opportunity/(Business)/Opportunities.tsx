@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useUserContext } from "../../../../context/UserContext";
 import { View, ScrollView } from "react-native";
-import { Text, Button, useTheme } from "react-native-paper";
+import { Text, Button, useTheme, Surface } from "react-native-paper";
 import { doc, onSnapshot, collection, deleteDoc } from "firebase/firestore";
 import { db } from "../../../../database/firebase";
 import { StyleSheet } from "react-native";
@@ -15,7 +15,6 @@ export default function Opportunities() {
 	const [opportunities, setOpportunities] = useState<any[]>([]);
 	const [openConfirm, setOpenConfirm] = useState(false);
 	const [deleteId, setDeleteId] = useState<string | null>(null);
-	const [deleteSuccess, setDeleteSuccess] = useState(false);
 	const { colors, fonts } = useTheme();
 
 	if (accountType === "Student") {
@@ -48,12 +47,7 @@ export default function Opportunities() {
 			await deleteDoc(
 				doc(db, "Business", user!.uid, "Opportunities", deleteId!)
 			);
-			setDeleteSuccess(true);
 			showSnackbar("Listing deleted successfully!", "success", 5000);
-			setTimeout(() => {
-				setDeleteSuccess(false);
-				window.location.reload();
-			}, 1000);
 		} catch (error) {
 			showSnackbar(
 				"Unable to delete listing. Please try again later.",
@@ -82,7 +76,7 @@ export default function Opportunities() {
 				) : (
 					opportunities.map((opp, index) => {
 						return (
-							<View style={styles.card} key={index}>
+							<Surface style={[styles.card, { margin: 10 }]} key={index}>
 								<Text
 									style={StyleSheet.compose(styles.role, {
 										fontFamily: "Lato",
@@ -124,24 +118,37 @@ export default function Opportunities() {
 									}}>
 									View Applications
 								</Button>
-							</View>
+							</Surface>
 						);
 					})
 				)}
 			</View>
-
-			<Button
-				mode="contained"
-				labelStyle={{ fontFamily: "Lato" }}
-				style={{ marginHorizontal: 20 }}
-				onPress={() => {
-					router.push({
-						pathname: "/(tabs)/opportunity/(Business)/listing",
-						params: { listingId: "" },
-					});
-				}}>
-				Post Listing
-			</Button>
+			<View style={styles.buttonContainer}>
+				<Button
+					mode="contained"
+					style={{
+						backgroundColor: colors.primary,
+						borderRadius: 8,
+						paddingLeft: 5,
+						paddingRight: 5,
+						marginBottom: 15,
+						width: "50%",
+					}}
+					labelStyle={{
+						fontFamily: "Lato",
+						fontSize: 16,
+						fontWeight: "normal",
+						color: colors.onPrimary,
+					}}
+					onPress={() => {
+						router.push({
+							pathname: "/(tabs)/opportunity/(Business)/listing",
+							params: { listingId: "" },
+						});
+					}}>
+					Post Listing
+				</Button>
+			</View>
 
 			{/* Confirmation Modal */}
 			<ConfirmActionModal
@@ -180,5 +187,10 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		color: "#007bff",
 		fontWeight: "600",
+	},
+	buttonContainer: {
+		flexDirection: "row",
+		justifyContent: "space-evenly",
+		gap: 5,
 	},
 });

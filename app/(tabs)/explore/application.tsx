@@ -55,12 +55,7 @@ export default function Application() {
 
 	const [chosen, setChosen] = useState<Record<string, any>>({});
 	const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-	const [isErrorModalVisible, setIsErrorModalVisible] =
-		useState<boolean>(false);
 
-	const [hasApplied, setHasApplied] = useState<boolean>(false);
-	const [missingFields, setMissingFields] = useState<boolean>(false);
-	const [errorMessage, setErrorMessage] = useState<string>("");
 	const router = useRouter();
 	const { colors, fonts } = useTheme();
 
@@ -174,10 +169,6 @@ export default function Application() {
 
 	const handleSubmit = async () => {
 		if (!why || !reason || Object.keys(chosen).length === 0) {
-			setMissingFields(true);
-			setTimeout(() => setMissingFields(false), 5000);
-			// setErrorMessage("Please fill in all fields and select from available dates to proceed.");
-			// setIsErrorModalVisible(true);
 			showSnackbar(
 				"Please fill in all fields and select from available dates to proceed.",
 				"error",
@@ -192,10 +183,6 @@ export default function Application() {
 				OpportunityId
 			);
 			if (hasAppliedAlready) {
-				setHasApplied(true);
-				setTimeout(() => setHasApplied(false), 5000);
-				// setErrorMessage("You have already applied for this opportunity! Please check on the status of your application or apply for another.");
-				// setIsErrorModalVisible(true);
 				showSnackbar(
 					"You have already applied for this opportunity! Please check on the status of your application or apply for another.",
 					"error",
@@ -242,7 +229,6 @@ export default function Application() {
 			}
 
 			setIsModalVisible(true);
-			setMissingFields(false);
 			setTimeout(() => {
 				setIsModalVisible(false);
 				router.back();
@@ -260,18 +246,11 @@ export default function Application() {
 		<KeyboardAwareScrollView
 			enableOnAndroid
 			contentContainerStyle={styles.container}>
-			<ConfirmationModal
-				open={isErrorModalVisible}
-				onClose={() => setIsErrorModalVisible(false)}
-				title="Error"
-				message={errorMessage}
-			/>
-
 			<Text
 				variant="titleLarge"
 				style={{
 					textAlign: "center",
-					paddingBottom: 15,
+					paddingVertical: 15,
 					color: colors.primary,
 				}}>
 				{jobRole} at {companyName}
