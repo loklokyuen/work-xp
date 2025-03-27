@@ -58,7 +58,9 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
 					}}>
 					Why they applied:
 				</Text>
-				<Text style={{ fontFamily: "Lato" }}>{application.whyApply}</Text>
+				<Text style={{ fontFamily: "Lato", textAlign: "center" }}>
+					{application.whyApply}
+				</Text>
 
 				{/* Why they are suitable */}
 				<Text
@@ -72,7 +74,9 @@ const ApplicationCard = ({ application, onDecision }: ApplicationCardProps) => {
 					}}>
 					Why they're suitable:
 				</Text>
-				<Text style={{ fontFamily: "Lato" }}>{application.whySuitable}</Text>
+				<Text style={{ fontFamily: "Lato", textAlign: "center" }}>
+					{application.whySuitable}
+				</Text>
 
 				{/* Chosen subjects */}
 				<Text

@@ -467,7 +467,7 @@ export default function Listing() {
                   },
                 ]}
               >
-                What dates would like to advertise the opportunity?
+                What dates would you like to advertise the opportunity?
               </Text>
             )}
             <Calendar
